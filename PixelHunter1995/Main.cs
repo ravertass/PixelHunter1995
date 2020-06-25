@@ -17,6 +17,8 @@ namespace PixelHunter1995
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = true;
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.PreferredBackBufferHeight = 1080;
             Content.RootDirectory = "Content";
         }
 
