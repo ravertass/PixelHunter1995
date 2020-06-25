@@ -25,3 +25,15 @@
 /processorParam:TextureFormat=Color
 /build:Images/Background1.jpg
 
+#begin Sounds/495674__jack-urbanski__vibraphone-chord.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/495674__jack-urbanski__vibraphone-chord.wav;Sounds/vibraphone-clip.wav
+
+#begin Sounds/92734__tj-mothy__slow-sad-tones.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/92734__tj-mothy__slow-sad-tones.wav;Sounds/slow-music.wav
+
