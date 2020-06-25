@@ -15,11 +15,13 @@ namespace PixelHunter1995
         Texture2D background;
         private SoundEffect music;
         private bool musicPlaying = false;
+        private bool justToggled = false;
 
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.IsFullScreen = true;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
             Content.RootDirectory = "Content";
         }
 
@@ -32,7 +34,6 @@ namespace PixelHunter1995
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -61,6 +62,27 @@ namespace PixelHunter1995
             Content.Unload();
         }
 
+        private bool IsAltEnterPressed()
+        {
+            return (Keyboard.GetState().IsKeyDown(Keys.LeftAlt) ||
+                    Keyboard.GetState().IsKeyDown(Keys.RightAlt)) &&
+                   Keyboard.GetState().IsKeyDown(Keys.Enter);
+        }
+
+        private void CheckForFullScreen()
+        {
+            if (!justToggled && IsAltEnterPressed())
+            {
+                graphics.ToggleFullScreen();
+                justToggled = true;
+            }
+
+            if (!IsAltEnterPressed())
+            {
+                justToggled = false;
+            }
+        }
+
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -71,7 +93,7 @@ namespace PixelHunter1995
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            CheckForFullScreen();
 
             base.Update(gameTime);
 
