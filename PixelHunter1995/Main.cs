@@ -16,6 +16,7 @@ namespace PixelHunter1995
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
         }
 
