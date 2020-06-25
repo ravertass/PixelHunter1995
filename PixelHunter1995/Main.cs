@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -12,6 +13,8 @@ namespace PixelHunter1995
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D background;
+        private SoundEffect music;
+        private bool musicPlaying = false;
 
         public Main()
         {
@@ -43,6 +46,8 @@ namespace PixelHunter1995
 
             // TODO: use this.Content to load your game content here
             background = Content.Load<Texture2D>("Images/Background1");
+
+            music = Content.Load<SoundEffect>("Sounds/slow-music");
         }
 
         /// <summary>
@@ -68,6 +73,15 @@ namespace PixelHunter1995
             // TODO: Add your update logic here
 
             base.Update(gameTime);
+
+            if (!musicPlaying)
+            {
+                SoundEffectInstance soundInst = music.CreateInstance();
+                soundInst.Volume = 0.5f;
+                soundInst.IsLooped = true;
+                soundInst.Play();
+                musicPlaying = true;
+            }
         }
 
         /// <summary>
