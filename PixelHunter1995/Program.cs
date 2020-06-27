@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace PixelHunter1995
 {
@@ -14,6 +15,9 @@ namespace PixelHunter1995
         [STAThread]
         static void Main()
         {
+            // This makes floats with dots, not commas, the standard when parsing and writing strings.
+            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
             using (var game = new Main())
                 game.Run();
         }
