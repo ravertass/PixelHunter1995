@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.IO;
 
 namespace PixelHunter1995
 {
@@ -34,6 +35,7 @@ namespace PixelHunter1995
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            SceneParser.ParseSceneXml(Path.Combine("Content", "Scenes", "scene1.tmx"));
             base.Initialize();
         }
 
