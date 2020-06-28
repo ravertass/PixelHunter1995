@@ -14,6 +14,7 @@ namespace PixelHunter1995
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D background;
+        Texture2D guy;
         private SoundEffect music;
         private bool musicPlaying = false;
         private bool justToggled = false;
@@ -50,6 +51,8 @@ namespace PixelHunter1995
 
             // TODO: use this.Content to load your game content here
             background = Content.Load<Texture2D>("Images/Background1");
+
+            guy = Content.Load<Texture2D>("Images/snubbe");
 
             music = Content.Load<SoundEffect>("Sounds/slow-music");
         }
@@ -120,6 +123,7 @@ namespace PixelHunter1995
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             spriteBatch.Draw(background, Vector2.Zero, Color.White);
+            spriteBatch.Draw(guy, new Vector2(20,20), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
