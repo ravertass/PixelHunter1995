@@ -5,16 +5,21 @@ namespace PixelHunter1995
 {
     class WalkingArea
     {
-        private List<Coord> points;
+        private List<Polygon> convexPolygons;
+
+        public WalkingArea(Polygon polygon)
+        {
+            this.convexPolygons = polygon.ConvexPartition();
+        }
 
         public WalkingArea(List<Coord> points)
+            : this(new Polygon(points))
         {
-            this.points = points;
         }
 
         public override string ToString()
         {
-            return String.Join<Coord>(", ", points);
+            return String.Join<Polygon>("; ", convexPolygons);
         }
     }
 }

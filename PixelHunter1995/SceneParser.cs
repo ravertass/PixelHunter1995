@@ -58,7 +58,6 @@ namespace PixelHunter1995
             foreach (String singlePointString in splitPolygonPointsString)
             {
                 List<String> splitSinglePointString = singlePointString.Split(',').ToList();
-                splitSinglePointString.ForEach(Console.WriteLine);
                 Debug.Assert(splitSinglePointString.Count == 2);
                 float x = float.Parse(splitSinglePointString[0]);
                 float y = float.Parse(splitSinglePointString[1]);
