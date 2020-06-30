@@ -126,6 +126,7 @@ namespace PixelHunter1995
 
                     ears = remaining.Triangulate();
                     ears.Add(VertexTriangle(i));
+                    break;
                 }
             }
 

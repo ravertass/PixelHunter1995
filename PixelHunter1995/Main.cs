@@ -39,7 +39,7 @@ namespace PixelHunter1995
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            currentScene = SceneParser.ParseSceneXml(Path.Combine("Content", "Scenes", "scene1.tmx"));
+            currentScene = SceneParser.ParseSceneXml(Path.Combine("Content", "Scenes", "scene2.tmx"));
             GlobalSettings.Instance.Debug = true;
             base.Initialize();
         }

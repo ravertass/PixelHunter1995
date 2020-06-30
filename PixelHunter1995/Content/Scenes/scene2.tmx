@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.0" orientation="orthogonal" renderorder="right-down" width="640" height="480" tilewidth="1" tileheight="1" infinite="0" nextlayerid="6" nextobjectid="8">
+ <tileset firstgid="1" source="../../../extra/dogs.tsx"/>
+ <imagelayer id="2" name="background">
+  <image source="../Images/scene2.png" width="640" height="480"/>
+ </imagelayer>
+ <objectgroup id="3" name="walking">
+  <object id="7" x="2" y="355.333">
+   <polygon points="0,0 110,-6 96.6667,-102.667 174,-158 313.333,-178 500.667,-158 553.333,-86.6667 508.667,0.666667 634,2.66667 634.667,77.3333 386,70.6667 366.667,-2.66667 417.333,-82 303.333,-100.667 224.667,-72.6667 254,-3.33333 240.667,76.6667 0,84.6667"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="dogs">
+  <object id="3" gid="1" x="459.333" y="359.333" width="32" height="32"/>
+  <object id="4" gid="1" x="158" y="262.667" width="32" height="32"/>
+  <object id="5" gid="1" x="43.3333" y="411.333" width="32" height="32"/>
+ </objectgroup>
+</map>
