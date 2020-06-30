@@ -20,6 +20,7 @@ namespace PixelHunter1995
         private bool musicPlaying = false;
         private bool justToggled = false;
         private List<Scene> scenes = new List<Scene>();
+        private Scene currentScene;
 
         public Main()
         {
@@ -38,7 +39,8 @@ namespace PixelHunter1995
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            Scene scene = SceneParser.ParseSceneXml(Path.Combine("Content", "Scenes", "scene1.tmx"));
+            currentScene = SceneParser.ParseSceneXml(Path.Combine("Content", "Scenes", "scene1.tmx"));
+            GlobalSettings.Instance.Debug = true;
             base.Initialize();
         }
 
@@ -49,7 +51,7 @@ namespace PixelHunter1995
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
             background = Content.Load<Texture2D>("Images/Background1");
@@ -120,13 +122,15 @@ namespace PixelHunter1995
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             spriteBatch.Draw(background, Vector2.Zero, Color.White);
             spriteBatch.Draw(guy, new Vector2(20,20), Color.White);
             spriteBatch.End();
+
+            currentScene.walkingArea.Draw(graphics);
 
             base.Draw(gameTime);
         }

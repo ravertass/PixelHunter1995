@@ -1,12 +1,13 @@
-﻿using System;
+using System;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace PixelHunter1995
 {
-    class Polygon
+    class Polygon : IDrawable
     {
         private List<Coord> vertices;
 
@@ -197,6 +198,48 @@ namespace PixelHunter1995
         public override string ToString()
         {
             return String.Join<Coord>(", ", vertices);
+        }
+
+        public void Draw(GraphicsDeviceManager graphics)
+        {
+            if (!GlobalSettings.Instance.Debug)
+            {
+                return;
+            }
+
+            VertexPositionColor[] drawVertices = new VertexPositionColor[vertices.Count];
+            short[] drawIndices = new short[vertices.Count * 2];
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Coord coord = vertices[i];
+                // Convert coordinates to the coordinate system
+                // used when drawing primitives, with 0 in the middle of
+                // the screen, X positive going right and Y positive
+                // going up.
+                float x = (coord.X / graphics.PreferredBackBufferWidth) * 2.0f - 1.0f;
+                float y = -(coord.Y / graphics.PreferredBackBufferHeight) * 2.0f + 1.0f;
+                drawVertices[i].Position = new Vector3(x, y, 0.0f);
+                drawIndices[i * 2] = (short)i;
+                drawIndices[i * 2 + 1] = (short)((i + 1) % vertices.Count);
+            }
+
+            int vertOffset = 0;
+            short indexOffset = 0;
+
+            // Apparently, we need to use a shader for this.
+            BasicEffect basicEffect = new BasicEffect(graphics.GraphicsDevice);
+            foreach (EffectPass effectPass in basicEffect.CurrentTechnique.Passes)
+            {
+                effectPass.Apply();
+                graphics.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionColor>(
+                    PrimitiveType.LineStrip,
+                    drawVertices,
+                    vertOffset,
+                    drawVertices.Length,
+                    drawIndices,
+                    indexOffset,
+                    drawIndices.Length - 1);
+            }
         }
     }
 }
