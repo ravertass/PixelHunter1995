@@ -6,11 +6,11 @@ namespace PixelHunter1995
 {
     class WalkingArea : IDrawable
     {
-        private List<Polygon> convexPolygons;
+        private PolygonPartition partition;
 
         public WalkingArea(Polygon polygon)
         {
-            this.convexPolygons = polygon.ConvexPartition();
+            partition = polygon.ConvexPartition();
         }
 
         public WalkingArea(List<Coord> points)
@@ -20,12 +20,12 @@ namespace PixelHunter1995
 
         public override string ToString()
         {
-            return String.Join<Polygon>("; ", convexPolygons);
+            return partition.ToString();
         }
 
         public void Draw(GraphicsDeviceManager graphics)
         {
-            convexPolygons.ForEach(p => p.Draw(graphics));
+            partition.Draw(graphics);
         }
     }
 }
