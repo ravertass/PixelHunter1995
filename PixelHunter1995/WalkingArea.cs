@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace PixelHunter1995
 {
-    class WalkingArea
+    class WalkingArea : IDrawable
     {
         private List<Polygon> convexPolygons;
 
@@ -20,6 +21,11 @@ namespace PixelHunter1995
         public override string ToString()
         {
             return String.Join<Polygon>("; ", convexPolygons);
+        }
+
+        public void Draw(GraphicsDeviceManager graphics)
+        {
+            convexPolygons.ForEach(p => p.Draw(graphics));
         }
     }
 }
