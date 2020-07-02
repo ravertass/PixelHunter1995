@@ -9,20 +9,7 @@ using System.Xml;
 
 namespace PixelHunter1995
 {
-    using Dog = System.ValueTuple<float,float,float,float>;
-    class Scene
-    {
-        public string background;
-        public List<Dog> dogs;
-        public WalkingArea walkingArea;
-
-        public Scene(string background, List<Dog> dogs, WalkingArea walkingArea)
-        {
-            this.background = background;
-            this.dogs = dogs;
-            this.walkingArea = walkingArea;
-        }
-    }
+    using Dog = System.ValueTuple<float, float, float, float>;
     class SceneParser
     {
         public static Scene ParseSceneXml(String sceneXmlPath)
