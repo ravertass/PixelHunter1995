@@ -21,6 +21,7 @@ namespace PixelHunter1995
         private bool justToggled = false;
         private List<Scene> scenes = new List<Scene>();
         private Scene currentScene;
+        private SceneHandler sceneHandler = new SceneHandler();
 
         public Main()
         {
@@ -59,6 +60,10 @@ namespace PixelHunter1995
             guy = Content.Load<Texture2D>("Images/snubbe");
 
             music = Content.Load<SoundEffect>("Sounds/slow-music");
+            foreach (string content in sceneHandler.Images())
+            {
+                Content.Load<Texture2D>(content);
+            }
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace PixelHunter1995
 {
@@ -7,15 +8,25 @@ namespace PixelHunter1995
     //using Background = System.ValueTuple<>;
     class Scene
     {
-        public string background;
+        public Background background;
         public List<Dog> dogs;
         public WalkingArea walkingArea;
 
-        public Scene(string background, List<Dog> dogs, WalkingArea walkingArea)
+        public Scene(Background background, List<Dog> dogs, WalkingArea walkingArea)
         {
             this.background = background;
             this.dogs = dogs;
             this.walkingArea = walkingArea;
+        }
+
+        public List<string> Images()
+        {
+            return new List<string>() { background.Image };
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+
         }
     }
 }

@@ -17,7 +17,7 @@ namespace PixelHunter1995
             XmlDocument doc = new XmlDocument();
             doc.Load(sceneXmlPath);
             XmlNodeList nodes = doc.DocumentElement.ChildNodes;
-            string background = null;
+            Background background = null;
             WalkingArea walkingArea = null;
             List<Dog> dogs = null;
 
@@ -25,7 +25,12 @@ namespace PixelHunter1995
             {
                 if (node.Name == "imagelayer" && node.Attributes["name"]?.InnerText == "background")
                 {
-                    background = node.Name;  // TODO: probably not the right value
+                    Debug.Assert(node.ChildNodes.Count == 1);
+                    XmlNode imageNode = node.ChildNodes[0];
+                    string image = imageNode.Attributes["source"].Value;
+                    int width = int.Parse(imageNode.Attributes["width"].Value);
+                    int height = int.Parse(imageNode.Attributes["height"].Value);
+                    background = new Background(image, width, height);
                 }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "dogs")
                 {

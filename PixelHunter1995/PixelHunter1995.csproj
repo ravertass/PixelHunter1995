@@ -56,10 +56,14 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Background.cs" />
+    <Compile Include="Drawer.cs" />
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="IDrawable.cs" />
     <Compile Include="Polygon.cs" />
     <Compile Include="Coord.cs" />
+    <Compile Include="Scene.cs" />
+    <Compile Include="SceneHandler.cs" />
     <Compile Include="WalkingArea.cs" />
     <Compile Include="SceneParser.cs" />
     <Compile Include="Main.cs" />
