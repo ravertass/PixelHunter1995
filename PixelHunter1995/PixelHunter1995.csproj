@@ -56,11 +56,15 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="GameStates\StateManager.cs" />
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="IDrawable.cs" />
     <Compile Include="Polygon.cs" />
     <Compile Include="Coord.cs" />
     <Compile Include="PolygonPartition.cs" />
+    <Compile Include="GameStates\Menu.cs" />
+    <Compile Include="GameStates\Playing.cs" />
+    <Compile Include="GameStates\IGameState.cs" />
     <Compile Include="WalkingArea.cs" />
     <Compile Include="SceneParser.cs" />
     <Compile Include="Main.cs" />
