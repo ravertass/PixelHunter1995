@@ -70,7 +70,7 @@ namespace PixelHunter1995
             return GetVertexType(i) == VertexType.Concave;
         }
 
-        private bool IsConvex()
+        public bool IsConvex()
         {
             for (int i = 0; i < vertices.Count; i++)
             {
@@ -83,16 +83,16 @@ namespace PixelHunter1995
             return true;
         }
 
-        public List<Polygon> ConvexPartition()
+        public PolygonPartition ConvexPartition()
         {
             // TODO: Use an actual convex partition algorithn, e.g. Hertel-Mehlhorn,
             //       instead of only using triangulation.
             if (IsConvex())
             {
-                return new List<Polygon>() { this };
+                return new PolygonPartition(new List<Polygon>() { this });
             }
 
-            return Triangulate();
+            return new PolygonPartition(Triangulate()).RemoveUnnecessaryEdges();
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace PixelHunter1995
 
         public override string ToString()
         {
-            return String.Join<Coord>(", ", vertices);
+            return string.Join<Coord>(", ", vertices);
         }
 
         public void Draw(GraphicsDeviceManager graphics)
@@ -241,6 +241,91 @@ namespace PixelHunter1995
                     indexOffset,
                     drawIndices.Length - 1);
             }
+        }
+
+        public bool HasCommonEdgeWith(Polygon other)
+        {
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Coord thisVertex = vertices[i];
+                Coord thisNextVertex = vertices[NextIndex(i)];
+                for (int j = 0; j < other.vertices.Count; j++)
+                {
+                    Coord otherVertex = other.vertices[j];
+                    Coord otherPreviousVertex = other.vertices[other.PreviousIndex(j)];
+
+                    if (thisVertex.Equals(otherVertex) && thisNextVertex.Equals(otherPreviousVertex))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public Polygon CombineWith(Polygon other)
+        {
+            Debug.Assert(HasCommonEdgeWith(other));
+
+            List<Coord> newVertices = new List<Coord>();
+            bool collectedFromOther = false;
+
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Coord currentVertex = vertices[i];
+                Coord nextVertex = vertices[NextIndex(i)];
+
+                newVertices.Add(currentVertex);
+
+                if (collectedFromOther)
+                {
+                    continue;
+                }
+
+                // Note: The vertex has been reversed, since it will be reversed
+                //       in the other polygon.
+                int otherIndex = other.EdgeAt(nextVertex, currentVertex);
+                bool edgeExistsInOther = otherIndex != -1;
+                if (edgeExistsInOther)
+                {
+                    // We reached a common edge, so we start collecting vertices from
+                    // the other polygon. The correct index to start at comes after the
+                    // edge (that is, the index of the first vertex in the edge plus two).
+                    int startIndex = other.NextIndex(other.NextIndex(otherIndex));
+                    for (int j = startIndex;
+                         !vertices.Contains(other.vertices[j]);
+                         j = other.NextIndex(j))
+                    {
+                        newVertices.Add(other.vertices[j]);
+                    }
+                    collectedFromOther = true;
+                }
+            }
+
+            return new Polygon(newVertices);
+        }
+
+        /// <summary>
+        /// Returns the index of the first vertex of this edge in the polygon,
+        /// if it exists in the polygon. Otherwise, return -1.
+        /// </summary>
+        /// <param name="vertexA"></param>
+        /// <param name="vertexB"></param>
+        /// <returns></returns>
+        private int EdgeAt(Coord vertexA, Coord vertexB)
+        {
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Coord currentVertex = vertices[i];
+                Coord nextVertex = vertices[NextIndex(i)];
+                if (currentVertex.Equals(vertexA) && nextVertex.Equals(vertexB))
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
     }
 }
