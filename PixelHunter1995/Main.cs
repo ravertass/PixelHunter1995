@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using PixelHunter1995.GameStates;
 using System.Collections.Generic;
 using System.IO;
 
@@ -14,14 +15,14 @@ namespace PixelHunter1995
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D background;
-        Texture2D guy;
         private SoundEffect music;
         private bool musicPlaying = false;
-        private bool justToggled = false;
         private List<Scene> scenes = new List<Scene>();
         private Scene currentScene;
         private SceneHandler sceneHandler = new SceneHandler();
+        private bool justToggledFullscreen = false;
+        private StateManager stateManager;
+        private ShouldExit shouldExit;
 
         public Main()
         {
@@ -40,8 +41,10 @@ namespace PixelHunter1995
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            List<Scene> scenes = new List<Scene>();
             currentScene = SceneParser.ParseSceneXml(Path.Combine("Content", "Scenes", "scene2.tmx"));
             GlobalSettings.Instance.Debug = true;
+            shouldExit = new ShouldExit();
             base.Initialize();
         }
 
@@ -54,16 +57,21 @@ namespace PixelHunter1995
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
-            background = Content.Load<Texture2D>("Images/Background1");
+            // Load images
+            Texture2D background = Content.Load<Texture2D>("Images/Background1");
+            Texture2D menu = Content.Load<Texture2D>("Images/Menu");
+            Texture2D guy = Content.Load<Texture2D>("Images/snubbe");
 
-            guy = Content.Load<Texture2D>("Images/snubbe");
-
+            // Load sounds
             music = Content.Load<SoundEffect>("Sounds/slow-music");
             foreach (string content in sceneHandler.Images())
             {
                 Content.Load<Texture2D>(content);
             }
+
+            // Load game states
+            stateManager = new StateManager(spriteBatch, shouldExit, background, menu, guy);
+            stateManager.SetStateMenu();
         }
 
         /// <summary>
@@ -76,24 +84,23 @@ namespace PixelHunter1995
             Content.Unload();
         }
 
-        private bool IsAltEnterPressed()
+        private bool IsAltEnterPressed(KeyboardState state)
         {
-            return (Keyboard.GetState().IsKeyDown(Keys.LeftAlt) ||
-                    Keyboard.GetState().IsKeyDown(Keys.RightAlt)) &&
-                   Keyboard.GetState().IsKeyDown(Keys.Enter);
+            return (state.IsKeyDown(Keys.LeftAlt) || state.IsKeyDown(Keys.RightAlt)) && state.IsKeyDown(Keys.Enter);
         }
 
         private void CheckForFullScreen()
         {
-            if (!justToggled && IsAltEnterPressed())
+            KeyboardState state = Keyboard.GetState();
+            if (!justToggledFullscreen && IsAltEnterPressed(state))
             {
                 graphics.ToggleFullScreen();
-                justToggled = true;
+                justToggledFullscreen = true;
             }
 
-            if (!IsAltEnterPressed())
+            if (!IsAltEnterPressed(state))
             {
-                justToggled = false;
+                justToggledFullscreen = false;
             }
         }
 
@@ -104,11 +111,13 @@ namespace PixelHunter1995
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (shouldExit.exit)
+            {
                 Exit();
+            }
 
+            stateManager.currentState.Update(gameTime);
             CheckForFullScreen();
-
             base.Update(gameTime);
 
             if (!musicPlaying)
@@ -127,17 +136,20 @@ namespace PixelHunter1995
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
+            GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
-            spriteBatch.Draw(background, Vector2.Zero, Color.White);
-            spriteBatch.Draw(guy, new Vector2(20,20), Color.White);
+            stateManager.currentState.Draw(gameTime);
             spriteBatch.End();
-
             currentScene.walkingArea.Draw(graphics);
-
             base.Draw(gameTime);
         }
+    }
+
+    /// <summary>
+    /// Small class to know when we should exit
+    /// </summary>
+    public class ShouldExit
+    {
+        public bool exit = false;
     }
 }
