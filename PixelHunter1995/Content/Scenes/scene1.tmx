@@ -5,7 +5,7 @@
  </editorsettings>
  <tileset firstgid="1" source="../../../extra/dogs.tsx"/>
  <imagelayer id="2" name="background">
-  <image source="../Images/background.png" width="640" height="480"/>
+  <image source="../Images/Background1" width="640" height="480"/>
  </imagelayer>
  <objectgroup id="3" name="walking" locked="1">
   <object id="1" x="130" y="280.667">

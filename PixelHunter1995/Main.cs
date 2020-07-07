@@ -17,8 +17,6 @@ namespace PixelHunter1995
         SpriteBatch spriteBatch;
         private SoundEffect music;
         private bool musicPlaying = false;
-        private List<Scene> scenes = new List<Scene>();
-        private Scene currentScene;
         private SceneHandler sceneHandler = new SceneHandler();
         private bool justToggledFullscreen = false;
         private StateManager stateManager;
@@ -27,8 +25,8 @@ namespace PixelHunter1995
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 426;
+            graphics.PreferredBackBufferHeight = 240;
             Content.RootDirectory = "Content";
         }
 
@@ -41,8 +39,8 @@ namespace PixelHunter1995
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            List<Scene> scenes = new List<Scene>();
-            currentScene = SceneParser.ParseSceneXml(Path.Combine("Content", "Scenes", "scene2.tmx"));
+            sceneHandler.Initialize(Path.Combine("Content", "Scenes"));
+            sceneHandler.SetCurrentSceneByName("scene1.tmx");
             GlobalSettings.Instance.Debug = true;
             shouldExit = new ShouldExit();
             base.Initialize();
@@ -58,19 +56,18 @@ namespace PixelHunter1995
             spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
             // Load images
-            Texture2D background = Content.Load<Texture2D>("Images/Background1");
             Texture2D menu = Content.Load<Texture2D>("Images/Menu");
             Texture2D guy = Content.Load<Texture2D>("Images/snubbe");
 
             // Load sounds
             music = Content.Load<SoundEffect>("Sounds/slow-music");
-            foreach (string content in sceneHandler.Images())
+            foreach (Scene scene in sceneHandler.scenes.Values)
             {
-                Content.Load<Texture2D>(content);
+                scene.LoadContent(Content);
             }
 
             // Load game states
-            stateManager = new StateManager(spriteBatch, shouldExit, background, menu, guy);
+            stateManager = new StateManager(shouldExit, menu, guy);
             stateManager.SetStateMenu();
         }
 
@@ -116,7 +113,7 @@ namespace PixelHunter1995
                 Exit();
             }
 
-            stateManager.currentState.Update(gameTime);
+            stateManager.currentState.Update(gameTime, sceneHandler.currentScene);
             CheckForFullScreen();
             base.Update(gameTime);
 
@@ -138,9 +135,9 @@ namespace PixelHunter1995
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
-            stateManager.currentState.Draw(gameTime);
+            stateManager.currentState.Draw(spriteBatch, gameTime, sceneHandler.currentScene);
             spriteBatch.End();
-            currentScene.walkingArea.Draw(graphics);
+            sceneHandler.currentScene.walkingArea.Draw(graphics);
             base.Draw(gameTime);
         }
     }

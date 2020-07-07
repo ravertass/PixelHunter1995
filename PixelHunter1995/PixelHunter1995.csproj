@@ -63,14 +63,14 @@
     <Compile Include="IDrawable.cs" />
     <Compile Include="Polygon.cs" />
     <Compile Include="Coord.cs" />
-    <Compile Include="Scene.cs" />
-    <Compile Include="SceneHandler.cs" />
+    <Compile Include="SceneLib\Scene.cs" />
+    <Compile Include="SceneLib\SceneHandler.cs" />
     <Compile Include="PolygonPartition.cs" />
     <Compile Include="GameStates\Menu.cs" />
     <Compile Include="GameStates\Playing.cs" />
     <Compile Include="GameStates\IGameState.cs" />
     <Compile Include="WalkingArea.cs" />
-    <Compile Include="SceneParser.cs" />
+    <Compile Include="SceneLib\SceneParser.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

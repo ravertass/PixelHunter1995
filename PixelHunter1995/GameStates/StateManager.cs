@@ -5,18 +5,14 @@ namespace PixelHunter1995.GameStates
     class StateManager
     {
         public IGameState currentState { get; internal set; }
-        private SpriteBatch spriteBatch;
         private ShouldExit shouldExit;
-        private Texture2D background;
         private Texture2D menu;
         private Texture2D guy;
 
 
-        public StateManager (SpriteBatch spriteBatch, ShouldExit shouldExit, Texture2D background, Texture2D menu, Texture2D guy)
+        public StateManager (ShouldExit shouldExit, Texture2D menu, Texture2D guy)
         {
-            this.spriteBatch = spriteBatch;
             this.shouldExit = shouldExit;
-            this.background = background;
             this.menu = menu;
             this.guy = guy;
         }
@@ -28,12 +24,12 @@ namespace PixelHunter1995.GameStates
 
         public void SetStateMenu()
         {
-            currentState = new Menu(this, menu, spriteBatch);
+            currentState = new Menu(this, menu);
         }
 
         public void SetStatePlaying()
         {
-            currentState = new Playing(this, background, guy, spriteBatch);
+            currentState = new Playing(this, guy);
         }
 
     }

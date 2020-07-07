@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Xml;
 
@@ -12,7 +13,7 @@ namespace PixelHunter1995
     using Dog = System.ValueTuple<float, float, float, float>;
     class SceneParser
     {
-        public static Scene ParseSceneXml(String sceneXmlPath)
+        public static Scene ParseSceneXml(string sceneXmlPath)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(sceneXmlPath);
@@ -27,10 +28,12 @@ namespace PixelHunter1995
                 {
                     Debug.Assert(node.ChildNodes.Count == 1);
                     XmlNode imageNode = node.ChildNodes[0];
-                    string image = imageNode.Attributes["source"].Value;
+                    string imagePathRelative = imageNode.Attributes["source"].Value;
+                    string imagePath = Path.Combine(Directory.GetParent(sceneXmlPath).FullName,
+                                                    imagePathRelative);
                     int width = int.Parse(imageNode.Attributes["width"].Value);
                     int height = int.Parse(imageNode.Attributes["height"].Value);
-                    background = new Background(image, width, height);
+                    background = new Background(imagePath, width, height);
                 }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "dogs")
                 {

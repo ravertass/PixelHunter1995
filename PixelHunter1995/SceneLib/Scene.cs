@@ -1,5 +1,8 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.Net.Mime;
 
 namespace PixelHunter1995
 {
@@ -19,14 +22,14 @@ namespace PixelHunter1995
             this.walkingArea = walkingArea;
         }
 
-        public List<string> Images()
-        {
-            return new List<string>() { background.Image };
-        }
-
         public void Draw(SpriteBatch spriteBatch)
         {
+            background.Draw(spriteBatch);
+        }
 
+        public void LoadContent(ContentManager content)
+        {
+            background.LoadContent(content);
         }
     }
 }
