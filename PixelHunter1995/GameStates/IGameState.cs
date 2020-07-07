@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace PixelHunter1995.GameStates
@@ -8,7 +9,7 @@ namespace PixelHunter1995.GameStates
     /// </summary>
     interface IGameState
     {
-        void Update(GameTime gameTime);
-        void Draw(GameTime gameTime);
+        void Update(GameTime gameTime, Scene scene);
+        void Draw(SpriteBatch spriteBatch, GameTime gameTime, Scene scene);
     }
 }

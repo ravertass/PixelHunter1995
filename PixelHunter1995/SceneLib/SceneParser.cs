@@ -4,33 +4,21 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Xml;
 
 namespace PixelHunter1995
 {
-    using Dog = System.ValueTuple<float,float,float,float>;
-    class Scene
-    {
-        public string background;
-        public List<Dog> dogs;
-        public WalkingArea walkingArea;
-
-        public Scene(string background, List<Dog> dogs, WalkingArea walkingArea)
-        {
-            this.background = background;
-            this.dogs = dogs;
-            this.walkingArea = walkingArea;
-        }
-    }
+    using Dog = System.ValueTuple<float, float, float, float>;
     class SceneParser
     {
-        public static Scene ParseSceneXml(String sceneXmlPath)
+        public static Scene ParseSceneXml(string sceneXmlPath)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(sceneXmlPath);
             XmlNodeList nodes = doc.DocumentElement.ChildNodes;
-            string background = null;
+            Background background = null;
             WalkingArea walkingArea = null;
             List<Dog> dogs = null;
 
@@ -38,7 +26,15 @@ namespace PixelHunter1995
             {
                 if (node.Name == "imagelayer" && node.Attributes["name"]?.InnerText == "background")
                 {
-                    background = node.Name;  // TODO: probably not the right value
+                    Debug.Assert(node.ChildNodes.Count == 1);
+                    XmlNode imageNode = node.ChildNodes[0];
+                    string imagePathRelative = imageNode.Attributes["source"].Value;
+                    string imagePath = Path.Combine(Path.GetFileNameWithoutExtension(Path.GetDirectoryName(sceneXmlPath)),
+                                                    Path.GetDirectoryName(imagePathRelative),
+                                                    Path.GetFileNameWithoutExtension(imagePathRelative));
+                    int width = int.Parse(imageNode.Attributes["width"].Value);
+                    int height = int.Parse(imageNode.Attributes["height"].Value);
+                    background = new Background(imagePath, width, height);
                 }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "dogs")
                 {

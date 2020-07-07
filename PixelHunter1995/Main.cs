@@ -17,8 +17,7 @@ namespace PixelHunter1995
         SpriteBatch spriteBatch;
         private SoundEffect music;
         private bool musicPlaying = false;
-        private List<Scene> scenes = new List<Scene>();
-        private Scene currentScene;
+        private SceneManager sceneManager = new SceneManager();
         private bool justToggledFullscreen = false;
         private StateManager stateManager;
         private ShouldExit shouldExit;
@@ -40,7 +39,8 @@ namespace PixelHunter1995
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            currentScene = SceneParser.ParseSceneXml(Path.Combine("Content", "Scenes", "scene2.tmx"));
+            sceneManager.Initialize(Path.Combine("Content", "Scenes"));
+            sceneManager.SetCurrentSceneByName("scene1.tmx");
             GlobalSettings.Instance.Debug = true;
             shouldExit = new ShouldExit();
             base.Initialize();
@@ -56,15 +56,19 @@ namespace PixelHunter1995
             spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
             // Load images
-            Texture2D background = Content.Load<Texture2D>("Images/Background1");
             Texture2D menu = Content.Load<Texture2D>("Images/Menu");
             Texture2D guy = Content.Load<Texture2D>("Images/snubbe");
 
             // Load sounds
             music = Content.Load<SoundEffect>("Sounds/slow-music");
 
+            foreach (Scene scene in sceneManager.scenes.Values)
+            {
+                scene.LoadContent(Content);
+            }
+
             // Load game states
-            stateManager = new StateManager(spriteBatch, shouldExit, background, menu, guy);
+            stateManager = new StateManager(shouldExit, menu, guy);
             stateManager.SetStateMenu();
         }
 
@@ -110,7 +114,7 @@ namespace PixelHunter1995
                 Exit();
             }
 
-            stateManager.currentState.Update(gameTime);
+            stateManager.currentState.Update(gameTime, sceneManager.currentScene);
             CheckForFullScreen();
             base.Update(gameTime);
 
@@ -132,9 +136,9 @@ namespace PixelHunter1995
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
-            stateManager.currentState.Draw(gameTime);
+            stateManager.currentState.Draw(spriteBatch, gameTime, sceneManager.currentScene);
             spriteBatch.End();
-            currentScene.walkingArea.Draw(graphics);
+            sceneManager.currentScene.walkingArea.Draw(graphics);
             base.Draw(gameTime);
         }
     }

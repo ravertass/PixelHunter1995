@@ -9,26 +9,23 @@ namespace PixelHunter1995.GameStates
     /// </summary>
     class Playing : IGameState
     {
-        private readonly Texture2D background;
         private readonly Texture2D guy;
-        private readonly SpriteBatch spriteBatch;
         private StateManager stateManager;
 
-        public Playing(StateManager stateManager, Texture2D background, Texture2D guy, SpriteBatch spriteBatch)
+        public Playing(StateManager stateManager, Texture2D guy)
         {
             this.stateManager = stateManager;
-            this.background = background;
             this.guy = guy;
-            this.spriteBatch = spriteBatch;
         }
 
-        public void Draw(GameTime gameTime)
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime, Scene scene)
         {
-            spriteBatch.Draw(background, Vector2.Zero, Color.White);
+            //spriteBatch.Draw(background, Vector2.Zero, Color.White);
+            scene.Draw(spriteBatch);
             spriteBatch.Draw(guy, new Vector2(20,20), Color.White);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Scene scene)
         {
             KeyboardState state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.Escape))
