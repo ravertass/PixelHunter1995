@@ -29,8 +29,9 @@ namespace PixelHunter1995
                     Debug.Assert(node.ChildNodes.Count == 1);
                     XmlNode imageNode = node.ChildNodes[0];
                     string imagePathRelative = imageNode.Attributes["source"].Value;
-                    string imagePath = Path.Combine(Directory.GetParent(sceneXmlPath).FullName,
-                                                    imagePathRelative);
+                    string imagePath = Path.Combine(Path.GetFileNameWithoutExtension(Path.GetDirectoryName(sceneXmlPath)),
+                                                    Path.GetDirectoryName(imagePathRelative),
+                                                    Path.GetFileNameWithoutExtension(imagePathRelative));
                     int width = int.Parse(imageNode.Attributes["width"].Value);
                     int height = int.Parse(imageNode.Attributes["height"].Value);
                     background = new Background(imagePath, width, height);

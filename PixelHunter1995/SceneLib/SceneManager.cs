@@ -4,15 +4,15 @@ using System.Runtime.InteropServices;
 
 namespace PixelHunter1995
 {
-    class SceneHandler
+    class SceneManager
     {
-        //List<Scene> scenes;
         public Dictionary<string, Scene> scenes;
         public Scene currentScene;
 
-        public SceneHandler()
+        public SceneManager()
         {
         }
+
         public void Initialize(string scenesPath)
         {
             scenes = new Dictionary<string, Scene>();

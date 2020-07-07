@@ -8,7 +8,6 @@ namespace PixelHunter1995
 {
     using Dog = System.ValueTuple<float, float, float, float>;
 
-    //using Background = System.ValueTuple<>;
     class Scene
     {
         public Background background;

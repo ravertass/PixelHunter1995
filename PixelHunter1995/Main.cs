@@ -17,7 +17,7 @@ namespace PixelHunter1995
         SpriteBatch spriteBatch;
         private SoundEffect music;
         private bool musicPlaying = false;
-        private SceneHandler sceneHandler = new SceneHandler();
+        private SceneManager sceneManager = new SceneManager();
         private bool justToggledFullscreen = false;
         private StateManager stateManager;
         private ShouldExit shouldExit;
@@ -39,8 +39,8 @@ namespace PixelHunter1995
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            sceneHandler.Initialize(Path.Combine("Content", "Scenes"));
-            sceneHandler.SetCurrentSceneByName("scene1.tmx");
+            sceneManager.Initialize(Path.Combine("Content", "Scenes"));
+            sceneManager.SetCurrentSceneByName("scene1.tmx");
             GlobalSettings.Instance.Debug = true;
             shouldExit = new ShouldExit();
             base.Initialize();
@@ -61,7 +61,8 @@ namespace PixelHunter1995
 
             // Load sounds
             music = Content.Load<SoundEffect>("Sounds/slow-music");
-            foreach (Scene scene in sceneHandler.scenes.Values)
+
+            foreach (Scene scene in sceneManager.scenes.Values)
             {
                 scene.LoadContent(Content);
             }
@@ -113,7 +114,7 @@ namespace PixelHunter1995
                 Exit();
             }
 
-            stateManager.currentState.Update(gameTime, sceneHandler.currentScene);
+            stateManager.currentState.Update(gameTime, sceneManager.currentScene);
             CheckForFullScreen();
             base.Update(gameTime);
 
@@ -135,9 +136,9 @@ namespace PixelHunter1995
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
-            stateManager.currentState.Draw(spriteBatch, gameTime, sceneHandler.currentScene);
+            stateManager.currentState.Draw(spriteBatch, gameTime, sceneManager.currentScene);
             spriteBatch.End();
-            sceneHandler.currentScene.walkingArea.Draw(graphics);
+            sceneManager.currentScene.walkingArea.Draw(graphics);
             base.Draw(gameTime);
         }
     }

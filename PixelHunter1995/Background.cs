@@ -8,13 +8,13 @@ namespace PixelHunter1995
 {
     class Background
     {
-        public string ImagePath { get; private set; }
+        string imagePath;
         int width;
         int height;
         public Texture2D image;
-        public Background(string image, int width, int height)
+        public Background(string imagePath, int width, int height)
         {
-            this.ImagePath = image;
+            this.imagePath = imagePath;
             this.width = width;
             this.height = height;
         }
@@ -26,7 +26,7 @@ namespace PixelHunter1995
 
         public void LoadContent(ContentManager content)
         {
-            image = content.Load<Texture2D>(ImagePath);
+            image = content.Load<Texture2D>(imagePath);
         }
     }
 }

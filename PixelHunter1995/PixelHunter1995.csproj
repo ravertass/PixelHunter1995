@@ -57,14 +57,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Background.cs" />
-    <Compile Include="Drawer.cs" />
     <Compile Include="GameStates\StateManager.cs" />
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="IDrawable.cs" />
     <Compile Include="Polygon.cs" />
     <Compile Include="Coord.cs" />
     <Compile Include="SceneLib\Scene.cs" />
-    <Compile Include="SceneLib\SceneHandler.cs" />
+    <Compile Include="SceneLib\SceneManager.cs" />
     <Compile Include="PolygonPartition.cs" />
     <Compile Include="GameStates\Menu.cs" />
     <Compile Include="GameStates\Playing.cs" />
