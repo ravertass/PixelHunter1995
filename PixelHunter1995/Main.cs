@@ -14,6 +14,7 @@ namespace PixelHunter1995
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private Player player;
         private SoundEffect music;
         private bool musicPlaying = false;
         private SceneManager sceneManager = new SceneManager();
@@ -59,7 +60,9 @@ namespace PixelHunter1995
 
             // Load images
             Texture2D menu = Content.Load<Texture2D>("Images/Menu");
-            Texture2D guy = Content.Load<Texture2D>("Images/snubbe");
+            //Texture2D guy = Content.Load<Texture2D>("Images/snubbe");
+            this.player = new Player(this, spriteBatch);
+            player.LoadContent(Content);
 
             // Load sounds
             music = Content.Load<SoundEffect>("Sounds/slow-music");
@@ -70,7 +73,7 @@ namespace PixelHunter1995
             }
 
             // Load game states
-            stateManager = new StateManager(shouldExit, font, menu, guy);
+            stateManager = new StateManager(spriteBatch, shouldExit, font, menu, player);
             stateManager.SetStateMenu();
         }
 
@@ -103,11 +106,13 @@ namespace PixelHunter1995
             if (!musicPlaying)
             {
                 SoundEffectInstance soundInst = music.CreateInstance();
-                soundInst.Volume = 0.5f;
+                soundInst.Volume = 0.01f;
                 soundInst.IsLooped = true;
                 soundInst.Play();
                 musicPlaying = true;
             }
+
+            player.Update(gameTime);
         }
 
         /// <summary>

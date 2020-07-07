@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PixelHunter1995
 {
-    class WalkingArea : IDrawable
+    class WalkingArea// : IDrawable
     {
         private PolygonPartition partition;
 

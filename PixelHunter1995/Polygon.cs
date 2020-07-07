@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PixelHunter1995
 {
-    class Polygon : IDrawable
+    class Polygon// : IDrawable
     {
         private List<Coord> vertices;
 
