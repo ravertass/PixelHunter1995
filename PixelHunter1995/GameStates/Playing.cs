@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using PixelHunter1995.Components.Gamma;
 
 namespace PixelHunter1995.GameStates
 {

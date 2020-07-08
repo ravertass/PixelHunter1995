@@ -82,10 +82,29 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Background.cs" />
+    <Compile Include="Components\Gamma\CompositeGamma.cs" />
+    <Compile Include="Components\Gamma\IComponentGamma.cs" />
+    <Compile Include="Components\Gamma\IHasComponentGamma.cs" />
+    <Compile Include="Components\Gamma\IHasComponentsGamma.cs" />
+    <Compile Include="Components\Gamma\PlayerGamma.cs" />
+    <Compile Include="Components\Gamma\PositionComponentGamma.cs" />
+    <Compile Include="Components\Gamma\SpriteComponentGamma.cs" />
+    <Compile Include="Components\Beta\IComponentBeta.cs" />
+    <Compile Include="Components\IComponent.cs" />
+    <Compile Include="Components\Beta\IHasComponentBeta.cs" />
+    <Compile Include="Components\IHasComponent.cs" />
+    <Compile Include="Components\Beta\IHasComponentsBeta.cs" />
+    <Compile Include="Components\IHasComponents.cs" />
+    <Compile Include="Components\Beta\PositionComponentBeta.cs" />
+    <Compile Include="Components\PlayerAlpha.cs" />
+    <Compile Include="Components\PositionComponent.cs" />
+    <Compile Include="Components\Beta\SpriteComponentBeta.cs" />
+    <Compile Include="Components\SpriteComponent.cs" />
     <Compile Include="GameStates\StateManager.cs" />
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="IDrawable.cs" />
     <Compile Include="IUpdateable.cs" />
+    <Compile Include="Components\Beta\PlayerBeta.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Polygon.cs" />
     <Compile Include="Coord.cs" />

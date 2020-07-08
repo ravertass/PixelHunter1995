@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PixelHunter1995.GameStates;
+using PixelHunter1995.Components;
+using PixelHunter1995.Components.Beta;
+using PixelHunter1995.Components.Gamma;
 using System.IO;
 
 namespace PixelHunter1995
@@ -27,6 +30,7 @@ namespace PixelHunter1995
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            this.IsMouseVisible = true;
         }
 
         /// <summary>
@@ -61,7 +65,7 @@ namespace PixelHunter1995
             // Load images
             Texture2D menu = Content.Load<Texture2D>("Images/Menu");
             //Texture2D guy = Content.Load<Texture2D>("Images/snubbe");
-            this.player = new Player(this, spriteBatch);
+            this.player = new PlayerGamma(this);
             player.LoadContent(Content);
 
             // Load sounds
