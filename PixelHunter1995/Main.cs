@@ -40,7 +40,7 @@ namespace PixelHunter1995
         {
             // TODO: Add your initialization logic here
             sceneManager.Initialize(Path.Combine("Content", "Scenes"));
-            sceneManager.SetCurrentSceneByName("scene1.tmx");
+            sceneManager.SetCurrentSceneByName("club_room.tmx");
             GlobalSettings.Instance.Debug = true;
             shouldExit = new ShouldExit();
             base.Initialize();
