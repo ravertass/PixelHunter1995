@@ -22,7 +22,7 @@ namespace PixelHunter1995.GameStates
         {
             //spriteBatch.Draw(background, Vector2.Zero, Color.White);
             scene.Draw(spriteBatch);
-            spriteBatch.Draw(guy, new Vector2(20,20), Color.White);
+            spriteBatch.Draw(guy, new Vector2(220, 180), Color.White);
         }
 
         public void Update(GameTime gameTime, Scene scene)

@@ -37,6 +37,18 @@
 /processorParam:TextureFormat=Color
 /build:Images/Background1.jpg
 
+#begin Images/club_room.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/club_room.png
+
 #begin Images/Menu.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
