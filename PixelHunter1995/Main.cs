@@ -21,12 +21,19 @@ namespace PixelHunter1995
         private bool justToggledFullscreen = false;
         private StateManager stateManager;
         private ShouldExit shouldExit;
+        private RenderTarget2D renderTarget;
+        private Rectangle renderTargetRect;
+        public const int WINDOW_WIDTH = 426;
+        public const int WINDOW_HEIGHT = 240;
+
+        private int fullScreenWidth;
+        private int fullScreenHeight;
 
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 426;
-            graphics.PreferredBackBufferHeight = 240;
+            graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
+            graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
             Content.RootDirectory = "Content";
         }
 
@@ -38,12 +45,16 @@ namespace PixelHunter1995
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+
             sceneManager.Initialize(Path.Combine("Content", "Scenes"));
             sceneManager.SetCurrentSceneByName("club_room.tmx");
             GlobalSettings.Instance.Debug = true;
             shouldExit = new ShouldExit();
+            renderTarget = new RenderTarget2D(GraphicsDevice, WINDOW_WIDTH, WINDOW_HEIGHT);
+            SetFullScreenResolution();
+            SetToWindowed();
             base.Initialize();
+
         }
 
         /// <summary>
@@ -92,7 +103,7 @@ namespace PixelHunter1995
             KeyboardState state = Keyboard.GetState();
             if (!justToggledFullscreen && IsAltEnterPressed(state))
             {
-                graphics.ToggleFullScreen();
+                ToggleFullScreen();
                 justToggledFullscreen = true;
             }
 
@@ -135,13 +146,93 @@ namespace PixelHunter1995
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            DrawToRenderTarget(gameTime);
+            spriteBatch.Begin();
+            spriteBatch.Draw((Texture2D)renderTarget, renderTargetRect, Color.White);
+            spriteBatch.End();
+            base.Draw(gameTime);
+        }
+
+        private void DrawToRenderTarget(GameTime gameTime)
+        {
+            GraphicsDevice.SetRenderTarget(renderTarget);
+            GraphicsDevice.Clear(Color.Black);
+
             spriteBatch.Begin();
             stateManager.currentState.Draw(spriteBatch, gameTime, sceneManager.currentScene);
             spriteBatch.End();
+
             sceneManager.currentScene.walkingArea.Draw(graphics);
-            base.Draw(gameTime);
+
+            GraphicsDevice.SetRenderTarget(null);
         }
+
+        public void ToggleFullScreen()
+        {
+            if (!Window.IsBorderless)
+                SetToFullScreen();
+            else
+                SetToWindowed();
+        }
+
+        private void SetToFullScreen()
+        {
+            renderTargetRect = RenderTargetFullScreenRect();
+            graphics.PreferredBackBufferWidth = fullScreenWidth;
+            graphics.PreferredBackBufferHeight = fullScreenHeight;
+            graphics.ApplyChanges();
+            Window.IsBorderless = true;
+            Window.Position = new Point(0, 0);
+
+        }
+
+        private void SetToWindowed()
+        {
+            renderTargetRect = RenderTargetWindowRect();
+            graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
+            graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
+            graphics.ApplyChanges();
+            Window.IsBorderless = false;
+            Window.Position = new Point((fullScreenWidth - WINDOW_WIDTH) / 2,
+                                        (fullScreenHeight - WINDOW_HEIGHT) / 2);
+
+        }
+
+        private Rectangle RenderTargetFullScreenRect()
+        {
+            if (fullScreenWidth > fullScreenHeight)
+            {
+                int newWindowWidth = (int)System.Math.Ceiling(
+                    ((float)fullScreenHeight / (float)WINDOW_HEIGHT) * WINDOW_WIDTH);
+
+                return new Rectangle((fullScreenWidth - newWindowWidth) / 2,
+                    0, newWindowWidth, fullScreenHeight);
+            }
+            else
+            {
+                int newWindowHeight = (int)System.Math.Ceiling(
+                    ((float)fullScreenWidth/ (float)WINDOW_WIDTH) * WINDOW_HEIGHT);
+
+                return new Rectangle(0, (fullScreenHeight - newWindowHeight) / 2,
+                    fullScreenWidth, newWindowHeight);
+            }
+        }
+
+        private Rectangle RenderTargetWindowRect()
+        {
+            return new Rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+        }
+
+        private void SetFullScreenResolution()
+        {
+            fullScreenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            fullScreenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+        }
+
+
     }
+
+
 
     /// <summary>
     /// Small class to know when we should exit
