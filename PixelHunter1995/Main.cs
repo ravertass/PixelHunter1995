@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PixelHunter1995.GameStates;
-using PixelHunter1995.Components;
+using PixelHunter1995.Components.Alpha;
 using PixelHunter1995.Components.Beta;
 using PixelHunter1995.Components.Gamma;
 using System.IO;
@@ -17,7 +17,7 @@ namespace PixelHunter1995
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        private Player player;
+        private IPlayer player;
         private SoundEffect music;
         private bool musicPlaying = false;
         private SceneManager sceneManager = new SceneManager();
@@ -64,8 +64,9 @@ namespace PixelHunter1995
 
             // Load images
             Texture2D menu = Content.Load<Texture2D>("Images/Menu");
-            //Texture2D guy = Content.Load<Texture2D>("Images/snubbe");
-            this.player = new PlayerGamma(this);
+            
+            // TODO players should not need to be called in loadcontent
+            this.player = new Player(this, 50, 50);
             player.LoadContent(Content);
 
             // Load sounds
@@ -77,7 +78,7 @@ namespace PixelHunter1995
             }
 
             // Load game states
-            stateManager = new StateManager(spriteBatch, shouldExit, font, menu, player);
+            stateManager = new StateManager(spriteBatch, shouldExit, font, menu, player, player);
             stateManager.SetStateMenu();
         }
 
@@ -115,8 +116,6 @@ namespace PixelHunter1995
                 soundInst.Play();
                 musicPlaying = true;
             }
-
-            player.Update(gameTime);
         }
 
         /// <summary>

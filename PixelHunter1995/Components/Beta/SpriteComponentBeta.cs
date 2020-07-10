@@ -8,18 +8,14 @@ namespace PixelHunter1995.Components.Beta
     {
         public Texture2D Sprite { get; set; }
 
-        private PositionComponentBeta _positionComponent;
+        public PositionComponentBeta PositionComponent { get; set; }
 
-        private Vector2 Position { get => this._positionComponent.Position; }
+        // alias
+        private Vector2 Position { get => this.PositionComponent.Position; }
 
         public SpriteComponentBeta(PositionComponentBeta posComp)
         {
-            if (posComp == null)
-            {
-                throw new ArgumentNullException("SpriteComponentBeta was given a null value for a dependency");
-            }
-
-            this._positionComponent = posComp;
+            this.PositionComponent = this.NotNullDependency(posComp, "posComp");
         }
 
         public void Draw(SpriteBatch spriteBatch)

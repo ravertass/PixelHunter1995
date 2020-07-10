@@ -8,33 +8,19 @@ namespace PixelHunter1995.Components
     {
         public Texture2D Sprite { get; set; }
 
-        private PositionComponent _positionComponent;
+        public PositionComponent PositionComponent { get; set; }
 
-        private Vector2 Position { get => this._positionComponent.Position; }
+        // alias
+        private Vector2 Position { get => this.PositionComponent.Position; }
 
-        public SpriteComponent()
+        public SpriteComponent(PositionComponent posComp)
         {
-            //this.SetOwner(owner);
-        }
-
-        //! Dependency-method can't be imposed by an interface,
-        //! as the generic type has to be exactly the same :(
-        //! There is also no way to ensure it is called, unlike constructors.
-        //public IComponentGamma SetOwner<T>(T owner)
-        public SpriteComponent SetOwner<T>(T owner)
-            where T : IHasComponents, IHasComponent<SpriteComponent>, IHasComponent<PositionComponent>
-        {
-            this._positionComponent = ((IHasComponent<PositionComponent>) owner).Component;
-            //this._positionComponent = owner.GetComponent<PositionComponent>();
-            Console.WriteLine("blah1");
-            return this;
+            this.PositionComponent = this.NotNullDependency(posComp, "posComp");
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-
             spriteBatch.Draw(Sprite, this.Position, Color.White);
-
         }
     }
 }

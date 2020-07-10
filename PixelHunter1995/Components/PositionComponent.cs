@@ -1,7 +1,6 @@
 ﻿
 
 using Microsoft.Xna.Framework;
-using System;
 
 namespace PixelHunter1995.Components
 {
@@ -13,13 +12,6 @@ namespace PixelHunter1995.Components
         public PositionComponent()
         {
 
-        }
-
-        public PositionComponent SetOwner<T>(T owner)
-            where T : IHasComponents, IHasComponent<PositionComponent>
-        {
-            Console.WriteLine("blah2");
-            return this;
         }
     }
 }

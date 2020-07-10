@@ -9,16 +9,19 @@ namespace PixelHunter1995.GameStates
         private SpriteFont font;
         private ShouldExit shouldExit;
         private Texture2D menu;
-        private Player guy;
         SpriteBatch spriteBatch;
 
-        public StateManager (SpriteBatch spriteBatch, ShouldExit shouldExit SpriteFont font, Texture2D menu, Player guy)
+        private IDrawable playerDrawable;
+        private IUpdateable playerUpdateable;
+
+        public StateManager (SpriteBatch spriteBatch, ShouldExit shouldExit, SpriteFont font, Texture2D menu, IDrawable playerDrawable, IUpdateable playerUpdateable)
         {
             this.spriteBatch = spriteBatch;
             this.shouldExit = shouldExit;
             this.menu = menu;
-            this.guy = guy;
             this.font = font;
+            this.playerDrawable = playerDrawable;
+            this.playerUpdateable = playerUpdateable;
         }
 
         public void SetExit()
@@ -33,7 +36,7 @@ namespace PixelHunter1995.GameStates
 
         public void SetStatePlaying()
         {
-            currentState = new Playing(this, guy, font, spriteBatch);
+            currentState = new Playing(this, playerDrawable, playerUpdateable, font, spriteBatch);
         }
 
     }
