@@ -40,7 +40,7 @@ namespace PixelHunter1995
             sceneManager.SetCurrentSceneByName("club_room.tmx");
             GlobalSettings.Instance.Debug = true;
             shouldExit = new ShouldExit();
-            renderTarget = new RenderTarget2D(GraphicsDevice, Screen.WINDOW_WIDTH, Screen.WINDOW_HEIGHT);
+            renderTarget = new RenderTarget2D(GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
             screen = new Screen(graphics, Window);
             base.Initialize();
         }

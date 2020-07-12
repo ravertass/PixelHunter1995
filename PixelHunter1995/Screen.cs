@@ -12,8 +12,6 @@ namespace PixelHunter1995
     {
         internal int fullScreenWidth;
         internal int fullScreenHeight;
-        public const int WINDOW_WIDTH = 426;
-        public const int WINDOW_HEIGHT = 240;
         public Rectangle renderTargetRect;
         private readonly GraphicsDeviceManager graphics;
         private readonly GameWindow window;
@@ -23,8 +21,8 @@ namespace PixelHunter1995
         {
             this.graphics = graphics;
             this.window = window;
-            graphics.PreferredBackBufferWidth = Screen.WINDOW_WIDTH;
-            graphics.PreferredBackBufferHeight = Screen.WINDOW_HEIGHT;
+            graphics.PreferredBackBufferWidth = GlobalSettings.WINDOW_WIDTH;
+            graphics.PreferredBackBufferHeight = GlobalSettings.WINDOW_HEIGHT;
             Initialize();
         }
 
@@ -37,18 +35,18 @@ namespace PixelHunter1995
         private void SetToWindowed()
         {
             renderTargetRect = RenderTargetWindowRect();
-            graphics.PreferredBackBufferWidth = Screen.WINDOW_WIDTH;
-            graphics.PreferredBackBufferHeight = Screen.WINDOW_HEIGHT;
+            graphics.PreferredBackBufferWidth = GlobalSettings.WINDOW_WIDTH;
+            graphics.PreferredBackBufferHeight = GlobalSettings.WINDOW_HEIGHT;
             graphics.ApplyChanges();
             window.IsBorderless = false;
-            window.Position = new Point((fullScreenWidth - Screen.WINDOW_WIDTH) / 2,
-                                        (fullScreenHeight - Screen.WINDOW_HEIGHT) / 2);
+            window.Position = new Point((fullScreenWidth - GlobalSettings.WINDOW_WIDTH) / 2,
+                                        (fullScreenHeight - GlobalSettings.WINDOW_HEIGHT) / 2);
 
         }
 
         private Rectangle RenderTargetWindowRect()
         {
-            return new Rectangle(0, 0, Screen.WINDOW_WIDTH, Screen.WINDOW_HEIGHT);
+            return new Rectangle(0, 0, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
         }
 
         internal void Initialize()
@@ -59,10 +57,10 @@ namespace PixelHunter1995
 
         public void ToggleFullScreen()
         {
-            if (!window.IsBorderless)
-                SetToFullScreen();
-            else
+            if (window.IsBorderless)
                 SetToWindowed();
+            else
+                SetToFullScreen();
         }
 
         private void SetToFullScreen()
@@ -81,7 +79,7 @@ namespace PixelHunter1995
             if (fullScreenWidth > fullScreenHeight)
             {
                 int newWindowWidth = (int)System.Math.Ceiling(
-                    ((float)fullScreenHeight / (float)Screen.WINDOW_HEIGHT) * Screen.WINDOW_WIDTH);
+                    ((float)fullScreenHeight / (float)GlobalSettings.WINDOW_HEIGHT) * GlobalSettings.WINDOW_WIDTH);
 
                 return new Rectangle((fullScreenWidth - newWindowWidth) / 2,
                     0, newWindowWidth, fullScreenHeight);
@@ -89,7 +87,7 @@ namespace PixelHunter1995
             else
             {
                 int newWindowHeight = (int)System.Math.Ceiling(
-                    ((float)fullScreenWidth / (float)Screen.WINDOW_WIDTH) * Screen.WINDOW_HEIGHT);
+                    ((float)fullScreenWidth / (float)GlobalSettings.WINDOW_WIDTH) * GlobalSettings.WINDOW_HEIGHT);
 
                 return new Rectangle(0, (fullScreenHeight - newWindowHeight) / 2,
                     fullScreenWidth, newWindowHeight);
