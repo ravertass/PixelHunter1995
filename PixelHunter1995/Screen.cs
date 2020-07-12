@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Runtime.InteropServices;
 
@@ -14,6 +15,7 @@ namespace PixelHunter1995
         public Rectangle renderTargetRect;
         private readonly GraphicsDeviceManager graphics;
         private readonly GameWindow window;
+        private bool justToggledFullscreen = false;
 
         public Screen(GraphicsDeviceManager graphics, GameWindow window)
         {
@@ -21,6 +23,7 @@ namespace PixelHunter1995
             this.window = window;
             graphics.PreferredBackBufferWidth = Screen.WINDOW_WIDTH;
             graphics.PreferredBackBufferHeight = Screen.WINDOW_HEIGHT;
+            Initialize();
         }
 
         public void SetFullScreenResolution()
@@ -90,5 +93,26 @@ namespace PixelHunter1995
                     fullScreenWidth, newWindowHeight);
             }
         }
+
+        private bool IsAltEnterPressed(KeyboardState state)
+        {
+            return (state.IsKeyDown(Keys.LeftAlt) || state.IsKeyDown(Keys.RightAlt)) && state.IsKeyDown(Keys.Enter);
+        }
+
+        public void CheckForFullScreen()
+        {
+            KeyboardState state = Keyboard.GetState();
+            if (!justToggledFullscreen && IsAltEnterPressed(state))
+            {
+                ToggleFullScreen();
+                justToggledFullscreen = true;
+            }
+
+            if (!IsAltEnterPressed(state))
+            {
+                justToggledFullscreen = false;
+            }
+        }
+
     }
 }

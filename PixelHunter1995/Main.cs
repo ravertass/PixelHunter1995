@@ -17,7 +17,6 @@ namespace PixelHunter1995
         private SoundEffect music;
         private bool musicPlaying = false;
         private SceneManager sceneManager = new SceneManager();
-        private bool justToggledFullscreen = false;
         private StateManager stateManager;
         private ShouldExit shouldExit;
         private RenderTarget2D renderTarget;
@@ -28,7 +27,6 @@ namespace PixelHunter1995
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
-            screen = new Screen(graphics, Window);
             Content.RootDirectory = "Content";
         }
 
@@ -45,7 +43,7 @@ namespace PixelHunter1995
             GlobalSettings.Instance.Debug = true;
             shouldExit = new ShouldExit();
             renderTarget = new RenderTarget2D(GraphicsDevice, Screen.WINDOW_WIDTH, Screen.WINDOW_HEIGHT);
-            screen.Initialize();
+            screen = new Screen(graphics, Window);
             base.Initialize();
         }
 
@@ -85,26 +83,6 @@ namespace PixelHunter1995
             Content.Unload();
         }
 
-        private bool IsAltEnterPressed(KeyboardState state)
-        {
-            return (state.IsKeyDown(Keys.LeftAlt) || state.IsKeyDown(Keys.RightAlt)) && state.IsKeyDown(Keys.Enter);
-        }
-
-        private void CheckForFullScreen()
-        {
-            KeyboardState state = Keyboard.GetState();
-            if (!justToggledFullscreen && IsAltEnterPressed(state))
-            {
-                screen.ToggleFullScreen();
-                justToggledFullscreen = true;
-            }
-
-            if (!IsAltEnterPressed(state))
-            {
-                justToggledFullscreen = false;
-            }
-        }
-
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -118,7 +96,7 @@ namespace PixelHunter1995
             }
 
             stateManager.currentState.Update(gameTime, sceneManager.currentScene);
-            CheckForFullScreen();
+            screen.CheckForFullScreen();
             base.Update(gameTime);
 
             if (!musicPlaying)
