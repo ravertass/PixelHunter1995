@@ -217,8 +217,8 @@ namespace PixelHunter1995
                 // used when drawing primitives, with 0 in the middle of
                 // the screen, X positive going right and Y positive
                 // going up.
-                float x = (coord.X / graphics.PreferredBackBufferWidth) * 2.0f - 1.0f;
-                float y = -(coord.Y / graphics.PreferredBackBufferHeight) * 2.0f + 1.0f;
+                float x = (coord.X / GlobalSettings.WINDOW_WIDTH) * 2.0f - 1.0f;
+                float y = -(coord.Y / GlobalSettings.WINDOW_HEIGHT) * 2.0f + 1.0f;
                 drawVertices[i].Position = new Vector3(x, y, 0.0f);
                 drawIndices[i * 2] = (short)i;
                 drawIndices[i * 2 + 1] = (short)((i + 1) % vertices.Count);

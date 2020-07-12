@@ -14,6 +14,8 @@ namespace PixelHunter1995
     class GlobalSettings
     {
         private static GlobalSettings instance;
+        public const int WINDOW_WIDTH = 426;
+        public const int WINDOW_HEIGHT = 240;
 
         private GlobalSettings()
         {

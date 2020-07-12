@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PixelHunter1995.GameStates;
-using System.Collections.Generic;
 using System.IO;
 
 namespace PixelHunter1995
@@ -18,15 +17,14 @@ namespace PixelHunter1995
         private SoundEffect music;
         private bool musicPlaying = false;
         private SceneManager sceneManager = new SceneManager();
-        private bool justToggledFullscreen = false;
         private StateManager stateManager;
         private ShouldExit shouldExit;
+        private RenderTarget2D renderTarget;
+        private Screen screen;
 
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 426;
-            graphics.PreferredBackBufferHeight = 240;
             Content.RootDirectory = "Content";
         }
 
@@ -38,11 +36,12 @@ namespace PixelHunter1995
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             sceneManager.Initialize(Path.Combine("Content", "Scenes"));
             sceneManager.SetCurrentSceneByName("club_room.tmx");
             GlobalSettings.Instance.Debug = true;
             shouldExit = new ShouldExit();
+            renderTarget = new RenderTarget2D(GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
+            screen = new Screen(graphics, Window);
             base.Initialize();
         }
 
@@ -82,26 +81,6 @@ namespace PixelHunter1995
             Content.Unload();
         }
 
-        private bool IsAltEnterPressed(KeyboardState state)
-        {
-            return (state.IsKeyDown(Keys.LeftAlt) || state.IsKeyDown(Keys.RightAlt)) && state.IsKeyDown(Keys.Enter);
-        }
-
-        private void CheckForFullScreen()
-        {
-            KeyboardState state = Keyboard.GetState();
-            if (!justToggledFullscreen && IsAltEnterPressed(state))
-            {
-                graphics.ToggleFullScreen();
-                justToggledFullscreen = true;
-            }
-
-            if (!IsAltEnterPressed(state))
-            {
-                justToggledFullscreen = false;
-            }
-        }
-
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -115,7 +94,7 @@ namespace PixelHunter1995
             }
 
             stateManager.currentState.Update(gameTime, sceneManager.currentScene);
-            CheckForFullScreen();
+            screen.CheckForFullScreen();
             base.Update(gameTime);
 
             if (!musicPlaying)
@@ -135,12 +114,27 @@ namespace PixelHunter1995
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            DrawToRenderTarget(gameTime);
+            spriteBatch.Begin();
+            spriteBatch.Draw((Texture2D)renderTarget, screen.renderTargetRect, Color.White);
+            spriteBatch.End();
+            base.Draw(gameTime);
+        }
+
+        private void DrawToRenderTarget(GameTime gameTime)
+        {
+            GraphicsDevice.SetRenderTarget(renderTarget);
+            GraphicsDevice.Clear(Color.Black);
+
             spriteBatch.Begin();
             stateManager.currentState.Draw(spriteBatch, gameTime, sceneManager.currentScene);
             spriteBatch.End();
+
             sceneManager.currentScene.walkingArea.Draw(graphics);
-            base.Draw(gameTime);
+
+            GraphicsDevice.SetRenderTarget(null);
         }
+
     }
 
     /// <summary>
