@@ -6,6 +6,8 @@ using System.Runtime.InteropServices;
 
 namespace PixelHunter1995
 {
+    /** This class is responsible for switching between windowed and fullscreen mode.
+     */
     internal class Screen
     {
         internal int fullScreenWidth;

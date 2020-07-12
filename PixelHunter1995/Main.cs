@@ -20,8 +20,6 @@ namespace PixelHunter1995
         private StateManager stateManager;
         private ShouldExit shouldExit;
         private RenderTarget2D renderTarget;
-
-        // Attempt to separate out fullscreen handling
         private Screen screen;
 
         public Main()
