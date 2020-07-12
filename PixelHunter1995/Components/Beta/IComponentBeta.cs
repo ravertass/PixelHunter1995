@@ -11,7 +11,7 @@ namespace PixelHunter1995.Components.Beta
     /// <summary>
     /// Extension methods for stuff implementing hte interface
     /// </summary>
-    static class Utils
+    static class Utils_IComponent
     {
         // TODO consider making a NullDependencyException exception
         /// <summary>
@@ -33,6 +33,8 @@ namespace PixelHunter1995.Components.Beta
             //return obj;
             return NotNull(obj, "{0}: A dependency ({1}) was given a null value", _this.GetType().Name, name);
         }
+
+        // TODO Move into a proper Utils file?
         /// <summary>
         /// Throws an exception (with given message) if object is null.
         /// </summary>

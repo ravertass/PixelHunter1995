@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PixelHunter1995.Components;
@@ -8,7 +7,7 @@ using System;
 namespace PixelHunter1995
 {
 
-    class Player : IPlayer, IUpdateable, IDrawable, IHasComponent<PositionComponent>, IHasComponent<SpriteComponent>
+    class Player : IUpdateable, IDrawable, IHasComponent<PositionComponent>, IHasComponent<SpriteComponent>
     {
         Vector2 MovePosition { get; set; }
 
@@ -23,21 +22,17 @@ namespace PixelHunter1995
 
         private readonly Game game;
 
-        public Player(Game game) : this(game, 0, 0) { }
-        public Player(Game game, float x, float y)
+        public Player(Game game, Texture2D sprite) : this(game, sprite, 0, 0) { }
+        public Player(Game game, Texture2D sprite, float x, float y)
         {
             this.PosComp = new PositionComponent();
             this.SpriteComp = new SpriteComponent(this.PosComp);
 
             this.game = game;
+            this.SpriteComp.Sprite = sprite;
 
             this.Position = new Vector2(x, y);
             this.MovePosition = this.Position;
-        }
-
-        public void LoadContent(ContentManager content)
-        {
-            SpriteComp.Sprite = content.Load<Texture2D>("Images/snubbe");
         }
 
         public void Update(GameTime gameTime)

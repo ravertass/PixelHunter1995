@@ -3,10 +3,8 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PixelHunter1995.GameStates;
-using PixelHunter1995.Components.Alpha;
-using PixelHunter1995.Components.Beta;
-using PixelHunter1995.Components.Gamma;
 using System.IO;
+using PixelHunter1995.Components;
 
 namespace PixelHunter1995
 {
@@ -17,7 +15,8 @@ namespace PixelHunter1995
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        private IPlayer player;
+        private Texture2D playerTexture;
+        private Player player;
         private SoundEffect music;
         private bool musicPlaying = false;
         private SceneManager sceneManager = new SceneManager();
@@ -47,6 +46,10 @@ namespace PixelHunter1995
             shouldExit = new ShouldExit();
             renderTarget = new RenderTarget2D(GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
             screen = new Screen(graphics, Window);
+
+            //! this call seems to be done before LoadContent, so playerTexture is null...
+            this.player = new Player(this, playerTexture, 50, 50);
+
             base.Initialize();
         }
 
@@ -64,10 +67,10 @@ namespace PixelHunter1995
 
             // Load images
             Texture2D menu = Content.Load<Texture2D>("Images/Menu");
-            
-            // TODO players should not need to be called in loadcontent
-            this.player = new Player(this, 50, 50);
-            player.LoadContent(Content);
+
+            // TODO Give the player their texture in a better way.
+            this.playerTexture = Content.Load<Texture2D>("Images/snubbe");
+            ((IHasComponent<SpriteComponent>)this.player).Component.Sprite = this.playerTexture;
 
             // Load sounds
             music = Content.Load<SoundEffect>("Sounds/slow-music");

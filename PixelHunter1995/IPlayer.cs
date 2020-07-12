@@ -12,11 +12,5 @@ namespace PixelHunter1995
     /// </summary>
     interface IPlayer : IUpdateable, IDrawable
     {
-
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
-        void LoadContent(ContentManager content);
     }
 }
