@@ -4,7 +4,7 @@ using System;
 
 namespace PixelHunter1995.Components
 {
-    class SpriteComponent : IComponent, IDrawable
+    class SpriteComponent : IComponent, ISpriteComponent
     {
         public Texture2D Sprite { get; set; }
 

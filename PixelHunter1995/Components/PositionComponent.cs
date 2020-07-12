@@ -1,10 +1,9 @@
 ﻿
-
 using Microsoft.Xna.Framework;
 
 namespace PixelHunter1995.Components
 {
-    class PositionComponent : IComponent
+    class PositionComponent : IComponent, IPositionComponent
     {
 
         // TODO consider make the getter unable to return a null-value
