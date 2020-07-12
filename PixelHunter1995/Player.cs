@@ -7,7 +7,7 @@ using System;
 namespace PixelHunter1995
 {
 
-    class Player : IUpdateable, IDrawable, IHasComponent<PositionComponent>, IHasComponent<SpriteComponent>
+    class Player : IUpdateable, IDrawable, IHasComponent<PositionComponent>, IHasComponent<SpriteComponent>, ISpriteComponent
     {
         Vector2 MovePosition { get; set; }
 
@@ -19,6 +19,12 @@ namespace PixelHunter1995
 
         PositionComponent IHasComponent<PositionComponent>.Component => PosComp;
         SpriteComponent IHasComponent<SpriteComponent>.Component => SpriteComp;
+
+        public Texture2D Sprite
+        {
+            get => SpriteComp.Sprite;
+            set => SpriteComp.Sprite = value;
+        }
 
         private readonly Game game;
 

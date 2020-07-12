@@ -13,7 +13,5 @@ namespace PixelHunter1995.Components
 
         Texture2D Sprite { get; set; }
 
-        PositionComponent PositionComponent { get; set; }
-
     }
 }

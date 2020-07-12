@@ -85,6 +85,8 @@
     <Compile Include="Components\IComponent.cs" />
     <Compile Include="Components\IHasComponent.cs" />
     <Compile Include="Components\IHasComponents.cs" />
+    <Compile Include="Components\IPositionComponent.cs" />
+    <Compile Include="Components\ISpriteComponent.cs" />
     <Compile Include="Components\PositionComponent.cs" />
     <Compile Include="Components\SpriteComponent.cs" />
     <Compile Include="GameStates\StateManager.cs" />

@@ -8,7 +8,7 @@ namespace PixelHunter1995.Components
     {
         public Texture2D Sprite { get; set; }
 
-        public PositionComponent PositionComponent { get; set; }
+        private PositionComponent PositionComponent { get; set; }
 
         // alias
         private Vector2 Position { get => this.PositionComponent.Position; }
