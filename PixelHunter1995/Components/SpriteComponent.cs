@@ -25,7 +25,7 @@ namespace PixelHunter1995.Components
             if (sprite == null)
             {
                 // TODO Create some error-texture, drawn when a texture is missing (like gmods checkerboard texture)
-                Console.Error.WriteLine(String.Format("ERROR! - attempted to draw a sprite with no texture! SpriteComponent: {1}", this));
+                Console.Error.WriteLine(String.Format("ERROR! - attempted to draw a sprite with no texture! SpriteComponent: {0}", this));
                 return;
             }
 

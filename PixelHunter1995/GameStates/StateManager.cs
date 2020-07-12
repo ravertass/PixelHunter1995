@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using PixelHunter1995.Components.Gamma;
 
 namespace PixelHunter1995.GameStates
 {
