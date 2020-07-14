@@ -1,0 +1,3 @@
+
+# Ignore .venv/ and Instead use a requirements.txt file
+.venv/

@@ -1,0 +1,93 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        
+        
+        {
+            "label": "build (Debug)",
+            "type": "shell",
+            "command": "${workspaceFolder}/.vscode/build.sh",
+            "args": [
+                "--dir", "${workspaceFolder}",
+                "--name", "${workspaceFolderBasename}",
+                "--read", // Leaves the terminal open to allow reading it
+            ]
+        },
+        {
+            "label": "build & run (Debug)",
+            "type": "shell",
+            "command": "${workspaceFolder}/.vscode/build.sh",
+            "args": [
+                "--dir", "${workspaceFolder}",
+                "--name", "${workspaceFolderBasename}",
+                "run",
+                //"--read",
+            ]
+        },
+        
+        
+        // {
+        //     "label": "run (Debug)",
+        //     "command": "${workspaceFolder}/${workspaceFolderBasename}/bin/Windows/x86/Debug/${workspaceFolderBasename}.exe",
+        //     "type": "process",
+        // },
+        
+        // {
+        //     "label": "build & run (Debug)",
+        //     "dependsOrder": "sequence",
+        //     "dependsOn": ["build ('devenv *.sln /Build' - working)", "run (Debug)"],
+        //     "group": {
+        //         "kind": "build",
+        //         "isDefault": true
+        //     },
+        //     "problemMatcher": "$msCompile",
+        // },
+        
+        // {
+        //     "label": "build ('devenv *.sln /Build' - working)",
+        //     "command": "E:/Program/Microsoft Visual Studio/2019/Community/Common7/IDE/devenv.exe",
+        //     "type": "process",
+        //     "args": [
+        //         "${workspaceFolder}/${workspaceFolderBasename}.sln",
+        //         "/Build"
+        //     ],
+        //     "problemMatcher": "$msCompile",
+        //     "group": "build",
+        // },
+        // {
+        //     "label": "build ('devenv *.csproj /Build' - working)",
+        //     "command": "E:/Program/Microsoft Visual Studio/2019/Community/Common7/IDE/devenv.exe",
+        //     "type": "process",
+        //     "args": [
+        //         "${workspaceFolder}/${workspaceFolderBasename}/${workspaceFolderBasename}.csproj",
+        //         "/Build"
+        //     ],
+        //     "problemMatcher": "$msCompile",
+        //     "group": "build",
+        // },
+        // {
+        //     "label": "build ('msbuild' - borked valuetuples)",
+        //     "command": "C:/Program Files (x86)/MSBuild/14.0/Bin/MSBuild.exe",
+        //     "type": "process",
+        //     "args": [
+        //         "${workspaceFolder}/${workspaceFolderBasename}.sln",
+        //         "/p:Configuration=Debug",
+        //     ],
+        //     "problemMatcher": "$msCompile",
+        //     "group": "build",
+        // },
+        // {
+        //     "label": "build ('dotnet build' - borked)",
+        //     "command": "dotnet",
+        //     "type": "process",
+        //     "args": [
+        //         "build",
+        //         "${workspaceFolder}/${workspaceFolderBasename}/${workspaceFolderBasename}.csproj",
+        //         "/property:GenerateFullPaths=true",
+        //         "/consoleloggerparameters:NoSummary"
+        //     ],
+        //     "problemMatcher": "$msCompile",
+        //     "group": "build",
+        // },
+    ]
+}

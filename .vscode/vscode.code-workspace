@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "..\\DialogGrapher"
+		}
+	],
+	"settings": {
+		"csharpfixformat.style.braces.onSameLine": false
+	}
+}

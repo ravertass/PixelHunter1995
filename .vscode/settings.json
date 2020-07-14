@@ -1,0 +1,5 @@
+{
+  "vssolution.showMode": "explorer",
+  "csharpfixformat.style.braces.onSameLine": false,
+  "csharpfixformat.style.indent.regionIgnored": true
+}

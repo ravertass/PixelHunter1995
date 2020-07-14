@@ -1,0 +1,4 @@
+{
+  "python.pythonPath": "../.venv/Scripts/python.exe",
+  //"python.autoComplete.extraPaths": ["../"], // supposedly fixes stuff (https://stackoverflow.com/questions/53939751/pylint-unresolved-import-error-in-visual-studio-code)
+}
