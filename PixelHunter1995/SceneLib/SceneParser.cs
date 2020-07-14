@@ -67,41 +67,17 @@ namespace PixelHunter1995
 
         private static Tileset ParseTilesetXml(string tilesetXmlPath, int firstGid)
         {
-            string imagePath = "";
-            int imageWidth = 0;
-            int imageHeight = 0;
-            string name = "";
-            int tileWidth = 0;
-            int tileHeight = 0;
-            int tileCount = 0;
-            int noOfColumns = 0;
-
             XmlDocument doc = new XmlDocument();
             doc.Load(tilesetXmlPath);
 
-            foreach (XmlAttribute attribute in doc.DocumentElement.Attributes)
-            {
-                if (attribute.Name == "name")
-                {
-                    name = attribute.Value;
-                }
-                else if (attribute.Name == "tilewidth")
-                {
-                    tileWidth = int.Parse(attribute.Value);
-                }
-                else if (attribute.Name == "tileheight")
-                {
-                    tileHeight = int.Parse(attribute.Value);
-                }
-                else if (attribute.Name == "tilecount")
-                {
-                    tileCount = int.Parse(attribute.Value);
-                }
-                else if (attribute.Name == "columns")
-                {
-                    noOfColumns = int.Parse(attribute.Value);
-                }
-            }
+            string name = doc.DocumentElement.Attributes["name"].Value;
+            int tileWidth = int.Parse(doc.DocumentElement.Attributes["tilewidth"].Value);
+            int tileHeight = int.Parse(doc.DocumentElement.Attributes["tileheight"].Value);
+            int tileCount = int.Parse(doc.DocumentElement.Attributes["tilecount"].Value);
+            int noOfColumns = int.Parse(doc.DocumentElement.Attributes["columns"].Value);
+            string imagePath = "";
+            int imageWidth = 0;
+            int imageHeight = 0;
 
             foreach (XmlNode node in doc.DocumentElement.ChildNodes)
             {
