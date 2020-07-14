@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.0" orientation="orthogonal" renderorder="right-down" width="712" height="144" tilewidth="1" tileheight="1" infinite="0" nextlayerid="5" nextobjectid="5">
+<map version="1.4" tiledversion="1.4.0" orientation="orthogonal" renderorder="right-down" width="712" height="160" tilewidth="1" tileheight="1" infinite="0" nextlayerid="6" nextobjectid="6">
  <tileset firstgid="1" source="../../../extra/dogs.tsx"/>
  <imagelayer id="2" name="background">
-  <image source="../Images/full_club_room.png" width="712" height="144"/>
+  <image source="../Images/full_club_room.png" width="712" height="160"/>
  </imagelayer>
- <objectgroup id="3" name="walking">
-  <object id="1" x="622.375" y="106.75">
-   <polygon points="0,0 11.875,0.625 26.875,0.625 62.25,36.375 -622,36.5 -622.25,32.5 -621,31.875 -570.5,-18.375 -253.875,-18.25 -253.875,-13.5 -202.75,-13.5 -199.5,-17.875 -178.5,-18.25 -183.5,-14.625 -180.125,10 -170.625,14.25 -90.125,15.125 -75.25,8.75 -76.875,-18.375 -1,-18.375 -1.25,-2.125"/>
+ <objectgroup id="5" name="walking">
+  <object id="5" x="623.667" y="116.667">
+   <polygon points="0,0 25.6667,0.666667 66.6667,42 -460.333,40.6667 -451.667,11 -518.333,10.3333 -523.333,41 -622.333,42.3333 -622,32.3333 -571.333,-19 -256,-19.3333 -256,-15 -206.667,-13.6667 -206.667,9.33333 -165.667,13.3333 -92.3333,15.3333 -85,11.3333 -58.6667,6.66667 -60,-18.3333 -4,-18.6667 -2.66667,-1.66667"/>
   </object>
  </objectgroup>
  <objectgroup id="4" name="dogs">
