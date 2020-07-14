@@ -82,9 +82,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Background.cs" />
+    <Compile Include="Components\IComponent.cs" />
+    <Compile Include="Components\IHasComponent.cs" />
+    <Compile Include="Components\IHasComponents.cs" />
+    <Compile Include="Components\IPositionComponent.cs" />
+    <Compile Include="Components\ISpriteComponent.cs" />
+    <Compile Include="Components\PositionComponent.cs" />
+    <Compile Include="Components\SpriteComponent.cs" />
     <Compile Include="GameStates\StateManager.cs" />
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="IDrawable.cs" />
+    <Compile Include="ILoadContent.cs" />
+    <Compile Include="IUpdateable.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Polygon.cs" />
     <Compile Include="Coord.cs" />
     <Compile Include="SceneLib\Scene.cs" />
@@ -94,6 +104,7 @@
     <Compile Include="GameStates\Playing.cs" />
     <Compile Include="GameStates\IGameState.cs" />
     <Compile Include="Screen.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="WalkingArea.cs" />
     <Compile Include="SceneLib\SceneParser.cs" />
     <Compile Include="Main.cs" />

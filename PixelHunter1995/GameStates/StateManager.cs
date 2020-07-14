@@ -8,14 +8,12 @@ namespace PixelHunter1995.GameStates
         private SpriteFont font;
         private ShouldExit shouldExit;
         private Texture2D menu;
-        private Texture2D guy;
 
 
-        public StateManager (ShouldExit shouldExit, SpriteFont font, Texture2D menu, Texture2D guy)
+        public StateManager (ShouldExit shouldExit, SpriteFont font, Texture2D menu)
         {
             this.shouldExit = shouldExit;
             this.menu = menu;
-            this.guy = guy;
             this.font = font;
         }
 
@@ -31,7 +29,7 @@ namespace PixelHunter1995.GameStates
 
         public void SetStatePlaying()
         {
-            currentState = new Playing(this, guy, font);
+            currentState = new Playing(this, font);
         }
 
     }

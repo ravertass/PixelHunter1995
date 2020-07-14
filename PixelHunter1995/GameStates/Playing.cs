@@ -9,21 +9,18 @@ namespace PixelHunter1995.GameStates
     /// </summary>
     class Playing : IGameState
     {
-        private readonly Texture2D guy;
         private readonly StateManager stateManager;
         private readonly SpriteFont font;
 
-        public Playing(StateManager stateManager, Texture2D guy, SpriteFont font)
+        public Playing(StateManager stateManager, SpriteFont font)
         {
             this.stateManager = stateManager;
-            this.guy = guy;
             this.font = font;
         }
 
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime, Scene scene)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime, Scene scene)
         {
-            scene.Draw(spriteBatch);
-            spriteBatch.Draw(guy, new Vector2(220, 180), Color.White);
+            scene.Draw(graphics, spriteBatch);
             spriteBatch.DrawString(font, "Hi, I'm an Alchemist! ÅÄÖ support now!", new Vector2(50, 50), Color.Blue);
         }
 
@@ -34,6 +31,8 @@ namespace PixelHunter1995.GameStates
             {
                 stateManager.SetStateMenu();
             }
+
+            scene.Update(gameTime);
         }
     }
 }
