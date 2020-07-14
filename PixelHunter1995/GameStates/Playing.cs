@@ -20,7 +20,7 @@ namespace PixelHunter1995.GameStates
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime, Scene scene)
         {
-            scene.Draw(spriteBatch);
+            scene.Draw(graphics, spriteBatch);
             spriteBatch.DrawString(font, "Hi, I'm an Alchemist! ÅÄÖ support now!", new Vector2(50, 50), Color.Blue);
         }
 

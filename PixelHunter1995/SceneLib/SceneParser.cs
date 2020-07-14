@@ -39,7 +39,7 @@ namespace PixelHunter1995
                                                     Path.GetFileNameWithoutExtension(imagePathRelative));
                     int width = int.Parse(imageNode.Attributes["width"].Value);
                     int height = int.Parse(imageNode.Attributes["height"].Value);
-                    background = new Background(imagePath, width, height);
+                    Background background = new Background(imagePath, width, height);
                     // TODO Preferably, all these things (background, player, etc.) should add themselves to the lists.
                     // TODO Maybe as part of constructor?
                     drawables.Add(background);
@@ -62,7 +62,7 @@ namespace PixelHunter1995
                 }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "walking")
                 {
-                    walkingArea = ParseWalkingXml(node);
+                    WalkingArea walkingArea = ParseWalkingXml(node);
                     drawables.Add(walkingArea);
 
                     // TODO Make player its own objectgroup, or part of "portal", or something similar.
