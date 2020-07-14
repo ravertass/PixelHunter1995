@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PixelHunter1995.Components;
@@ -7,7 +8,7 @@ using System;
 namespace PixelHunter1995
 {
 
-    class Player : IUpdateable, IDrawable, IHasComponent<PositionComponent>, IHasComponent<SpriteComponent>, ISpriteComponent
+    class Player : IUpdateable, IDrawable, ILoadContent, IHasComponent<PositionComponent>, IHasComponent<SpriteComponent>, ISpriteComponent
     {
         Vector2 MovePosition { get; set; }
 
@@ -28,14 +29,13 @@ namespace PixelHunter1995
 
         private readonly Game game;
 
-        public Player(Game game, Texture2D sprite) : this(game, sprite, 0, 0) { }
-        public Player(Game game, Texture2D sprite, float x, float y)
+        public Player(Game game) : this(game, 0, 0) { }
+        public Player(Game game, float x, float y)
         {
             this.PosComp = new PositionComponent();
             this.SpriteComp = new SpriteComponent(this.PosComp);
 
             this.game = game;
-            this.SpriteComp.Sprite = sprite;
 
             this.Position = new Vector2(x, y);
             this.MovePosition = this.Position;
@@ -54,9 +54,9 @@ namespace PixelHunter1995
 
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
         {
-            SpriteComp.Draw(spriteBatch);
+            SpriteComp.Draw(graphics, spriteBatch);
         }
 
         public Vector2 Approach(Vector2 start, Vector2 target, double speed)
@@ -72,6 +72,12 @@ namespace PixelHunter1995
                 //return start + new Vector2(dir.X * speed, dir.Y * speed);
                 return start + dir * (float)speed;
             }
+        }
+
+        // TODO Figure out some way to handle this better
+        public void LoadContent(ContentManager content)
+        {
+            this.Sprite = content.Load<Texture2D>("Images/snubbe");
         }
     }
 }

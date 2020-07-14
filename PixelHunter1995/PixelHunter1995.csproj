@@ -92,8 +92,8 @@
     <Compile Include="GameStates\StateManager.cs" />
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="IDrawable.cs" />
+    <Compile Include="ILoadContent.cs" />
     <Compile Include="IUpdateable.cs" />
-    <Compile Include="IPlayer.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Polygon.cs" />
     <Compile Include="Coord.cs" />

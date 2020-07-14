@@ -18,7 +18,7 @@ namespace PixelHunter1995.Components
             this.PositionComponent = this.NotNullDependency(posComp, "posComp");
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
         {
             var sprite = this.Sprite;
 

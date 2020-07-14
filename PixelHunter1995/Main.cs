@@ -15,8 +15,6 @@ namespace PixelHunter1995
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        private Texture2D playerTexture;
-        private Player player;
         private SoundEffect music;
         private bool musicPlaying = false;
         private SceneManager sceneManager = new SceneManager();
@@ -40,15 +38,12 @@ namespace PixelHunter1995
         /// </summary>
         protected override void Initialize()
         {
-            sceneManager.Initialize(Path.Combine("Content", "Scenes"));
+            sceneManager.Initialize(Path.Combine("Content", "Scenes"), this);
             sceneManager.SetCurrentSceneByName("club_room.tmx");
             GlobalSettings.Instance.Debug = true;
             shouldExit = new ShouldExit();
             renderTarget = new RenderTarget2D(GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
             screen = new Screen(graphics, Window);
-
-            //! this call seems to be done before LoadContent, so playerTexture is null...
-            this.player = new Player(this, playerTexture, 50, 50);
 
             base.Initialize();
         }
@@ -60,17 +55,13 @@ namespace PixelHunter1995
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
             // Load fonts
             SpriteFont font = Content.Load<SpriteFont>("Fonts/font1");
 
             // Load images
             Texture2D menu = Content.Load<Texture2D>("Images/Menu");
-
-            // TODO Give the player their texture in a better way.
-            this.playerTexture = Content.Load<Texture2D>("Images/snubbe");
-            ((IHasComponent<SpriteComponent>)this.player).Component.Sprite = this.playerTexture;
 
             // Load sounds
             music = Content.Load<SoundEffect>("Sounds/slow-music");
@@ -81,7 +72,7 @@ namespace PixelHunter1995
             }
 
             // Load game states
-            stateManager = new StateManager(spriteBatch, shouldExit, font, menu, player, player);
+            stateManager = new StateManager(shouldExit, font, menu);
             stateManager.SetStateMenu();
         }
 
@@ -141,10 +132,8 @@ namespace PixelHunter1995
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-            stateManager.currentState.Draw(spriteBatch, gameTime, sceneManager.currentScene);
+            stateManager.currentState.Draw(graphics, spriteBatch, gameTime, sceneManager.currentScene);
             spriteBatch.End();
-
-            sceneManager.currentScene.walkingArea.Draw(graphics);
 
             GraphicsDevice.SetRenderTarget(null);
         }

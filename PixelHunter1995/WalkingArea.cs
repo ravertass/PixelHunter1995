@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
 namespace PixelHunter1995
 {
-    class WalkingArea// : IDrawable
+    class WalkingArea : IDrawable
     {
         private PolygonPartition partition;
 
@@ -23,7 +23,7 @@ namespace PixelHunter1995
             return partition.ToString();
         }
 
-        public void Draw(GraphicsDeviceManager graphics)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
         {
             partition.Draw(graphics);
         }

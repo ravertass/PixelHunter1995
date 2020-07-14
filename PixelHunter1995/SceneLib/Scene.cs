@@ -8,27 +8,41 @@ namespace PixelHunter1995
 {
     using Dog = System.ValueTuple<float, float, float, float>;
 
-    class Scene
+    class Scene : IDrawable, IUpdateable, ILoadContent
     {
-        public Background background;
-        public List<Dog> dogs;
-        public WalkingArea walkingArea;
+        private List<IDrawable> drawables;
+        private List<IUpdateable> updateables;
+        private List<ILoadContent> loadables;
 
-        public Scene(Background background, List<Dog> dogs, WalkingArea walkingArea)
+        public Scene(List<IDrawable> drawables, List<IUpdateable> updateables, List<ILoadContent> loadables)
         {
-            this.background = background;
-            this.dogs = dogs;
-            this.walkingArea = walkingArea;
+            this.drawables = drawables;
+            this.updateables = updateables;
+            this.loadables = loadables;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
         {
-            background.Draw(spriteBatch);
+            foreach (IDrawable drawable in drawables)
+            {
+                drawable.Draw(graphics, spriteBatch);
+            }
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            foreach (IUpdateable updateable in updateables)
+            {
+                updateable.Update(gameTime);
+            }
         }
 
         public void LoadContent(ContentManager content)
         {
-            background.LoadContent(content);
+            foreach (ILoadContent loadable in loadables)
+            {
+                loadable.LoadContent(content); ;
+            }
         }
     }
 }

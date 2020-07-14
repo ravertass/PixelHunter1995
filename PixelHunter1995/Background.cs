@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace PixelHunter1995
 {
-    class Background
+    class Background : IDrawable, ILoadContent
     {
         string imagePath;
         int width;
@@ -19,7 +19,7 @@ namespace PixelHunter1995
             this.height = height;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(image, Vector2.Zero, Color.White);
         }
