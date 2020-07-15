@@ -1,24 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PixelHunter1995.SceneLib;
 using System.Collections.Generic;
-using System.Net.Mime;
 
 namespace PixelHunter1995
 {
-    using Dog = System.ValueTuple<float, float, float, float>;
-
     class Scene : IDrawable, IUpdateable, ILoadContent
     {
         private List<IDrawable> drawables;
         private List<IUpdateable> updateables;
         private List<ILoadContent> loadables;
+        public Tileset tileset;
 
-        public Scene(List<IDrawable> drawables, List<IUpdateable> updateables, List<ILoadContent> loadables)
+        public Scene(List<IDrawable> drawables, List<IUpdateable> updateables, List<ILoadContent> loadables, Tileset tileset)
         {
             this.drawables = drawables;
             this.updateables = updateables;
             this.loadables = loadables;
+            this.tileset = tileset;
         }
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
@@ -39,6 +39,7 @@ namespace PixelHunter1995
 
         public void LoadContent(ContentManager content)
         {
+            tileset.LoadContent(content);
             foreach (ILoadContent loadable in loadables)
             {
                 loadable.LoadContent(content); ;

@@ -116,3 +116,15 @@
 /processorParam:Quality=Best
 /build:Sounds/92734__tj-mothy__slow-sad-tones.wav;Sounds/slow-music.wav
 
+#begin Tileset/dogs.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Tileset/dogs.png
+

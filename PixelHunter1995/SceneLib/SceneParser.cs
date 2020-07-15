@@ -1,11 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using PixelHunter1995.SceneLib;
+using Microsoft.Xna.Framework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -13,7 +10,6 @@ using System.Xml;
 
 namespace PixelHunter1995
 {
-    using Dog = System.ValueTuple<float, float, float, float>;
     class SceneParser
     {
         public static Scene ParseSceneXml(string sceneXmlPath, Game game)
@@ -21,7 +17,7 @@ namespace PixelHunter1995
             XmlDocument doc = new XmlDocument();
             doc.Load(sceneXmlPath);
             XmlNodeList nodes = doc.DocumentElement.ChildNodes;
-            List<Dog> dogs = null;
+            Tileset tileset = null; // TODO: Possible to have many tilesets per scene?
             List<IDrawable> drawables = new List<IDrawable>();
             List<IUpdateable> updateables = new List<IUpdateable>();
             List<ILoadContent> loadables = new List<ILoadContent>();
@@ -45,19 +41,28 @@ namespace PixelHunter1995
                     drawables.Add(background);
                     loadables.Add(background);
                 }
+                else if (node.Name == "tileset")
+                {
+                    string tilesetXmlPathRelative = node.Attributes["source"].Value;
+                    string tilesetXmlPath = Path.Combine(Path.GetDirectoryName(sceneXmlPath),
+                                                         Path.GetDirectoryName(tilesetXmlPathRelative),
+                                                         Path.GetFileName(tilesetXmlPathRelative));
+                    int tilesetFirstGid = int.Parse(node.Attributes["firstgid"].Value);
+                    tileset = ParseTilesetXml(tilesetXmlPath, tilesetFirstGid);
+                }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "dogs")
                 {
                     dogs = new List<Dog>();
                     foreach (XmlNode dogNode in node.ChildNodes)
                     {
-                        float x = float.Parse(dogNode.Attributes["x"].Value);
-                        float y = float.Parse(dogNode.Attributes["y"].Value);
-                        float width = float.Parse(dogNode.Attributes["width"].Value);
-                        float height = float.Parse(dogNode.Attributes["height"].Value);
-                        Dog dog = (x, y, width, height);
-                        dogs.Add(dog);
-                        // TODO Dogs are supposed to be drawable. But currently a valuetuple
-                        //drawables.Add(dog);
+                        int x = (int)Math.Round(float.Parse(dogNode.Attributes["x"].Value));
+                        int y = (int)Math.Round(float.Parse(dogNode.Attributes["y"].Value));
+                        int width = (int)Math.Round(float.Parse(dogNode.Attributes["width"].Value));
+                        int height = (int)Math.Round(float.Parse(dogNode.Attributes["height"].Value));
+                        int gid = int.Parse(dogNode.Attributes["gid"].Value);
+                        y = y - height; // Compensate for Tiled's coordinate system
+                        Dog dog = new Dog(x, y, width, height, gid);
+                        drawables.Add(dog);
                     }
                 }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "walking")
@@ -75,7 +80,38 @@ namespace PixelHunter1995
                     }
                 }
             }
-            return new Scene(drawables, updateables, loadables);
+            return new Scene(drawables, updateables, loadables, tileset);
+        }
+
+        private static Tileset ParseTilesetXml(string tilesetXmlPath, int firstGid)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(tilesetXmlPath);
+
+            string name = doc.DocumentElement.Attributes["name"].Value;
+            int tileWidth = int.Parse(doc.DocumentElement.Attributes["tilewidth"].Value);
+            int tileHeight = int.Parse(doc.DocumentElement.Attributes["tileheight"].Value);
+            int tileCount = int.Parse(doc.DocumentElement.Attributes["tilecount"].Value);
+            int noOfColumns = int.Parse(doc.DocumentElement.Attributes["columns"].Value);
+            string imagePath = "";
+            int imageWidth = 0;
+            int imageHeight = 0;
+
+            foreach (XmlNode node in doc.DocumentElement.ChildNodes)
+            {
+                if (node.Name == "image")
+                {
+                    string imagePathRelative = node.Attributes["source"].Value;
+                    imagePath = Path.Combine(Path.GetFileNameWithoutExtension(Path.GetDirectoryName(tilesetXmlPath)),
+                                             Path.GetDirectoryName(imagePathRelative),
+                                             Path.GetFileNameWithoutExtension(imagePathRelative));
+                    imageWidth = int.Parse(node.Attributes["width"].Value);
+                    imageHeight = int.Parse(node.Attributes["height"].Value);
+                }
+            }
+
+            return new Tileset(imagePath, imageWidth, imageHeight, firstGid, name, tileWidth,
+                tileHeight, tileCount, noOfColumns);
         }
 
         private static WalkingArea ParseWalkingXml(XmlNode node)
