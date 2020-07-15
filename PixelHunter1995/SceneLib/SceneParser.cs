@@ -1,4 +1,4 @@
-using PixelHunter1995.SceneLib;
+﻿using PixelHunter1995.SceneLib;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -52,7 +52,6 @@ namespace PixelHunter1995
                 }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "dogs")
                 {
-                    dogs = new List<Dog>();
                     foreach (XmlNode dogNode in node.ChildNodes)
                     {
                         int x = (int)Math.Round(float.Parse(dogNode.Attributes["x"].Value));

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PixelHunter1995.SceneLib
 {
-    class Dog
+    class Dog : IDrawable
     {
         public int X { get; private set; }
         public int Y { get; private set; }
@@ -21,6 +21,10 @@ namespace PixelHunter1995.SceneLib
             this.gid = gid;
         }
         public void Draw(SpriteBatch spriteBatch, Tileset tileset)
+        {
+        }
+
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Tileset tileset)
         {
             Rectangle destinationRectangle = new Rectangle(X, Y, Width, Height);
             tileset.DrawTile(spriteBatch, destinationRectangle, gid);

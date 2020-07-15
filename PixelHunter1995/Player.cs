@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PixelHunter1995.Components;
+using PixelHunter1995.SceneLib;
 using System;
 
 namespace PixelHunter1995
@@ -54,9 +55,9 @@ namespace PixelHunter1995
 
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Tileset tileset)
         {
-            SpriteComp.Draw(graphics, spriteBatch);
+            SpriteComp.Draw(graphics, spriteBatch, tileset);
         }
 
         public Vector2 Approach(Vector2 start, Vector2 target, double speed)
