@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using System.IO;
 
 namespace PixelHunter1995
@@ -12,14 +13,14 @@ namespace PixelHunter1995
         {
         }
 
-        public void Initialize(string scenesPath)
+        public void Initialize(string scenesPath, Game game)
         {
             scenes = new Dictionary<string, Scene>();
             foreach (string filepath in Directory.GetFiles(scenesPath))
             {
                 string filename = Path.GetFileName(filepath);
 
-                scenes.Add(filename, SceneParser.ParseSceneXml(filepath));
+                scenes.Add(filename, SceneParser.ParseSceneXml(filepath, game));
             };
         }
 

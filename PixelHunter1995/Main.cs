@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PixelHunter1995.GameStates;
 using System.IO;
+using PixelHunter1995.Components;
 
 namespace PixelHunter1995
 {
@@ -26,6 +27,7 @@ namespace PixelHunter1995
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            this.IsMouseVisible = true;
         }
 
         /// <summary>
@@ -36,12 +38,13 @@ namespace PixelHunter1995
         /// </summary>
         protected override void Initialize()
         {
-            sceneManager.Initialize(Path.Combine("Content", "Scenes"));
+            sceneManager.Initialize(Path.Combine("Content", "Scenes"), this);
             sceneManager.SetCurrentSceneByName("club_room.tmx");
             GlobalSettings.Instance.Debug = true;
             shouldExit = new ShouldExit();
             renderTarget = new RenderTarget2D(GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
             screen = new Screen(graphics, Window);
+
             base.Initialize();
         }
 
@@ -52,11 +55,13 @@ namespace PixelHunter1995
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
+
+            // Load fonts
+            SpriteFont font = Content.Load<SpriteFont>("Fonts/font1");
 
             // Load images
             Texture2D menu = Content.Load<Texture2D>("Images/Menu");
-            Texture2D guy = Content.Load<Texture2D>("Images/snubbe");
 
             // Load sounds
             music = Content.Load<SoundEffect>("Sounds/slow-music");
@@ -67,7 +72,7 @@ namespace PixelHunter1995
             }
 
             // Load game states
-            stateManager = new StateManager(shouldExit, menu, guy);
+            stateManager = new StateManager(shouldExit, font, menu);
             stateManager.SetStateMenu();
         }
 
@@ -100,7 +105,7 @@ namespace PixelHunter1995
             if (!musicPlaying)
             {
                 SoundEffectInstance soundInst = music.CreateInstance();
-                soundInst.Volume = 0.5f;
+                soundInst.Volume = 0.01f;
                 soundInst.IsLooped = true;
                 soundInst.Play();
                 musicPlaying = true;
@@ -127,10 +132,8 @@ namespace PixelHunter1995
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-            stateManager.currentState.Draw(spriteBatch, gameTime, sceneManager.currentScene);
+            stateManager.currentState.Draw(graphics, spriteBatch, gameTime, sceneManager.currentScene);
             spriteBatch.End();
-
-            sceneManager.currentScene.walkingArea.Draw(graphics);
 
             GraphicsDevice.SetRenderTarget(null);
         }

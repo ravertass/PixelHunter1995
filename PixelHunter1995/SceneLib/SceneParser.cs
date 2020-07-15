@@ -1,24 +1,27 @@
-﻿using PixelHunter1995.SceneLib;
+using PixelHunter1995.SceneLib;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Xml;
 
 namespace PixelHunter1995
 {
     class SceneParser
     {
-        public static Scene ParseSceneXml(string sceneXmlPath)
+        public static Scene ParseSceneXml(string sceneXmlPath, Game game)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(sceneXmlPath);
             XmlNodeList nodes = doc.DocumentElement.ChildNodes;
-            Background background = null;
             Tileset tileset = null; // TODO: Possible to have many tilesets per scene?
-            WalkingArea walkingArea = null;
-            List<Dog> dogs = null;
+            List<IDrawable> drawables = new List<IDrawable>();
+            List<IUpdateable> updateables = new List<IUpdateable>();
+            List<ILoadContent> loadables = new List<ILoadContent>();
+            Player player = null;
 
             foreach (XmlNode node in nodes)
             {
@@ -32,7 +35,11 @@ namespace PixelHunter1995
                                                     Path.GetFileNameWithoutExtension(imagePathRelative));
                     int width = int.Parse(imageNode.Attributes["width"].Value);
                     int height = int.Parse(imageNode.Attributes["height"].Value);
-                    background = new Background(imagePath, width, height);
+                    Background background = new Background(imagePath, width, height);
+                    // TODO Preferably, all these things (background, player, etc.) should add themselves to the lists.
+                    // TODO Maybe as part of constructor?
+                    drawables.Add(background);
+                    loadables.Add(background);
                 }
                 else if (node.Name == "tileset")
                 {
@@ -54,15 +61,26 @@ namespace PixelHunter1995
                         int height = (int)Math.Round(float.Parse(dogNode.Attributes["height"].Value));
                         int gid = int.Parse(dogNode.Attributes["gid"].Value);
                         y = y - height; // Compensate for Tiled's coordinate system
-                        dogs.Add(new Dog(x, y, width, height, gid));
+                        Dog dog = new Dog(x, y, width, height, gid);
+                        drawables.Add(dog);
                     }
                 }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "walking")
                 {
-                    walkingArea = ParseWalkingXml(node);
+                    WalkingArea walkingArea = ParseWalkingXml(node);
+                    drawables.Add(walkingArea);
+
+                    // TODO Make player its own objectgroup, or part of "portal", or something similar.
+                    if (player == null)
+                    {
+                        player = new Player(game, 50, 50);
+                        drawables.Add(player);
+                        updateables.Add(player);
+                        loadables.Add(player);
+                    }
                 }
             }
-            return new Scene(background, dogs, walkingArea, tileset);
+            return new Scene(drawables, updateables, loadables, tileset);
         }
 
         private static Tileset ParseTilesetXml(string tilesetXmlPath, int firstGid)

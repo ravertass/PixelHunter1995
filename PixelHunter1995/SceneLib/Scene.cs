@@ -6,34 +6,44 @@ using System.Collections.Generic;
 
 namespace PixelHunter1995
 {
-    class Scene
+    class Scene : IDrawable, IUpdateable, ILoadContent
     {
-        public Background background;
-        public List<Dog> dogs;
-        public WalkingArea walkingArea;
+        private List<IDrawable> drawables;
+        private List<IUpdateable> updateables;
+        private List<ILoadContent> loadables;
         public Tileset tileset;
 
-        public Scene(Background background, List<Dog> dogs, WalkingArea walkingArea, Tileset tileset)
+        public Scene(List<IDrawable> drawables, List<IUpdateable> updateables, List<ILoadContent> loadables, Tileset tileset)
         {
-            this.background = background;
-            this.dogs = dogs;
-            this.walkingArea = walkingArea;
+            this.drawables = drawables;
+            this.updateables = updateables;
+            this.loadables = loadables;
             this.tileset = tileset;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
         {
-            background.Draw(spriteBatch);
-            foreach (Dog dog in dogs)
+            foreach (IDrawable drawable in drawables)
             {
-                dog.Draw(spriteBatch, tileset);
+                drawable.Draw(graphics, spriteBatch);
+            }
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            foreach (IUpdateable updateable in updateables)
+            {
+                updateable.Update(gameTime);
             }
         }
 
         public void LoadContent(ContentManager content)
         {
-            background.LoadContent(content);
             tileset.LoadContent(content);
+            foreach (ILoadContent loadable in loadables)
+            {
+                loadable.LoadContent(content); ;
+            }
         }
     }
 }
