@@ -1,7 +1,7 @@
 # PixelHunter1995
 Point and click goodness
 
-### DEVELOMENT ###
+### DEVELOPMENT ###
 TOOL VERSIONS
 Visual Studio 2019
 Monogame 3.7.1
@@ -12,7 +12,10 @@ SETUP ENVIRONMENT
 - Install MonoGame 3.7.1 for Visual Studio (https://community.monogame.net/t/monogame-3-7-1/11173)
 - Add MonoGame-templates according to: https://stackoverflow.com/questions/57879424/how-to-open-a-new-monogame-desktop-project-in-visual-studio-2019-community-editi)
 - Install Tiled 1.4.1 (https://thorbjorn.itch.io/tiled)
+- Install Git LFS
+- To edit xcf and pyxel files, install GIMP and Pyxel Edit respectively
 - Clone the repo (https://github.com/ravertass/PixelHunter1995)
+- Run `git lfs pull`
 
 BUILD AND START THE GAME
 1. First build content:
