@@ -57,9 +57,6 @@ namespace PixelHunter1995
             // Create a new SpriteBatch, which can be used to draw textures.
             this.spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
-            // Load fonts
-            SpriteFont font = Content.Load<SpriteFont>("Fonts/font1");
-
             // Load images
             Texture2D menu = Content.Load<Texture2D>("Images/Menu");
 
@@ -72,7 +69,7 @@ namespace PixelHunter1995
             }
 
             // Load game states
-            stateManager = new StateManager(shouldExit, font, menu);
+            stateManager = new StateManager(shouldExit, menu);
             stateManager.SetStateMenu();
         }
 

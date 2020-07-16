@@ -5,16 +5,14 @@ namespace PixelHunter1995.GameStates
     class StateManager
     {
         public IGameState currentState { get; internal set; }
-        private SpriteFont font;
         private ShouldExit shouldExit;
         private Texture2D menu;
 
 
-        public StateManager (ShouldExit shouldExit, SpriteFont font, Texture2D menu)
+        public StateManager (ShouldExit shouldExit, Texture2D menu)
         {
             this.shouldExit = shouldExit;
             this.menu = menu;
-            this.font = font;
         }
 
         public void SetExit()
@@ -29,7 +27,7 @@ namespace PixelHunter1995.GameStates
 
         public void SetStatePlaying()
         {
-            currentState = new Playing(this, font);
+            currentState = new Playing(this);
         }
 
     }

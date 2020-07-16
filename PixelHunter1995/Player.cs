@@ -15,6 +15,7 @@ namespace PixelHunter1995
 
         private PositionComponent PosComp { get; set; }
         private SpriteComponent SpriteComp { get; set; }
+        private SpriteFont Font;
 
         // alias
         private Vector2 Position { get => this.PosComp.Position; set => this.PosComp.Position = value; }
@@ -58,6 +59,24 @@ namespace PixelHunter1995
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Tileset tileset)
         {
             SpriteComp.Draw(graphics, spriteBatch, tileset);
+            DrawTextOverHead(spriteBatch, "Hi, I'm the player!"); // TODO: Get text from some kind of file
+        }
+
+        private Vector2 RelativePosition( int deltaX, int deltaY)
+        {
+            return new Vector2(Position.X + deltaX, Position.Y + deltaY);
+        }
+
+        private void DrawTextOverHead(SpriteBatch spriteBatch, String text)
+        {
+            int textDeltaX = -((int)Font.MeasureString(text).X / 2);
+            int textDeltaY = -((int)Font.MeasureString(text).Y + 5);
+            // Draw white around the letters to see them better
+            spriteBatch.DrawString(Font, text, RelativePosition(textDeltaX + 1, textDeltaY + 1), Color.White);
+            spriteBatch.DrawString(Font, text, RelativePosition(textDeltaX + 1, textDeltaY - 1), Color.White);
+            spriteBatch.DrawString(Font, text, RelativePosition(textDeltaX - 1, textDeltaY + 1), Color.White);
+            spriteBatch.DrawString(Font, text, RelativePosition(textDeltaX - 1, textDeltaY - 1), Color.White);
+            spriteBatch.DrawString(Font, text, RelativePosition(textDeltaX, textDeltaY), Color.DarkBlue);
         }
 
         public Vector2 Approach(Vector2 start, Vector2 target, double speed)
@@ -79,6 +98,7 @@ namespace PixelHunter1995
         public void LoadContent(ContentManager content)
         {
             this.Sprite = content.Load<Texture2D>("Images/snubbe");
+            this.Font = content.Load<SpriteFont>("Fonts/font1");
         }
     }
 }

@@ -10,18 +10,15 @@ namespace PixelHunter1995.GameStates
     class Playing : IGameState
     {
         private readonly StateManager stateManager;
-        private readonly SpriteFont font;
 
-        public Playing(StateManager stateManager, SpriteFont font)
+        public Playing(StateManager stateManager)
         {
             this.stateManager = stateManager;
-            this.font = font;
         }
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime, Scene scene)
         {
             scene.Draw(graphics, spriteBatch);
-            spriteBatch.DrawString(font, "Hi, I'm an Alchemist! ÅÄÖ support now!", new Vector2(50, 50), Color.Blue);
         }
 
         public void Update(GameTime gameTime, Scene scene)
