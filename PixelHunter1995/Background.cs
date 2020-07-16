@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PixelHunter1995.SceneLib;
 
 namespace PixelHunter1995
 {
@@ -18,7 +19,7 @@ namespace PixelHunter1995
             this.height = height;
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Tileset tileset)
         {
             spriteBatch.Draw(image, Vector2.Zero, Color.White);
         }

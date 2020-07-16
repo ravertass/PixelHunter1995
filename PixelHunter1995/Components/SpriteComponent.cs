@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using PixelHunter1995.SceneLib;
 using System;
 
 namespace PixelHunter1995.Components
@@ -18,7 +19,7 @@ namespace PixelHunter1995.Components
             this.PositionComponent = this.NotNullDependency(posComp, "posComp");
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Tileset tileset)
         {
             var sprite = this.Sprite;
 
