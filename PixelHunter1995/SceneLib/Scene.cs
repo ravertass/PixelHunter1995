@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace PixelHunter1995
 {
-    class Scene : IDrawable, IUpdateable, ILoadContent
+    class Scene : IUpdateable, ILoadContent
     {
         private List<IDrawable> drawables;
         private List<IUpdateable> updateables;
@@ -25,7 +25,7 @@ namespace PixelHunter1995
         {
             foreach (IDrawable drawable in drawables)
             {
-                drawable.Draw(graphics, spriteBatch);
+                drawable.Draw(graphics, spriteBatch, tileset);
             }
         }
 
