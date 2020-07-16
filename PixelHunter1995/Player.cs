@@ -3,32 +3,33 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PixelHunter1995.Components;
-using PixelHunter1995.SceneLib;
+using PixelHunter1995.TilesetLib;
 using System;
 
 namespace PixelHunter1995
 {
 
-    class Player : IUpdateable, IDrawable, ILoadContent, IHasComponent<PositionComponent>, IHasComponent<SpriteComponent>, ISpriteComponent
+    class Player : IUpdateable, IDrawable, ILoadContent, IHasComponent<PositionComponent>, IHasComponent<CharacterComponent>, ICharacterComponent
     {
-        Vector2 MovePosition { get; set; }
+
+        private Vector2 MovePosition { get; set; }
 
         private PositionComponent PosComp { get; set; }
-        private SpriteComponent SpriteComp { get; set; }
-        private SpriteFont Font;
-        private Color FontColor = Color.Purple;
+        private CharacterComponent CharComp { get; set; }
 
         // alias
         private Vector2 Position { get => this.PosComp.Position; set => this.PosComp.Position = value; }
+        public Vector2 MoveDirection { get => this.CharComp.MoveDirection; set => this.CharComp.MoveDirection = value; }
+        public Color FontColor { get => this.CharComp.FontColor; set => this.CharComp.FontColor = value; }
+        public String FontName { get => this.CharComp.FontName; set => this.CharComp.FontName = value; }
+        public AnimationTileset AnimationTileset
+        {
+            get => this.CharComp.AnimationTileset;
+            set => this.CharComp.AnimationTileset = value;
+        }
 
         PositionComponent IHasComponent<PositionComponent>.Component => PosComp;
-        SpriteComponent IHasComponent<SpriteComponent>.Component => SpriteComp;
-
-        public Texture2D Sprite
-        {
-            get => SpriteComp.Sprite;
-            set => SpriteComp.Sprite = value;
-        }
+        CharacterComponent IHasComponent<CharacterComponent>.Component => CharComp;
 
         private readonly Game game;
 
@@ -36,12 +37,17 @@ namespace PixelHunter1995
         public Player(Game game, float x, float y)
         {
             this.PosComp = new PositionComponent();
-            this.SpriteComp = new SpriteComponent(this.PosComp);
+            this.CharComp = new CharacterComponent(this.PosComp);
 
             this.game = game;
 
             this.Position = new Vector2(x, y);
             this.MovePosition = this.Position;
+            this.MoveDirection = new Vector2();
+
+            this.FontColor = Color.Purple;
+            this.FontName = "Alkhemikal";
+            this.AnimationTileset = new AnimationTileset("Animations/felixia");
         }
 
         public void Update(GameTime gameTime)
@@ -52,32 +58,19 @@ namespace PixelHunter1995
             {
                 this.MovePosition = new Vector2(mouseState.X, mouseState.Y);
             }
-
+            this.MoveDirection = MovePosition - Position;
             this.Position = this.Approach(Position, MovePosition, 2);
-
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Tileset tileset)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
-            SpriteComp.Draw(graphics, spriteBatch, tileset);
+            CharComp.Draw(graphics, spriteBatch, scaling);
             Talk(spriteBatch, "Hi, I'm the player!"); // TODO: Get text from some kind of file
         }
 
-        private Vector2 RelativePosition( int deltaX, int deltaY)
+        public void Talk(SpriteBatch spriteBatch, String text)
         {
-            return new Vector2(Position.X + deltaX, Position.Y + deltaY);
-        }
-
-        private void Talk(SpriteBatch spriteBatch, String text)
-        {
-            int textDeltaX = -((int)Font.MeasureString(text).X / 2);
-            int textDeltaY = -((int)Font.MeasureString(text).Y + 5);
-            // Draw white around the letters to see them better
-            //spriteBatch.DrawString(Font, text, RelativePosition(textDeltaX + 1, textDeltaY + 1), Color.Black);
-            //spriteBatch.DrawString(Font, text, RelativePosition(textDeltaX + 1, textDeltaY - 1), Color.Black);
-            //spriteBatch.DrawString(Font, text, RelativePosition(textDeltaX - 1, textDeltaY + 1), Color.Black);
-            //spriteBatch.DrawString(Font, text, RelativePosition(textDeltaX - 1, textDeltaY - 1), Color.Black);
-            spriteBatch.DrawString(Font, text, RelativePosition(textDeltaX, textDeltaY), FontColor);
+            CharComp.Talk(spriteBatch, text);
         }
 
         public Vector2 Approach(Vector2 start, Vector2 target, double speed)
@@ -90,16 +83,13 @@ namespace PixelHunter1995
             else
             {
                 Vector2 dir = Vector2.Normalize(error);
-                //return start + new Vector2(dir.X * speed, dir.Y * speed);
                 return start + dir * (float)speed;
             }
         }
 
-        // TODO Figure out some way to handle this better
         public void LoadContent(ContentManager content)
         {
-            this.Sprite = content.Load<Texture2D>("Images/snubbe");
-            this.Font = content.Load<SpriteFont>("Fonts/Alkhemikal");
+            CharComp.LoadContent(content);
         }
     }
 }

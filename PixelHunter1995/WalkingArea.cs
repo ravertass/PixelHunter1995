@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using PixelHunter1995.SceneLib;
+using PixelHunter1995.TilesetLib;
 using System.Collections.Generic;
 
 namespace PixelHunter1995
@@ -24,7 +24,7 @@ namespace PixelHunter1995
             return partition.ToString();
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Tileset tileset)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
             partition.Draw(graphics);
         }

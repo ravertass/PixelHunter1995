@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using PixelHunter1995.SceneLib;
+using PixelHunter1995.TilesetLib;
 using System.Collections.Generic;
 
 namespace PixelHunter1995
@@ -21,11 +21,11 @@ namespace PixelHunter1995
             this.tileset = tileset;
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
             foreach (IDrawable drawable in drawables)
             {
-                drawable.Draw(graphics, spriteBatch, tileset);
+                drawable.Draw(graphics, spriteBatch, scaling);
             }
         }
 

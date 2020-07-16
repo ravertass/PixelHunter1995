@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using PixelHunter1995.SceneLib;
+using PixelHunter1995.TilesetLib;
 
 namespace PixelHunter1995
 {
@@ -19,7 +19,7 @@ namespace PixelHunter1995
             this.height = height;
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Tileset tileset)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
             spriteBatch.Draw(image, Vector2.Zero, Color.White);
         }

@@ -18,7 +18,7 @@ namespace PixelHunter1995.GameStates
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime, Scene scene)
         {
-            scene.Draw(graphics, spriteBatch);
+            scene.Draw(graphics, spriteBatch, 1);
         }
 
         public void Update(GameTime gameTime, Scene scene)
