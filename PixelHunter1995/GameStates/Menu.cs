@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -11,13 +12,11 @@ namespace PixelHunter1995.GameStates
     {
         private readonly Texture2D menu;
         private StateManager stateManager;
-        private bool escapeHasBeenUp;
 
         public Menu(StateManager stateManager, Texture2D menu)
         {
             this.stateManager = stateManager;
             this.menu = menu;
-            this.escapeHasBeenUp = false;
         }
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime, Scene scene)
@@ -25,21 +24,14 @@ namespace PixelHunter1995.GameStates
             spriteBatch.Draw(menu, Vector2.Zero, Color.White);
         }
 
-        public void Update(GameTime gameTime, Scene scene)
+        public void Update(GameTime gameTime, Scene scene, Input input)
         {
-            KeyboardState state = Keyboard.GetState();
-            if (state.IsKeyUp(Keys.Escape))
-            {
-                escapeHasBeenUp = true;
-            }
-
-            if (state.IsKeyDown(Keys.Escape) && escapeHasBeenUp)
+            if (input.GetKeyState(Keys.Escape).IsEdgeDown)
             {
                 stateManager.SetExit();
             }
-            else if (state.IsKeyDown(Keys.Enter))
+            else if (input.GetKeyState(Keys.Enter).IsEdgeDown)
             {
-                escapeHasBeenUp = false;
                 stateManager.SetStatePlaying();
             }
         }

@@ -50,15 +50,14 @@ namespace PixelHunter1995
             this.AnimationTileset = new AnimationTileset("Animations/felixia");
         }
         bool said = false;
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Input input)
         {
-            var mouseState = Mouse.GetState();
-
-            if (game.IsActive && mouseState.LeftButton == ButtonState.Pressed)
+            //if (game.IsActive && input.GetKeyState(MouseKeys.LeftButton).IsDown)
+            if (input.GetKeyState(MouseKeys.LeftButton).IsDown)
             {
                 // Compensate for Position being in top left corner
-                float x = mouseState.X - AnimationTileset.tileWidth / 2;
-                float y = mouseState.Y - AnimationTileset.tileHeight;
+                float x = input.X - AnimationTileset.tileWidth / 2;
+                float y = input.Y - AnimationTileset.tileHeight;
                 this.MovePosition = new Vector2(x,y);
                 if (!said)  // TODO remove this once we have better input handling
                 {

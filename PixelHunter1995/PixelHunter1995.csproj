@@ -96,6 +96,8 @@
     <Compile Include="HaveFunctionInterfaces\IDrawable.cs" />
     <Compile Include="HaveFunctionInterfaces\ILoadContent.cs" />
     <Compile Include="HaveFunctionInterfaces\IUpdateable.cs" />
+    <Compile Include="Either.cs" />
+    <Compile Include="Input.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="WalkingAreaLib\Polygon.cs" />
     <Compile Include="Utilities\Coord.cs" />

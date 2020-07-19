@@ -26,15 +26,14 @@ namespace PixelHunter1995.GameStates
             Inventory.Draw(graphics, spriteBatch, 1);
         }
 
-        public void Update(GameTime gameTime, Scene scene)
+        public void Update(GameTime gameTime, Scene scene, Input input)
         {
-            KeyboardState state = Keyboard.GetState();
-            if (state.IsKeyDown(Keys.Escape))
+            if (input.GetKeyState(Keys.Escape).IsEdgeDown)
             {
                 StateManager.SetStateMenu();
             }
 
-            scene.Update(gameTime);
+            scene.Update(gameTime, input);
         }
     }
 }

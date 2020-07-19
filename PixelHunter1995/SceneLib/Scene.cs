@@ -28,11 +28,11 @@ namespace PixelHunter1995
             }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Input input)
         {
             foreach (IUpdateable updateable in updateables)
             {
-                updateable.Update(gameTime);
+                updateable.Update(gameTime, input);
             }
         }
 

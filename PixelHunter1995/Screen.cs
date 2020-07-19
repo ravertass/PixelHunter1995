@@ -9,9 +9,14 @@ namespace PixelHunter1995
      */
     internal class Screen
     {
+
+        public Rectangle renderTargetRect;
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+
         internal int fullScreenWidth;
         internal int fullScreenHeight;
-        public Rectangle renderTargetRect;
+
         private readonly GraphicsDeviceManager graphics;
         private readonly GameWindow window;
         private bool justToggledFullscreen = false;
@@ -20,8 +25,10 @@ namespace PixelHunter1995
         {
             this.graphics = graphics;
             this.window = window;
-            graphics.PreferredBackBufferWidth = GlobalSettings.WINDOW_WIDTH;
-            graphics.PreferredBackBufferHeight = GlobalSettings.WINDOW_HEIGHT;
+            this.Width = GlobalSettings.WINDOW_WIDTH;
+            this.Height = GlobalSettings.WINDOW_HEIGHT;
+            graphics.PreferredBackBufferWidth = this.Width;
+            graphics.PreferredBackBufferHeight = this.Height;
             Initialize();
         }
 
@@ -34,8 +41,10 @@ namespace PixelHunter1995
         private void SetToWindowed()
         {
             renderTargetRect = RenderTargetWindowRect();
-            graphics.PreferredBackBufferWidth = GlobalSettings.WINDOW_WIDTH;
-            graphics.PreferredBackBufferHeight = GlobalSettings.WINDOW_HEIGHT;
+            this.Width = GlobalSettings.WINDOW_WIDTH;
+            this.Height = GlobalSettings.WINDOW_HEIGHT;
+            graphics.PreferredBackBufferWidth = this.Width;
+            graphics.PreferredBackBufferHeight = this.Height;
             graphics.ApplyChanges();
             window.IsBorderless = false;
             window.Position = new Point((fullScreenWidth - GlobalSettings.WINDOW_WIDTH) / 2,
@@ -65,8 +74,10 @@ namespace PixelHunter1995
         private void SetToFullScreen()
         {
             renderTargetRect = RenderTargetFullScreenRect();
-            graphics.PreferredBackBufferWidth = fullScreenWidth;
-            graphics.PreferredBackBufferHeight = fullScreenHeight;
+            this.Width = fullScreenWidth;
+            this.Height = fullScreenHeight;
+            graphics.PreferredBackBufferWidth = this.Width;
+            graphics.PreferredBackBufferHeight = this.Height;
             graphics.ApplyChanges();
             window.IsBorderless = true;
             window.Position = new Point(0, 0);
@@ -93,21 +104,20 @@ namespace PixelHunter1995
             }
         }
 
-        private bool IsAltEnterPressed(KeyboardState state)
+        private bool IsAltEnterPressed(Input input)
         {
-            return (state.IsKeyDown(Keys.LeftAlt) || state.IsKeyDown(Keys.RightAlt)) && state.IsKeyDown(Keys.Enter);
+            return (input.GetKeyState(Keys.LeftAlt).IsDown || input.GetKeyState(Keys.RightAlt).IsDown) && input.GetKeyState(Keys.Enter).IsEdgeDown;
         }
 
-        public void CheckForFullScreen()
+        public void CheckForFullScreen(Input input)
         {
-            KeyboardState state = Keyboard.GetState();
-            if (!justToggledFullscreen && IsAltEnterPressed(state))
+            if (!justToggledFullscreen && IsAltEnterPressed(input))
             {
                 ToggleFullScreen();
                 justToggledFullscreen = true;
             }
 
-            if (!IsAltEnterPressed(state))
+            if (!IsAltEnterPressed(input))
             {
                 justToggledFullscreen = false;
             }

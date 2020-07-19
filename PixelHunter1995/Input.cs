@@ -1,24 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using PixelHunter1995.Components;
 
 namespace PixelHunter1995
 {
     class Input
     {
-        
+
+        public int X { get; private set; }
+        public int Y { get; private set; }
+        public Point Position { get => new Point(this.X, this.Y); }
+
+        public int ScrollWheelValue { get; private set; }
+        public int HorizontalScrollWheelValue { get; private set; }
+
         private Game game;
+        private Screen screen;
 
-        private Dictionary<Keys, KeyState> naiveState = new Dictionary<Keys, KeyState>();
-        private Dictionary<Keys, ProperKeyState> properState = new Dictionary<Keys, ProperKeyState>();
+        private Dictionary<Either<Keys, MouseKeys>, ProperKeyState> properState = new Dictionary<Either<Keys, MouseKeys>, ProperKeyState>();
 
-        public Input(Game game)
+        public Input(Game game, Screen screen)
         {
             this.game = game;
+            this.screen = screen;
         }
 
         //? Perhaps make this track input as a queue, to persist chronological order.
@@ -49,7 +59,7 @@ namespace PixelHunter1995
         //TODO with the latter tactic, things can still work alongside hotkeys if they truly want, which might be useful for example for modifier keys that also affect sprinting. Or whatever.
         //TODO Could also set its own flag instead, so when checking an input one might also check specifically that hotkeys that shouldn't occur at same time didn't. Should be more benign and avoid bugs when keys are re-bound.
 
-        
+
         /// <summary>
         /// Called to update the state of inputs. Perhaps even more often than per-frame? Event-based?
         /// </summary>
@@ -63,58 +73,122 @@ namespace PixelHunter1995
 
                 // Keys currently pressed
                 var pressedKeys = keyboardState.GetPressedKeys();
-                foreach (Keys key in pressedKeys)
+                foreach (Keys k in pressedKeys)
                 {
-                    KeyState priorState;
-                    bool success = naiveState.TryGetValue(key, out priorState);
-                    if (!success)
+                    var key = new Either<Keys, MouseKeys>(k);
+                    ProperKeyState priorState;
+                    bool success = properState.TryGetValue(key, out priorState);
+                    if (!success || priorState == ProperKeyState.EdgeUp)
                     {
-                        priorState = KeyState.Up;
+                        properState[key] = ProperKeyState.EdgeDown;
+                    }
+                    else if (priorState == ProperKeyState.EdgeDown)
+                    {
+                        properState[key] = ProperKeyState.Down;
                     }
 
-                    if (priorState == KeyState.Up)
-                    {
-                        // TODO Edge-down
-                        properState.Add(key, ProperKeyState.EdgeDown);
-                    }
-                    else
-                    {
-                        // TODO Held-down
-                        properState.Add(key, ProperKeyState.Down);
-                    }
-                    // TODO Down
-                    naiveState.Add(key, KeyState.Down);
                 }
 
-                // Keys not currently pressed
-                var releasedKeys = naiveState.Keys.Except(pressedKeys);
-                foreach (Keys key in releasedKeys)
+                // Keys not currently pressed, but were stored as somethign other than Up
+                var releasedKeys = properState.Keys.Except(pressedKeys.Select(k => new Either<Keys, MouseKeys>(k))).ToList();
+                foreach (Either<Keys, MouseKeys> key in releasedKeys)
                 {
-                    KeyState priorState;
-                    bool success = naiveState.TryGetValue(key, out priorState);
+                    ProperKeyState priorState;
+                    bool success = properState.TryGetValue(key, out priorState);
                     if (!success)
                     {
                         //! Should not be possible (releasedKeys comes from a Set-operation on the dict's key-set)!
-                        priorState = KeyState.Up;
+                        Console.Error.WriteLine("Input somehow failed to get value for key when that should be impossible!");
                     }
 
-                    if (priorState == KeyState.Down)
+                    if (priorState == ProperKeyState.Down || priorState == ProperKeyState.EdgeDown)
                     {
-                        // TODO Edge-Up
-                        properState.Add(key, ProperKeyState.EdgeUp);
+                        properState[key] = ProperKeyState.EdgeUp;
+                    }
+                    else if (priorState == ProperKeyState.EdgeUp)
+                    {
+                        properState.Remove(key);
                     }
                     else
                     {
-                        // TODO Held-up
-                        properState.Add(key, ProperKeyState.Up);
+                        //! Should not be possible (keys are removed when released)!
+                        Console.Error.WriteLine("Input somehow had a (keyboard) key stored as Up, which was decided in chat to be made impossible!");
                     }
-                    // TODO Up
-                    naiveState.Add(key, KeyState.Up);
                 }
+
+                var mouseKeys = new Dictionary<MouseKeys, ButtonState>();
+                mouseKeys.Add(MouseKeys.LeftButton, mouseState.LeftButton);
+                mouseKeys.Add(MouseKeys.RightButton, mouseState.RightButton);
+                mouseKeys.Add(MouseKeys.MiddleButton, mouseState.MiddleButton);
+                mouseKeys.Add(MouseKeys.XButton1, mouseState.XButton1);
+                mouseKeys.Add(MouseKeys.XButton2, mouseState.XButton2);
+                foreach (var item in mouseKeys)
+                {
+                    var key = new Either<Keys, MouseKeys>(item.Key);
+                    var state = item.Value;
+                    
+                    ProperKeyState priorState;
+                    bool success = properState.TryGetValue(key, out priorState);
+
+                    if (state == ButtonState.Pressed)
+                    {
+                        //var stateProper = ProperKeyState.Down;
+                        //if (priorState == ProperKeyState.Up)
+                        //{
+                        //    stateProper = ProperKeyState.EdgeDown;
+                        //}
+                        //properState[key] = stateProper;
+                        // `!success==true` means priorState was Up
+                        if (!success || priorState == ProperKeyState.EdgeUp)
+                        {
+                            properState[key] = ProperKeyState.EdgeDown;
+                        }
+                        else if (priorState == ProperKeyState.EdgeDown)
+                        {
+                            properState[key] = ProperKeyState.Down;
+                        }
+                    } // can ignore if `success==false`, as that corresponds to Up, aka Released.
+                    else if (state == ButtonState.Released && success)
+                    {
+                        //var stateProper = ProperKeyState.Up;
+                        //if (priorState == ProperKeyState.Down)
+                        //{
+                        //    stateProper = ProperKeyState.EdgeUp;
+                        //}
+                        //properState[key] = stateProper;
+                        if (priorState == ProperKeyState.Down || priorState == ProperKeyState.EdgeDown)
+                        {
+                            properState[key] = ProperKeyState.EdgeUp;
+                        }
+                        else if (priorState == ProperKeyState.EdgeUp)
+                        {
+                            properState.Remove(key);
+                        }
+                        else if (!success)
+                        {
+
+                        }
+                        else if (priorState == ProperKeyState.Up)
+                        {
+                            //! Should not be possible (keys are removed when released)!
+                            Console.Error.WriteLine("Input somehow had a (mouse) key stored as Up, which was decided in chat to be made impossible!");
+                        }
+                    }
+                }
+
+                // fix fullscreen
+                double ratioWidth = GlobalSettings.WINDOW_WIDTH / (double) screen.Width;
+                double ratioHeight = GlobalSettings.WINDOW_HEIGHT / (double) screen.Height;
+                this.X = (int)(mouseState.X * ratioWidth);
+                this.Y = (int)(mouseState.Y * ratioHeight);
+
+                this.ScrollWheelValue = mouseState.ScrollWheelValue;
+                this.HorizontalScrollWheelValue = mouseState.HorizontalScrollWheelValue;
             }
         }
 
-        public ProperKeyState GetKeyState(Keys key)
+
+        public ProperKeyState GetKeyState(Either<Keys, MouseKeys> key)
         {
             ProperKeyState state;
             bool success = properState.TryGetValue(key, out state);
@@ -124,83 +198,95 @@ namespace PixelHunter1995
             }
             return ProperKeyState.Up;
         }
-
-        /// <summary>
-        /// Returns true if the keys has the given state.
-        /// Do note that this method considers edge-states to be a subset of their base-states,
-        /// meaning if a key is EdgeDown, then `IsKeyState(key, Down)` will also return true.
-        /// Do however also note this means that if the key is Down, then `IsKeyState(key, EdgeDown)` returns false.
-        /// 
-        /// Essentially, if a key is Down in any way, then the key is Down.
-        /// But it is only EdgeDown if the key is EdgeDown.
-        /// 
-        /// This is to allow for easily checking if a key is down/up without handling edges explicitly,
-        /// but to also not break excepted behavior if changed to explicitly require/check for an edge.
-        /// 
-        /// If you want a more strict check, use `IsStrictlyKeyState` instead.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="state"></param>
-        /// <returns></returns>
-        public bool IsKeyState(Keys key, ProperKeyState state)
+        public ProperKeyState GetKeyState(Keys key)
         {
-            ProperKeyState currentState;
-            bool success = properState.TryGetValue(key, out currentState);
-            if (!success)
-            {
-                currentState = ProperKeyState.Up;
-            }
-
-            // Ignores the third edge-bit in currentState when comparing the states.
-            // So ie. EdgeDown == Down, while the vice versa is not true: Down != EdgeDown
-            return ((currentState & ~ProperKeyState.Edge) == state);
+            return GetKeyState(new Either<Keys, MouseKeys>(key));
+        }
+        public ProperKeyState GetKeyState(MouseKeys key)
+        {
+            return GetKeyState(new Either<Keys, MouseKeys>(key));
         }
 
-        /// <summary>
-        /// Returns true if the keys has the given state.
-        /// Do note that this method performs a strict equals operation, so ie `Down == EdgeDown` returns false.
-        /// 
-        /// If you want a less strict (and more usable) check, use `IsKeyState` instead.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="state"></param>
-        /// <returns></returns>
-        public bool IsStrictlyKeyState(Keys key, ProperKeyState state)
-        {
-            ProperKeyState currentState;
-            bool success = properState.TryGetValue(key, out currentState);
-            if (!success)
-            {
-                currentState = ProperKeyState.Up;
-            }
+        ///// <summary>
+        ///// Returns true if the keys has the given state.
+        ///// Do note that this method considers edge-states to be a subset of their base-states,
+        ///// meaning if a key is EdgeDown, then `IsKeyState(key, Down)` will also return true.
+        ///// Do however also note this means that if the key is Down, then `IsKeyState(key, EdgeDown)` returns false.
+        ///// 
+        ///// Essentially, if a key is Down in any way, then the key is Down.
+        ///// But it is only EdgeDown if the key is EdgeDown.
+        ///// 
+        ///// This is to allow for easily checking if a key is down/up without handling edges explicitly,
+        ///// but to also not break excepted behavior if changed to explicitly require/check for an edge.
+        ///// 
+        ///// If you want a more strict check, use `IsStrictlyKeyState` instead.
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="state"></param>
+        ///// <returns></returns>
+        //public bool IsKeyState(Either<Keys, MouseKeys> key, ProperKeyState state)
+        //{
+        //    // Ignores the third edge-bit in currentState when comparing the states.
+        //    // So ie. EdgeDown == Down, while the vice versa is not true: Down != EdgeDown
+        //    ProperKeyState currentState = GetKeyState(key);
+        //    return (currentState == state) || 
+        //            (currentState == ProperKeyState.EdgeUp && state == ProperKeyState.Up) ||
+        //            (currentState == ProperKeyState.EdgeDown && state == ProperKeyState.Down);
+        //}
+        //public bool IsKeyState(Keys key, ProperKeyState state)
+        //{
+        //    return IsKeyState(new Either<Keys, MouseKeys>(key), state);
+        //}
+        //public bool IsKeyState(MouseKeys key, ProperKeyState state)
+        //{
+        //    return IsKeyState(new Either<Keys, MouseKeys>(key), state);
+        //}
 
-            return currentState == state;
-        }
+        ///// <summary>
+        ///// Returns true if the keys has the given state.
+        ///// Do note that this method performs a strict equals operation, so ie `Down == EdgeDown` returns false.
+        ///// 
+        ///// If you want a less strict (and more usable) check, use `IsKeyState` instead.
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="state"></param>
+        ///// <returns></returns>
+        //public bool IsStrictlyKeyState(Either<Keys, MouseKeys> key, ProperKeyState state)
+        //{
+        //    ProperKeyState currentState;
+        //    bool success = properState.TryGetValue(key, out currentState);
+        //    if (!success)
+        //    {
+        //        currentState = ProperKeyState.Up;
+        //    }
 
-        public bool isKeyPressed(Keys key)
-        {
-            return IsKeyState(key, ProperKeyState.EdgeDown);
-        }
-        public bool isKeyDown(Keys key)
-        {
-            return IsKeyState(key, ProperKeyState.Down);
-        }
-        public bool isStrictlyKeyDown(Keys key)
-        {
-            return IsStrictlyKeyState(key, ProperKeyState.Down);
-        }
-        public bool IsKeyReleased(Keys key)
-        {
-            return IsKeyState(key, ProperKeyState.EdgeUp);
-        }
-        public bool isKeyUp(Keys key)
-        {
-            return IsKeyState(key, ProperKeyState.Up);
-        }
-        public bool isStrictlyKeyUp(Keys key)
-        {
-            return IsStrictlyKeyState(key, ProperKeyState.Up);
-        }
+        //    return currentState == state;
+        //}
+
+        //public bool isKeyPressed(Either<Keys, MouseKeys> key)
+        //{
+        //    return IsKeyState(key, ProperKeyState.EdgeDown);
+        //}
+        //public bool isKeyDown(Either<Keys, MouseKeys> key)
+        //{
+        //    return IsKeyState(key, ProperKeyState.Down);
+        //}
+        //public bool isStrictlyKeyDown(Either<Keys, MouseKeys> key)
+        //{
+        //    return IsStrictlyKeyState(key, ProperKeyState.Down);
+        //}
+        //public bool IsKeyReleased(Either<Keys, MouseKeys> key)
+        //{
+        //    return IsKeyState(key, ProperKeyState.EdgeUp);
+        //}
+        //public bool isKeyUp(Either<Keys, MouseKeys> key)
+        //{
+        //    return IsKeyState(key, ProperKeyState.Up);
+        //}
+        //public bool isStrictlyKeyUp(Either<Keys, MouseKeys> key)
+        //{
+        //    return IsStrictlyKeyState(key, ProperKeyState.Up);
+        //}
 
     }
 
@@ -213,12 +299,54 @@ namespace PixelHunter1995
     /// It is possible to simple state that it is an edge without specifying direction,
     /// to make certain operations easier, so be careful with that.
     /// </summary>
-    public enum ProperKeyState
+    //public enum ProperKeyState : uint
+    //{
+    //    Up = 1 << 0, // 1
+    //    Down = 1 << 1, // 2
+    //    Edge = 1 << 2, // 4
+    //    EdgeUp = Edge + Up, // 5
+    //    EdgeDown = Edge + Down // 6
+    //}
+    //public enum ProperKeyState : uint
+    //{
+    //    Up,
+    //    Down,
+    //    EdgeUp,
+    //    EdgeDown
+    //}
+    public class ProperKeyState
     {
-        Up      = 1<<0, // 1
-        Down    = 1<<1, // 2
-        Edge    = 1<<2, // 4
-        EdgeUp  = Edge+Up, // 5
-        EdgeDown= Edge+Down // 6
+        public bool IsUp { get; }
+        public bool IsDown { get => !this.IsUp; }
+        public bool IsEdge { get; }
+
+        public bool IsEdgeUp { get => this.IsUp && this.IsEdge; }
+        public bool IsEdgeDown { get => this.IsDown && this.IsEdge; }
+
+        // alias
+        public bool IsReleased { get => this.IsEdgeUp; }
+        public bool IsPressed { get => this.IsEdgeDown; }
+
+        public ProperKeyState(bool isUp, bool isEdge)
+        {
+            this.IsUp = isUp;
+            this.IsEdge = isEdge;
+        }
+
+        static public ProperKeyState Up = new ProperKeyState(true, false);
+        static public ProperKeyState Down = new ProperKeyState(false, false);
+        static public ProperKeyState EdgeUp = new ProperKeyState(true, true);
+        static public ProperKeyState EdgeDown = new ProperKeyState(false, true);
+
     }
+
+    public enum MouseKeys
+    {
+        LeftButton,
+        RightButton,
+        MiddleButton,
+        XButton1,
+        XButton2
+    }
+
 }

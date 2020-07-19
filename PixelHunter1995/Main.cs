@@ -23,6 +23,7 @@ namespace PixelHunter1995
         private ShouldExit shouldExit;
         private RenderTarget2D renderTarget;
         private Screen screen;
+        private Input input;
 
         public Main()
         {
@@ -46,6 +47,8 @@ namespace PixelHunter1995
             stateManager = new StateManager(shouldExit);
             renderTarget = new RenderTarget2D(GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
             screen = new Screen(graphics, Window);
+            input = new Input(this, screen);
+
             base.Initialize();
         }
 
@@ -96,8 +99,12 @@ namespace PixelHunter1995
                 Exit();
             }
 
-            stateManager.currentState.Update(gameTime, SceneManager.currentScene);
-            screen.CheckForFullScreen();
+            this.input.Update();
+            // TODO add a HandleInput loop, instead of running this in Update
+            //? TODO add a PreHandleInput loop, for ie. hotkeys, so alt+enter doesnt trigger enter
+
+            stateManager.currentState.Update(gameTime, SceneManager.currentScene, this.input);
+            screen.CheckForFullScreen(this.input);
             base.Update(gameTime);
 
             if (!musicPlaying)
