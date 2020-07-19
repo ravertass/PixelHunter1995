@@ -120,7 +120,9 @@ namespace PixelHunter1995
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             DrawToRenderTarget(gameTime);
-            spriteBatch.Begin();
+            // SamplerState.PointClamp is needed to skip smoothing in fullscreen mode. The others are just
+            // the default values.
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
             spriteBatch.Draw((Texture2D)renderTarget, screen.renderTargetRect, Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
