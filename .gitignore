@@ -3,6 +3,15 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+
+# Custom ignores
+
+# Ignore folder from another branch that ignore certain stuff,
+# resulting in 'untracked' persisting between branches
+DialogGrapher/
+
+
+
 # User-specific files
 *.rsuser
 *.suo
