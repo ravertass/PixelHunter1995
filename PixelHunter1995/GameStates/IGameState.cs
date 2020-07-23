@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.Inputs;
 
@@ -17,7 +16,6 @@ namespace PixelHunter1995.GameStates
         /// </summary>
         Input Input { get; }
 
-        void HandleInput(Game game, GameTime gameTime, Input input);
         void Update(GameTime gameTime, Scene scene, Input input);
         void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime, Scene scene);
     }

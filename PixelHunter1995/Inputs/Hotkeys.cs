@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace PixelHunter1995.Inputs
@@ -9,7 +8,7 @@ namespace PixelHunter1995.Inputs
     using KeyDisjunction = Dictionary<Either<Keys, MouseKeys>, SignalState>;
     using KeyConjunction = HashSet<Dictionary<Either<Keys, MouseKeys>, SignalState>>;
 
-    class Hotkeys : StateMap<Actions>, IInputHandler
+    class Hotkeys : StateMap<Actions>
     {
 
         private readonly Dictionary<Actions, KeyConjunction> binds = new Dictionary<Actions, KeyConjunction>();
@@ -26,7 +25,7 @@ namespace PixelHunter1995.Inputs
             binds[Actions.MouseLeft] = new KeyConjunction { new KeyDisjunction { [MouseKeys.LeftButton] = SignalState.Down } };
         }
 
-        public void HandleInput(GameTime gameTime, Input input)
+        public void Update(Input input)
         {
             var activeActions = new HashSet<Actions>();
 
@@ -69,7 +68,7 @@ namespace PixelHunter1995.Inputs
                 }
             }
 
-            this.HandleKeys(activeActions);
+            this.Update(activeActions);
         }
     }
 

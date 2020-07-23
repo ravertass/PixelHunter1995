@@ -52,7 +52,6 @@ namespace PixelHunter1995
         bool said = false;
         public void Update(GameTime gameTime, Input input)
         {
-            //if (game.IsActive && input.GetKeyState(MouseKeys.LeftButton).IsDown)
             if (input.Hotkeys.GetState(Actions.MouseLeft).IsDown)
             {
                 // Compensate for Position being in top left corner

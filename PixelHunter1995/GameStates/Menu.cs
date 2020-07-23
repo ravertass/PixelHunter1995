@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using PixelHunter1995.Inputs;
 
 namespace PixelHunter1995.GameStates
@@ -29,11 +27,6 @@ namespace PixelHunter1995.GameStates
             spriteBatch.Draw(menu, Vector2.Zero, Color.White);
         }
 
-        public void HandleInput(Game game, GameTime gameTime, Input input)
-        {
-            this.Input.Update(game, gameTime);
-        }
-
         public void Update(GameTime gameTime, Scene scene, Input input)
         {
             if (input.Hotkeys.GetState(Actions.Exit).IsEdgeDown)
@@ -41,7 +34,6 @@ namespace PixelHunter1995.GameStates
                 stateManager.SetExit();
             }
             else if (input.Hotkeys.GetState(Actions.Accept).IsEdgeDown)
-            //else if (input.Hotkeys.activeActions.Contains(Actions.Accept))
             {
                 stateManager.SetStatePlaying();
             }

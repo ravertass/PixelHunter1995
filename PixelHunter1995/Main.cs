@@ -103,10 +103,10 @@ namespace PixelHunter1995
             // The game requires focus to handle input.
             if (this.IsActive)
             {
-                this.input.Update(this, gameTime);
+                this.input.Update(); // handle input for global hotkeys (ie. fullscreen)
+                stateManager.currentState.Input.Update(); // handle input for current state.
             }
 
-            stateManager.currentState.HandleInput(this, gameTime, this.input);
             stateManager.currentState.Update(gameTime, SceneManager.currentScene, this.input);
             screen.CheckForFullScreen(this.input);
             base.Update(gameTime);

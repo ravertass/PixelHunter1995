@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PixelHunter1995.Inputs
 {
@@ -24,19 +21,18 @@ namespace PixelHunter1995.Inputs
         {
         }
 
-        // TODO Come up with a better name
-        protected void HandleKeys(IEnumerable<T> pressedKeys)
+        protected void Update(IEnumerable<T> pressedKeys)
         {
             var releasedKeys = state.Keys.Except(pressedKeys);
 
             //Keys currently pressed
-            this.HandleKeys(pressedKeys, SignalState.Down);
+            this.Update(pressedKeys, SignalState.Down);
 
             // Keys not currently pressed, but were stored as something other than ProperKeyState.Up
-            this.HandleKeys(releasedKeys, SignalState.Up);
+            this.Update(releasedKeys, SignalState.Up);
         }
 
-        private void HandleKeys(IEnumerable<T> list, bool isUp)
+        private void Update(IEnumerable<T> list, bool isUp)
         {
             // ToList ensures it is a copy, as `state` is mutated during the iteration and `list` might depend on it.
             // Specifically, `state.Keys.Except(pressedKeys)` returns an IEnumerable that does.
@@ -61,9 +57,9 @@ namespace PixelHunter1995.Inputs
                 }
             }
         }
-        private void HandleKeys(IEnumerable<T> list, SignalState state)
+        private void Update(IEnumerable<T> list, SignalState state)
         {
-            HandleKeys(list, state.IsUp);
+            Update(list, state.IsUp);
         }
 
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -71,7 +70,7 @@ namespace PixelHunter1995.Inputs
         /// <summary>
         /// Called to update the state of inputs. Perhaps even more often than per-frame? Event-based?
         /// </summary>
-        public void Update(Game game, GameTime gameTime)
+        public void Update()
         {
             var keyboardState = Keyboard.GetState();
             var mouseState = Mouse.GetState();
@@ -89,7 +88,7 @@ namespace PixelHunter1995.Inputs
             // Merge keyboard and mouse
             var pressedKeys = pressedMouse.Concat(keyboardState.GetPressedKeys().Select(k => (AllKeys) k));
            
-            this.HandleKeys(pressedKeys);
+            this.Update(pressedKeys);
 
             // fix fullscreen (moved to static class, in case other things need to do it. also removes the need for a Screen reference.)
             //double ratioWidth = GlobalSettings.WINDOW_WIDTH / (double)screen.Width;
@@ -103,64 +102,10 @@ namespace PixelHunter1995.Inputs
             this.ScrollWheelValue = mouseState.ScrollWheelValue;
             this.HorizontalScrollWheelValue = mouseState.HorizontalScrollWheelValue;
 
-            this.Hotkeys.HandleInput(gameTime, this);
+            this.Hotkeys.Update(this);
         }
 
     }
-
-    ///// <summary>
-    ///// The proper keystate, as monogame does not give any information on whether the key was released or pressed.
-    ///// Rather than an enum like one would expect, this is a class, meaning each ProperKeyState is an instance.
-    ///// There are static references for each permutation to instances describing them, to allow easier use.
-    ///// 
-    ///// The advantage with doing it this way however, is that Properties can be used to nicely get a bool for various
-    ///// properties of the keystate.
-    ///// So `input.GetKeyState(key) == ProperKeyState.EdgeDown` becomes `input.GetKeyState(key).IsEdgeDown` instead.
-    ///// As a result however, it makes much less sense to enable 'Is' syntax (ie `input.IsKeyState(key, state)`),
-    ///// although nothing stops one from implementing that as options/aliases of the former.
-    ///// 
-    ///// The disadvantage could have been that one has to be careful about making sure to use the static references,
-    ///// as otherwise `==` or `.Equals` would compare reference and not value.
-    ///// This has however been rendered moot by overriding the relevant methods,
-    ///// as well as by turning it into a struct (making it a value-type).
-    ///// </summary>
-    //class ProperKeyState : SignalState
-    //{
-    //    public ProperKeyState(bool isUp, bool isEdge) : base(isUp, isEdge) { }
-    //    public ProperKeyState(SignalState blah) : base(blah.IsUp, blah.IsEdge) { }
-
-    //    public static ProperKeyState Up = new ProperKeyState(SignalState.Up);
-    //    public static ProperKeyState Down = new ProperKeyState(SignalState.Down);
-    //    public static ProperKeyState EdgeUp = new ProperKeyState(SignalState.EdgeUp);
-    //    public static ProperKeyState EdgeDown = new ProperKeyState(SignalState.EdgeDown);
-
-    //    //public static implicit operator ProperKeyState(SignalState blah) => (ProperKeyState)blah;
-    //}
-    //struct ProperKeyState // doesn't work, cant see a way to implicitly convert on the lhs of `.` (for properties and fields)
-    //{
-    //    private SignalState wrapped;
-
-    //    public ProperKeyState(SignalState wrapped)
-    //    {
-    //        this.wrapped = wrapped;
-    //    }
-    //    public ProperKeyState(bool isUp, bool isEdge)
-    //    {
-    //        this.wrapped = new SignalState(isUp, isEdge);
-    //    }
-
-    //    public static ProperKeyState Up = SignalState.Up;
-    //    public static ProperKeyState Down = SignalState.Down;
-    //    public static ProperKeyState EdgeUp = SignalState.EdgeUp;
-    //    public static ProperKeyState EdgeDown = SignalState.EdgeDown;
-
-    //    //public override string ToString()
-    //    //{
-    //    //    return "ProperKeyState." + (this.IsEdge ? "Edge" : "") + (this.IsUp ? "Up" : "Down");
-    //    //}
-    //    public static implicit operator ProperKeyState(SignalState blah) => new ProperKeyState(blah);
-    //    public static implicit operator SignalState(ProperKeyState blah) => blah.wrapped;
-    //}
 
     /// <summary>
     /// An enum for the various keys on a mouse,

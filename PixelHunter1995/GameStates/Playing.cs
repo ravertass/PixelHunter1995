@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using PixelHunter1995.InventoryLib;
 using PixelHunter1995.Inputs;
 
@@ -31,19 +28,16 @@ namespace PixelHunter1995.GameStates
             Inventory.Draw(graphics, spriteBatch, 1);
         }
 
-        public void HandleInput(Game game, GameTime gameTime, Input input)
-        {
-            this.Input.Update(game, gameTime);
-            //this.Input.Hotkeys.activeActions = (HashSet<Actions>) this.Input.Hotkeys.activeActions.Concat(input.Hotkeys.activeActions);
-        }
-
         public void Update(GameTime gameTime, Scene scene, Input input)
         {
-            if (input.Hotkeys.GetState(Actions.Pause).IsEdgeDown)
+            //this.Input.Hotkeys.activeActions = (HashSet<Actions>) this.Input.Hotkeys.activeActions.Concat(input.Hotkeys.activeActions); // TODO figure out something nice regarding the fact there is a global input instance...
+
+            if (this.Input.Hotkeys.GetState(Actions.Pause).IsEdgeDown)
             {
                 StateManager.SetStateMenu();
             }
 
+            scene.HandleInput(gameTime, this.Input);
             scene.Update(gameTime, this.Input);
         }
     }
