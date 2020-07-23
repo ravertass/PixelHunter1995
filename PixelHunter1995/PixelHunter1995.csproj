@@ -97,7 +97,12 @@
     <Compile Include="HaveFunctionInterfaces\ILoadContent.cs" />
     <Compile Include="HaveFunctionInterfaces\IUpdateable.cs" />
     <Compile Include="Either.cs" />
-    <Compile Include="Input.cs" />
+    <Compile Include="Inputs\FullscreenFix.cs" />
+    <Compile Include="Inputs\Hotkeys.cs" />
+    <Compile Include="Inputs\IInputHandler.cs" />
+    <Compile Include="Inputs\Input.cs" />
+    <Compile Include="Inputs\SignalState.cs" />
+    <Compile Include="Inputs\StateMap.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="WalkingAreaLib\Polygon.cs" />
     <Compile Include="Utilities\Coord.cs" />

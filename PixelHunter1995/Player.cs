@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using PixelHunter1995.Components;
 using PixelHunter1995.TilesetLib;
+using PixelHunter1995.Inputs;
 using System;
 
 namespace PixelHunter1995
@@ -53,7 +53,7 @@ namespace PixelHunter1995
         public void Update(GameTime gameTime, Input input)
         {
             //if (game.IsActive && input.GetKeyState(MouseKeys.LeftButton).IsDown)
-            if (input.GetKeyState(MouseKeys.LeftButton).IsDown)
+            if (input.Hotkeys.GetState(Actions.MouseLeft).IsDown)
             {
                 // Compensate for Position being in top left corner
                 float x = input.X - AnimationTileset.tileWidth / 2;

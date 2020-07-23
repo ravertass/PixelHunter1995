@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PixelHunter1995.Utilities;
+using PixelHunter1995.Inputs;
 
 namespace PixelHunter1995
 {
@@ -106,7 +107,9 @@ namespace PixelHunter1995
 
         private bool IsAltEnterPressed(Input input)
         {
-            return (input.GetKeyState(Keys.LeftAlt).IsDown || input.GetKeyState(Keys.RightAlt).IsDown) && input.GetKeyState(Keys.Enter).IsEdgeDown;
+            return input.Hotkeys.GetState(Actions.ToggleFullscreen).IsEdgeDown;
+            //return (input.GetKeyState(Keys.LeftAlt).IsDown || input.GetKeyState(Keys.RightAlt).IsDown)
+            //        && input.GetKeyState(Keys.Enter).IsEdgeDown;
         }
 
         public void CheckForFullScreen(Input input)

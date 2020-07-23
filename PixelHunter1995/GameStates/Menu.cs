@@ -1,7 +1,8 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using PixelHunter1995.Inputs;
 
 namespace PixelHunter1995.GameStates
 {
@@ -13,24 +14,34 @@ namespace PixelHunter1995.GameStates
         private readonly Texture2D menu;
         private StateManager stateManager;
 
+        public Input Input { get; }
+
         public Menu(StateManager stateManager, Texture2D menu)
         {
             this.stateManager = stateManager;
             this.menu = menu;
+            this.Input = new Input();
         }
+
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime, Scene scene)
         {
             spriteBatch.Draw(menu, Vector2.Zero, Color.White);
         }
 
+        public void HandleInput(Game game, GameTime gameTime, Input input)
+        {
+            this.Input.Update(game, gameTime);
+        }
+
         public void Update(GameTime gameTime, Scene scene, Input input)
         {
-            if (input.GetKeyState(Keys.Escape).IsEdgeDown)
+            if (input.Hotkeys.GetState(Actions.Exit).IsEdgeDown)
             {
                 stateManager.SetExit();
             }
-            else if (input.GetKeyState(Keys.Enter).IsEdgeDown)
+            else if (input.Hotkeys.GetState(Actions.Accept).IsEdgeDown)
+            //else if (input.Hotkeys.activeActions.Contains(Actions.Accept))
             {
                 stateManager.SetStatePlaying();
             }

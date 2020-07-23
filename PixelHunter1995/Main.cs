@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using PixelHunter1995.GameStates;
 using PixelHunter1995.Utilities;
-using PixelHunter1995.InventoryLib;
+using PixelHunter1995.Inputs;
 using System.IO;
 
 namespace PixelHunter1995
@@ -47,7 +47,8 @@ namespace PixelHunter1995
             stateManager = new StateManager(shouldExit);
             renderTarget = new RenderTarget2D(GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
             screen = new Screen(graphics, Window);
-            input = new Input(this, screen);
+            FullscreenFix.Screen = screen;
+            this.input = new Input();
 
             base.Initialize();
         }
@@ -99,10 +100,13 @@ namespace PixelHunter1995
                 Exit();
             }
 
-            this.input.Update();
-            // TODO add a HandleInput loop, instead of running this in Update
-            //? TODO add a PreHandleInput loop, for ie. hotkeys, so alt+enter doesnt trigger enter
+            // The game requires focus to handle input.
+            if (this.IsActive)
+            {
+                this.input.Update(this, gameTime);
+            }
 
+            stateManager.currentState.HandleInput(this, gameTime, this.input);
             stateManager.currentState.Update(gameTime, SceneManager.currentScene, this.input);
             screen.CheckForFullScreen(this.input);
             base.Update(gameTime);

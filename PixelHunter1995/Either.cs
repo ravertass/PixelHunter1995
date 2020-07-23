@@ -9,22 +9,34 @@ namespace PixelHunter1995
     public struct Either<L, R>
     {
         public bool IsLeft { get; }
-
+        
         public L left { get; }
         public R right { get; }
 
-        public Either(L left)
+        public Either(bool isLeft, L left, R right)
         {
-            this.IsLeft = true;
+            this.IsLeft = isLeft;
             this.left = left;
-            this.right = default(R);
-        }
-        public Either(R right)
-        {
-            this.IsLeft = false;
-            this.left = default(L);
             this.right = right;
         }
+
+        //! only works (properly) if L != R (not same type or subtype)
+        public Either(L left) : this(true, left, default(R)) { }
+        public Either(R right) : this(false, default(L), right) { }
+
+        public override string ToString()
+        {
+            return "Either< " + this.left.ToString() + ", " +  this.right.ToString() + " >";
+            //return "" + this + "{ IsLeft = " + this.IsLeft + ", (" + this.left + ", " + this.right + ") >";
+        }
+        public string ToStringHide()
+        {
+            return this.IsLeft ? this.left.ToString() : this.right.ToString();
+        }
+
+        //! only works (properly) if L != R (not same type or subtype)
+        public static implicit operator Either<L, R>(L left) => new Either<L, R>(left);
+        public static implicit operator Either<L, R>(R right) => new Either<L, R>(right);
     }
     //public class Either2<L, R>
     //{
@@ -64,6 +76,16 @@ namespace PixelHunter1995
     //        //hashCode = hashCode * -1521134295 + EqualityComparer<R>.Default.GetHashCode(right);
     //        //return hashCode;
     //        return this.IsLeft ? this.left.GetHashCode() : this.right.GetHashCode();
+    //    }
+
+    //    public override string ToString()
+    //    {
+    //        return "Either< " + this.left.ToString() + ", " + this.right.ToString() + " >";
+    //        //return "" + this + "{ IsLeft = " + this.IsLeft + ", (" + this.left + ", " + this.right + ") >";
+    //    }
+    //    public string ToStringHide()
+    //    {
+    //        return this.IsLeft ? this.left.ToString() : this.right.ToString();
     //    }
     //}
 }
