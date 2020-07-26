@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PixelHunter1995
+namespace PixelHunter1995.Utilities
 {
     public class Coord
     {
@@ -34,7 +34,7 @@ namespace PixelHunter1995
 
         public override string ToString()
         {
-            return String.Format("({0}, {1})", X, Y);
+            return string.Format("({0}, {1})", X, Y);
         }
     }
 }

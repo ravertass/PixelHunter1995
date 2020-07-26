@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using PixelHunter1995.TilesetLib;
+using PixelHunter1995.Utilities;
 using System.Collections.Generic;
 
-namespace PixelHunter1995
+namespace PixelHunter1995.WalkingAreaLib
 {
     class WalkingArea : IDrawable
     {

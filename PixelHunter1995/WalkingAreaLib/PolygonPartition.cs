@@ -1,8 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
 
-namespace PixelHunter1995
+namespace PixelHunter1995.WalkingAreaLib
 {
     class PolygonPartition
     {
@@ -63,7 +62,7 @@ namespace PixelHunter1995
 
         public override string ToString()
         {
-            return String.Join<Polygon>("; ", Polygons);
+            return string.Join<Polygon>("; ", Polygons);
         }
 
         public void Draw(GraphicsDeviceManager graphics)

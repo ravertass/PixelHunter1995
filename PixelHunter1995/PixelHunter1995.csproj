@@ -78,36 +78,36 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Background.cs" />
+    <Compile Include="SceneLib\Background.cs" />
     <Compile Include="Components\IComponent.cs" />
     <Compile Include="Components\IHasComponent.cs" />
     <Compile Include="Components\IHasComponents.cs" />
-    <Compile Include="Components\ITalkable.cs" />
+    <Compile Include="HaveFunctionInterfaces\ITalkable.cs" />
     <Compile Include="Components\IPositionComponent.cs" />
     <Compile Include="Components\ICharacterComponent.cs" />
     <Compile Include="Components\PositionComponent.cs" />
     <Compile Include="Components\CharacterComponent.cs" />
     <Compile Include="GameStates\StateManager.cs" />
-    <Compile Include="GlobalSettings.cs" />
-    <Compile Include="IDrawable.cs" />
-    <Compile Include="ILoadContent.cs" />
-    <Compile Include="IUpdateable.cs" />
+    <Compile Include="Utilities\GlobalSettings.cs" />
+    <Compile Include="HaveFunctionInterfaces\IDrawable.cs" />
+    <Compile Include="HaveFunctionInterfaces\ILoadContent.cs" />
+    <Compile Include="HaveFunctionInterfaces\IUpdateable.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="Polygon.cs" />
-    <Compile Include="Coord.cs" />
+    <Compile Include="WalkingAreaLib\Polygon.cs" />
+    <Compile Include="Utilities\Coord.cs" />
     <Compile Include="TilesetLib\AnimationTileset.cs" />
     <Compile Include="TilesetLib\TilesetParser.cs" />
     <Compile Include="TilesetLib\Tileset.cs" />
     <Compile Include="SceneLib\Dog.cs" />
     <Compile Include="SceneLib\Scene.cs" />
     <Compile Include="SceneLib\SceneManager.cs" />
-    <Compile Include="PolygonPartition.cs" />
+    <Compile Include="WalkingAreaLib\PolygonPartition.cs" />
     <Compile Include="GameStates\Menu.cs" />
     <Compile Include="GameStates\Playing.cs" />
     <Compile Include="GameStates\IGameState.cs" />
     <Compile Include="Screen.cs" />
-    <Compile Include="Utils.cs" />
-    <Compile Include="WalkingArea.cs" />
+    <Compile Include="Utilities\Utils.cs" />
+    <Compile Include="WalkingAreaLib\WalkingArea.cs" />
     <Compile Include="SceneLib\SceneParser.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Program.cs" />
@@ -125,7 +125,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Images\Background1.jpg" />
+    <Content Include="Content\Images\club_room.png" />
+    <Content Include="Content\Images\full_club_room.png" />
     <Content Include="Content\Sounds\495674__jack-urbanski__vibraphone-chord.wav" />
     <Content Include="Content\Sounds\92734__tj-mothy__slow-sad-tones.wav" />
     <Content Include="Content\Tileset\dogs.png" />
@@ -139,9 +140,12 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include=".editorconfig" />
     <None Include="app.manifest" />
+    <None Include="Content\Fonts\Alkhemikal.spritefont" />
+    <None Include="Content\Fonts\Alkhemikal.ttf" />
     <None Include="Content\Scenes\club_room.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Scenes\full_club_room.tmx" />
     <None Include="Content\Scenes\scene1.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

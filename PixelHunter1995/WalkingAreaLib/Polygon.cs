@@ -1,11 +1,12 @@
-using System;
+﻿using System;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
+using PixelHunter1995.Utilities;
 
-namespace PixelHunter1995
+namespace PixelHunter1995.WalkingAreaLib
 {
     class Polygon// : IDrawable
     {
@@ -140,7 +141,7 @@ namespace PixelHunter1995
 
         private int PreviousIndex(int i)
         {
-            return (((i - 1) % vertices.Count) + vertices.Count) % vertices.Count;
+            return ((i - 1) % vertices.Count + vertices.Count) % vertices.Count;
         }
 
         private int NextIndex(int i)
@@ -157,7 +158,7 @@ namespace PixelHunter1995
         {
             for (int j = 0; j < vertices.Count; j++)
             {
-                if (new [] {PreviousIndex(i), i, NextIndex(i)}.Contains(j))
+                if (new[] { PreviousIndex(i), i, NextIndex(i) }.Contains(j))
                 {
                     continue;
                 }
@@ -183,7 +184,7 @@ namespace PixelHunter1995
             Coord currentVertex = vertices[i];
             Coord nextVertex = vertices[NextIndex(i)];
 
-            Func<Coord, Coord, Coord, float> sign = (Coord p1, Coord p2, Coord p3) =>
+            float sign(Coord p1, Coord p2, Coord p3) =>
                     (p1.X - p3.X) * (p2.Y - p3.Y) - (p2.X - p3.X) * (p1.Y - p3.Y);
 
             float d1 = sign(point, previousVertex, currentVertex);

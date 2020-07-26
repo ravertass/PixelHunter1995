@@ -1,12 +1,14 @@
-﻿using PixelHunter1995.SceneLib;
-using Microsoft.Xna.Framework;
-using System;
+﻿using Microsoft.Xna.Framework;
+using PixelHunter1995.SceneLib;
+using PixelHunter1995.TilesetLib;
+using PixelHunter1995.Utilities;
+using PixelHunter1995.WalkingAreaLib;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using PixelHunter1995.TilesetLib;
+using System;
 
 namespace PixelHunter1995
 {
