@@ -3,19 +3,19 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
 
-namespace PixelHunter1995.SceneLib
+namespace PixelHunter1995.TilesetLib
 {
     class Tileset
     {
-        string imagePath;
-        int imageWidth;
-        int imageHeight;
-        int firstGid;
-        string name;
-        int tileWidth;
-        int tileHeight;
-        int tileCount;
-        int noOfColumns;
+        private readonly string imagePath;
+        private readonly int imageWidth;
+        private readonly int imageHeight;
+        private readonly int firstGid;
+        private readonly string name;
+        public readonly int tileWidth;
+        private readonly int tileHeight;
+        private readonly int tileCount;
+        private readonly int noOfColumns;
 
         Texture2D image;
 
@@ -38,13 +38,14 @@ namespace PixelHunter1995.SceneLib
             image = content.Load<Texture2D>(imagePath);
         }
 
-        public void DrawTile(SpriteBatch spriteBatch, Rectangle destinationRectangle, int gid)
+        public void Draw(SpriteBatch spriteBatch, Vector2 destination, int gid, double scaling, SpriteEffects spriteEffects = SpriteEffects.None)
         {
             Debug.Assert(gid >= firstGid && gid < firstGid + tileCount, "Gid outside of valid range.");
             int row = (gid - firstGid) / noOfColumns;
             int column = (gid - firstGid) % noOfColumns;
             Rectangle sourceRectangle = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
-            spriteBatch.Draw(image, destinationRectangle, sourceRectangle, Color.White);
+            Rectangle destinationRectangle = new Rectangle((int)destination.X, (int)destination.Y, (int)(tileWidth * scaling), (int)(tileHeight * scaling));
+            spriteBatch.Draw(image, destinationRectangle, sourceRectangle, Color.White, 0, new Vector2(), spriteEffects, 0);
         }
     }
 }
