@@ -2,9 +2,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using PixelHunter1995.TilesetLib;
 
-namespace PixelHunter1995
+namespace PixelHunter1995.SceneLib
 {
     class Background : IDrawable, ILoadContent
     {

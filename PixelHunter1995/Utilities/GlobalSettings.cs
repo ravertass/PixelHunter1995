@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PixelHunter1995
+﻿
+namespace PixelHunter1995.Utilities
 {
     /// <summary>
     /// Holder for global settings, e.g. if we're in debug mode.

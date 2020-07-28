@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.TilesetLib;
 
 namespace PixelHunter1995.Components

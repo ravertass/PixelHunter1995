@@ -1,10 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
+﻿using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
 using PixelHunter1995.GameStates;
+using PixelHunter1995.Utilities;
 using System.IO;
-using PixelHunter1995.Components;
 
 namespace PixelHunter1995
 {
