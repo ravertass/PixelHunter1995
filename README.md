@@ -16,6 +16,7 @@ SETUP ENVIRONMENT
 - To edit xcf and pyxel files, install GIMP and Pyxel Edit respectively
 - Clone the repo (https://github.com/ravertass/PixelHunter1995)
 - Run `git lfs pull`
+	- You may also need to run `git lfs install`
 
 BUILD AND START THE GAME
 1. First build content:
