@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.0" orientation="orthogonal" renderorder="right-down" width="356" height="160" tilewidth="1" tileheight="1" infinite="0" nextlayerid="7" nextobjectid="3">
+ <imagelayer id="2" name="background">
+  <image source="../Images/hallway_club_room.png" width="356" height="160"/>
+ </imagelayer>
+ <objectgroup id="3" name="walking">
+  <object id="1" x="95.2308" y="66.0431">
+   <polygon points="0,0 15.5832,-26.2194 82.6158,-27.9508 100.92,5.44176 118.235,20.7776 158.8,44.2761 173.889,44.2761 214.207,93.2519 -93.4993,93.0046 -40.8132,38.3397 -26.7141,24.9826 -16.3253,26.4667 -11.3782,16.3253 -10.8835,9.15205"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="dogs"/>
+ <objectgroup color="#006464" id="6" name="portals">
+  <object id="2" x="32.1558" y="122.934">
+   <properties>
+    <property name="destination" value="full_club_room"/>
+    <property name="destination_portal" value="0"/>
+    <property name="name" value="0"/>
+   </properties>
+   <polygon points="0,0 -2.72088,-57.6332 18.0567,-76.6793 21.2723,-19.5409 30.6717,-17.0673 3.21558,11.8729"/>
+  </object>
+ </objectgroup>
+</map>
