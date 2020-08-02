@@ -11,9 +11,9 @@ namespace PixelHunter1995.TilesetLib
         private readonly int imageWidth;
         private readonly int imageHeight;
         private readonly int firstGid;
-        private readonly string name;
+        public readonly string name;
         public readonly int tileWidth;
-        private readonly int tileHeight;
+        public readonly int tileHeight;
         private readonly int tileCount;
         private readonly int noOfColumns;
 
