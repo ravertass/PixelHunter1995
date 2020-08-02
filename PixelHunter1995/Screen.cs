@@ -19,7 +19,6 @@ namespace PixelHunter1995
 
         private readonly GraphicsDeviceManager graphics;
         private readonly GameWindow window;
-        //private bool justToggledFullscreen = false;
 
         public Screen(GraphicsDeviceManager graphics, GameWindow window)
         {
@@ -103,24 +102,13 @@ namespace PixelHunter1995
                     fullScreenWidth, newWindowHeight);
             }
         }
-
-        //private bool IsAltEnterPressed(Input input)
-        //{
-        //    return input.Hotkeys.GetState(Actions.ToggleFullscreen).IsEdgeDown;
-        //}
-
+        
         public void CheckForFullScreen(Input input)
         {
-            if (input.Hotkeys.GetState(Actions.ToggleFullscreen).IsEdgeDown)//!justToggledFullscreen && IsAltEnterPressed(input))
+            if (input.Actions.GetState(Action.ToggleFullscreen).IsEdgeDown)
             {
                 ToggleFullScreen();
-                //justToggledFullscreen = true;
             }
-
-            //if (!IsAltEnterPressed(input))
-            //{
-            //    justToggledFullscreen = false;
-            //}
         }
 
     }

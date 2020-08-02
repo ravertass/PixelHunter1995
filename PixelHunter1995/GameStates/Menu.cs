@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.Inputs;
+using System.Collections.Generic;
 
 namespace PixelHunter1995.GameStates
 {
@@ -12,13 +13,10 @@ namespace PixelHunter1995.GameStates
         private readonly Texture2D menu;
         private StateManager stateManager;
 
-        public Input Input { get; }
-
         public Menu(StateManager stateManager, Texture2D menu)
         {
             this.stateManager = stateManager;
             this.menu = menu;
-            this.Input = new Input();
         }
 
 
@@ -29,11 +27,11 @@ namespace PixelHunter1995.GameStates
 
         public void Update(GameTime gameTime, Scene scene, Input input)
         {
-            if (input.Hotkeys.GetState(Actions.Exit).IsEdgeDown)
+            if (input.Actions.GetState(Action.Exit).IsEdgeDown)
             {
                 stateManager.SetExit();
             }
-            else if (input.Hotkeys.GetState(Actions.Accept).IsEdgeDown)
+            else if (input.Actions.GetState(Action.Accept).IsEdgeDown)
             {
                 stateManager.SetStatePlaying();
             }

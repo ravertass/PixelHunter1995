@@ -5,6 +5,7 @@ using PixelHunter1995.GameStates;
 using PixelHunter1995.Utilities;
 using PixelHunter1995.Inputs;
 using System.IO;
+using System.Collections.Generic;
 
 namespace PixelHunter1995
 {
@@ -24,6 +25,8 @@ namespace PixelHunter1995
         private RenderTarget2D renderTarget;
         private Screen screen;
         private Input input;
+        
+        private static readonly string inputConfigPath = "Content/Config/input.cfg";
 
         public Main()
         {
@@ -48,8 +51,7 @@ namespace PixelHunter1995
             renderTarget = new RenderTarget2D(GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
             screen = new Screen(graphics, Window);
             FullscreenFix.Screen = screen;
-            this.input = new Input();
-
+            
             base.Initialize();
         }
 
@@ -61,6 +63,9 @@ namespace PixelHunter1995
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             this.spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
+            
+            this.input = InputConfigParser.ParseInputConfig(inputConfigPath)
+                    [InputConfigParser.DEFAULT_CONTEXT];
 
             // Load sounds
             music = Content.Load<SoundEffect>("Sounds/slow-music");
@@ -103,12 +108,12 @@ namespace PixelHunter1995
             // The game requires focus to handle input.
             if (this.IsActive)
             {
-                this.input.Update(); // handle input for global hotkeys (ie. fullscreen)
-                stateManager.currentState.Input.Update(); // handle input for current state.
+                this.input.Update(); // handle input for global actions
+                
+                screen.CheckForFullScreen(this.input);
             }
 
             stateManager.currentState.Update(gameTime, SceneManager.currentScene, this.input);
-            screen.CheckForFullScreen(this.input);
             base.Update(gameTime);
 
             if (!musicPlaying)
