@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.Inputs;
-using System.Collections.Generic;
 
 namespace PixelHunter1995.GameStates
 {
@@ -27,11 +26,13 @@ namespace PixelHunter1995.GameStates
 
         public void Update(GameTime gameTime, Scene scene, Input input)
         {
-            if (input.Actions.GetState(Action.Exit).IsEdgeDown)
+            if (input.Actions.GetState(Action.MENU_Exit).IsEdgeDown)
             {
                 stateManager.SetExit();
             }
-            else if (input.Actions.GetState(Action.Accept).IsEdgeDown)
+            // Do not trigger at same time as ToggleFullscreen
+            if (input.Actions.GetState(Action.MENU_Accept).IsEdgeDown
+                    && input.Actions.GetState(Inputs.Action.ToggleFullscreen).IsUp)
             {
                 stateManager.SetStatePlaying();
             }

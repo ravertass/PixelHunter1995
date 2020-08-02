@@ -52,7 +52,7 @@ namespace PixelHunter1995
         bool said = false;
         public void Update(GameTime gameTime, Input input)
         {
-            if (input.Actions.GetState(Inputs.Action.MouseLeft).IsDown)
+            if (input.Actions.GetState(Inputs.Action.PLAYING_Move).IsDown)
             {
                 // Compensate for Position being in top left corner
                 float x = input.X - AnimationTileset.tileWidth / 2;

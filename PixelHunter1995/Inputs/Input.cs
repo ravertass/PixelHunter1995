@@ -51,16 +51,10 @@ namespace PixelHunter1995.Inputs
             var pressedKeys = pressedMouse.Concat(keyboardState.GetPressedKeys().Select(k => (AllKeys) k));
            
             this.Update(pressedKeys);
-
-            // fix fullscreen (moved to static class, in case other things need to do it. also removes the need for a Screen reference.)
-            //double ratioWidth = GlobalSettings.WINDOW_WIDTH / (double)screen.Width;
-            //double ratioHeight = GlobalSettings.WINDOW_HEIGHT / (double)screen.Height;
-            //this.X = (int)(mouseState.X * ratioWidth);
-            //this.Y = (int)(mouseState.Y * ratioHeight);
-
+            
+            // mouse position
             this.X = FullscreenFix.GetFixedX(mouseState.X);
             this.Y = FullscreenFix.GetFixedX(mouseState.Y);
-
             this.ScrollWheelValue = mouseState.ScrollWheelValue;
             this.HorizontalScrollWheelValue = mouseState.HorizontalScrollWheelValue;
 

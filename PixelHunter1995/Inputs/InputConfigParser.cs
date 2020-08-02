@@ -28,10 +28,9 @@ namespace PixelHunter1995.Inputs
             
             var contexts = new Dictionary<string, Dictionary<Action, KeyConjunction>>();
             
-            string filename = Path.GetFileName(path);
-            if (File.Exists(filename))
+            if (File.Exists(path))
             {
-                string[] lines = File.ReadAllLines(filename);
+                string[] lines = File.ReadAllLines(path);
                 foreach (string line in lines)
                 {
                     string context;
@@ -57,7 +56,7 @@ namespace PixelHunter1995.Inputs
                     
                     if (Action.TryParse(kv[0].Trim(), true, out Action action))
                     {
-                        if (contexts.TryGetValue(context, out var binds))
+                        if (!contexts.TryGetValue(context, out var binds))
                         {
                             binds = new Dictionary<Action, KeyConjunction>();
                             contexts[context] = binds;
@@ -65,6 +64,8 @@ namespace PixelHunter1995.Inputs
                         binds[action] = ParseConjunction(kv[1]);
                     }
                 }
+            } else {
+                Console.Error.WriteLine(String.Format("ERROR! - Unable to find config file! {0}", path));
             }
             return contexts;
         }
@@ -78,18 +79,19 @@ namespace PixelHunter1995.Inputs
                 foreach (string factor in term.Split('|'))
                 {
                     string key = factor.Trim();
-                    SignalState state = SignalState.Down;
+                    bool isUp = false;
+                    bool isEdge = false;
                     if (key.Contains("^"))
                     {
-                        state = SignalState.Up;
-                        key.Replace("^", "");
+                        isUp = true;
+                        key = key.Replace("^", "");
                     }
                     if (key.Contains("~"))
                     {
-                        state.IsEdge = true;
-                        key.Replace("~", "");
+                        isEdge = true;
+                        key = key.Replace("~", "");
                     }
-                    
+                    SignalState state = new SignalState(isUp, isEdge);
                     if (Keys.TryParse(key, true, out Keys keyboardKey))
                     {
                         keyDisjunction[keyboardKey] = state;

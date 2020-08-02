@@ -28,8 +28,8 @@ namespace PixelHunter1995.Inputs
     /// </summary>
     class SignalState
     {
-        public bool IsUp { get; set; }
-        public bool IsEdge { get; set; }
+        public bool IsUp { get; }
+        public bool IsEdge { get; }
         public bool IsDown { get => !this.IsUp; }
         public bool IsHeld { get => !this.IsEdge; }
 

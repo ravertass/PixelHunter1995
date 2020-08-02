@@ -16,16 +16,18 @@ namespace PixelHunter1995.Inputs
         QuickSave,
         QuickLoad,
         // Menu
+        MENU_Exit,
+        MENU_Accept,
         Back, // can be held?
         Resume, // is this equivalent to Action.Back when at the root?
-        Accept,
         Decline,
         MenuNext, // can be held? // up/down?
         MenuPrior, // can be held? 
         MenuRight, // can be held // right/left? Like when controlling volume in options with arrowkeys
         MenuLeft, // can be held
         // Playing
-        Pause,
+        PLAYING_Pause,
+        PLAYING_Move,
         MouseLeft, // nothing says it has to be a mouse-button
         MouseRight,
         InventoryScrollUp,

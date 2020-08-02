@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace PixelHunter1995.Inputs
 {
@@ -12,16 +13,6 @@ namespace PixelHunter1995.Inputs
     {
 
         private readonly Dictionary<Action, KeyConjunction> binds = new Dictionary<Action, KeyConjunction>();
-
-        // public Actions()
-        // {
-            // //! No inherent support for chords
-            // this.binds[Action.Exit] = new KeyConjunction { new KeyDisjunction { [Keys.Escape] = SignalState.EdgeDown } }; // Feels like while the ability to specify edge is nice, the action should have an edge instead
-            // this.binds[Action.Pause] = new KeyConjunction { new KeyDisjunction { [Keys.Escape] = SignalState.EdgeDown } };
-            // this.binds[Action.ToggleFullscreen] = new KeyConjunction { new KeyDisjunction { [Keys.LeftAlt] = SignalState.Down, [Keys.RightAlt] = SignalState.Down }, new KeyDisjunction { [Keys.Enter] = SignalState.EdgeDown } };
-            // this.binds[Action.Accept] = new KeyConjunction { new KeyDisjunction { [Keys.LeftAlt] = SignalState.Up }, new KeyDisjunction { [Keys.RightAlt] = SignalState.Up }, new KeyDisjunction { [Keys.Enter] = SignalState.EdgeDown } }; //? keybinds can be explicitly made to avoid collisions... Should not be done in the binding imo. Even if the ability to is nice...
-            // this.binds[Action.MouseLeft] = new KeyConjunction { new KeyDisjunction { [MouseKeys.LeftButton] = SignalState.Down } };
-        // }
         
         public Actions(Dictionary<Action, KeyConjunction> binds)
         {
