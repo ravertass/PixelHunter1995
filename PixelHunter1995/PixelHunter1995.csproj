@@ -128,6 +128,7 @@
     <Content Include="Content\Images\club_room.png" />
     <Content Include="Content\Images\full_club_room.png" />
     <Content Include="Content\Images\hallway_club_room.png" />
+    <Content Include="Content\Images\hallway_principal.png" />
     <Content Include="Content\Images\hallway_soda.png" />
     <Content Include="Content\Sounds\495674__jack-urbanski__vibraphone-chord.wav" />
     <Content Include="Content\Sounds\92734__tj-mothy__slow-sad-tones.wav" />
@@ -151,6 +152,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Scenes\hallway_club_room.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Scenes\hallway_principal.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Scenes\hallway_soda.tmx">

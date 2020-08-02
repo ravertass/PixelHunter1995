@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.0" orientation="orthogonal" renderorder="right-down" width="356" height="160" tilewidth="1" tileheight="1" infinite="0" nextlayerid="7" nextobjectid="3">
+<map version="1.4" tiledversion="1.4.0" orientation="orthogonal" renderorder="right-down" width="356" height="160" tilewidth="1" tileheight="1" infinite="0" nextlayerid="7" nextobjectid="5">
  <tileset firstgid="1" source="../Tileset/dogs.tsx"/>
  <imagelayer id="2" name="background">
   <image source="../Images/hallway_club_room.png" width="356" height="160"/>
@@ -18,6 +18,22 @@
     <property name="name" value="0"/>
    </properties>
    <polygon points="0,0 -2.72088,-57.6332 18.0567,-76.6793 21.2723,-19.5409 30.6717,-17.0673 3.21558,11.8729"/>
+  </object>
+  <object id="3" x="203" y="0.75">
+   <properties>
+    <property name="destination" value="hallway_soda"/>
+    <property name="destination_portal" value="0"/>
+    <property name="name" value="1"/>
+   </properties>
+   <polygon points="0,0 -35,-0.25 -32.5,43.5 -23,60.75 -7.75,51.75 -5,35.5 -1.5,35.5"/>
+  </object>
+  <object id="4" x="95.75" y="65">
+   <properties>
+    <property name="destination" value="hallway_principal"/>
+    <property name="destination_portal" value="0"/>
+    <property name="name" value="2"/>
+   </properties>
+   <polygon points="0,0 -2.25,-30.75 0.75,-64.75 31,-64.25 18,-9.25"/>
   </object>
  </objectgroup>
 </map>
