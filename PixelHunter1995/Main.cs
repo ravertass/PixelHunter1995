@@ -14,6 +14,7 @@ namespace PixelHunter1995
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        FontManager fontManager;
         private SoundEffect music;
         private bool musicPlaying = false;
         private SceneManager sceneManager = new SceneManager();
@@ -43,7 +44,6 @@ namespace PixelHunter1995
             shouldExit = new ShouldExit();
             renderTarget = new RenderTarget2D(GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
             screen = new Screen(graphics, Window);
-
             base.Initialize();
         }
 
@@ -70,6 +70,9 @@ namespace PixelHunter1995
             // Load game states
             stateManager = new StateManager(shouldExit, menu);
             stateManager.SetStateMenu();
+
+            // Load fonts
+            FontManager.Instance.LoadContent(Content);
         }
 
         /// <summary>

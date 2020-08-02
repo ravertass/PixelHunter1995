@@ -11,7 +11,6 @@ namespace PixelHunter1995.Components
         private PositionComponent PositionComponent { get; set; }
         public Vector2 MoveDirection { get; set; }
         public AnimationTileset AnimationTileset { get; set; }
-        public SpriteFont Font { get; set; }
         public Color FontColor { get; set; }
         public String FontName { get; set; }
 
@@ -39,7 +38,6 @@ namespace PixelHunter1995.Components
 
         public void LoadContent(ContentManager content)
         {
-            Font = content.Load<SpriteFont>("Fonts/" + FontName);
             AnimationTileset.LoadContent(content);
         }
 
@@ -50,12 +48,13 @@ namespace PixelHunter1995.Components
 
         public void Talk(SpriteBatch spriteBatch, string text)
         {
-            int textDeltaX = -(int)Font.MeasureString(text).X / 2 + AnimationTileset.tileWidth / 2;
-            int textDeltaY = -(int)Font.MeasureString(text).Y - 5;
+            SpriteFont font = FontManager.Instance.getFontByName(FontName);
+            int textDeltaX = -(int)font.MeasureString(text).X / 2 + AnimationTileset.tileWidth / 2;
+            int textDeltaY = -(int)font.MeasureString(text).Y - 5;
             // Draw black around the letters to see them better
-            spriteBatch.DrawString(Font, text, RelativePosition(textDeltaX + 1, textDeltaY + 1), Color.Black);
-            spriteBatch.DrawString(Font, text, RelativePosition(textDeltaX - 1, textDeltaY - 1), Color.Black);
-            spriteBatch.DrawString(Font, text, RelativePosition(textDeltaX, textDeltaY), FontColor);
+            spriteBatch.DrawString(font, text, RelativePosition(textDeltaX + 1, textDeltaY + 1), Color.Black);
+            spriteBatch.DrawString(font, text, RelativePosition(textDeltaX - 1, textDeltaY - 1), Color.Black);
+            spriteBatch.DrawString(font, text, RelativePosition(textDeltaX, textDeltaY), FontColor);
         }
     }
 }
