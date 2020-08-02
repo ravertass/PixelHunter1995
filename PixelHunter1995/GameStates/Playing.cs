@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using PixelHunter1995.InventoryLib;
 
 namespace PixelHunter1995.GameStates
 {
@@ -16,9 +17,10 @@ namespace PixelHunter1995.GameStates
             this.stateManager = stateManager;
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime, Scene scene)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime, Scene scene, Inventory inventory)
         {
             scene.Draw(graphics, spriteBatch, 1);
+            inventory.Draw(graphics, spriteBatch);
         }
 
         public void Update(GameTime gameTime, Scene scene)

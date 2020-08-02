@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using PixelHunter1995.GameStates;
 using PixelHunter1995.Utilities;
+using PixelHunter1995.InventoryLib;
 using System.IO;
 
 namespace PixelHunter1995
@@ -17,7 +18,8 @@ namespace PixelHunter1995
         FontManager fontManager;
         private SoundEffect music;
         private bool musicPlaying = false;
-        private SceneManager sceneManager = new SceneManager();
+        private readonly SceneManager SceneManager = new SceneManager();
+        private readonly InventoryManager InventoryManager = new InventoryManager();
         private StateManager stateManager;
         private ShouldExit shouldExit;
         private RenderTarget2D renderTarget;
@@ -38,8 +40,9 @@ namespace PixelHunter1995
         /// </summary>
         protected override void Initialize()
         {
-            sceneManager.Initialize(Path.Combine("Content", "Scenes"), this);
-            sceneManager.SetCurrentSceneByName("club_room.tmx");
+            SceneManager.Initialize(Path.Combine("Content", "Scenes"), this);
+            SceneManager.SetCurrentSceneByName("full_club_room.tmx");
+            InventoryManager.Initialize(Path.Combine("Content", "Tileset"));
             GlobalSettings.Instance.Debug = true;
             shouldExit = new ShouldExit();
             renderTarget = new RenderTarget2D(GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
@@ -62,10 +65,12 @@ namespace PixelHunter1995
             // Load sounds
             music = Content.Load<SoundEffect>("Sounds/slow-music");
 
-            foreach (Scene scene in sceneManager.scenes.Values)
+            foreach (Scene scene in SceneManager.scenes.Values)
             {
                 scene.LoadContent(Content);
             }
+
+            InventoryManager.inventory.LoadContent(Content);
 
             // Load game states
             stateManager = new StateManager(shouldExit, menu);
@@ -97,7 +102,7 @@ namespace PixelHunter1995
                 Exit();
             }
 
-            stateManager.currentState.Update(gameTime, sceneManager.currentScene);
+            stateManager.currentState.Update(gameTime, SceneManager.currentScene);
             screen.CheckForFullScreen();
             base.Update(gameTime);
 
@@ -133,7 +138,7 @@ namespace PixelHunter1995
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-            stateManager.currentState.Draw(graphics, spriteBatch, gameTime, sceneManager.currentScene);
+            stateManager.currentState.Draw(graphics, spriteBatch, gameTime, SceneManager.currentScene, InventoryManager.inventory);
             spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);

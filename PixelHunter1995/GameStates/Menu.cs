@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using PixelHunter1995.InventoryLib;
 
 namespace PixelHunter1995.GameStates
 {
@@ -20,7 +21,7 @@ namespace PixelHunter1995.GameStates
             this.escapeHasBeenUp = false;
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime, Scene scene)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime, Scene scene, Inventory inventory)
         {
             spriteBatch.Draw(menu, Vector2.Zero, Color.White);
         }
