@@ -9,7 +9,7 @@ using PixelHunter1995.TilesetLib;
 
 namespace PixelHunter1995.InventoryLib
 {
-    class Inventory
+    class Inventory: ILoadContent, IDrawable
     {
         private static readonly int X_POS = 120;
         private static readonly int Y_POS = 160;
@@ -19,17 +19,20 @@ namespace PixelHunter1995.InventoryLib
         private static readonly int Y_ITEM_SIZE = 32;
         private static readonly int COLUMNS = 6;
         private static readonly int ROWS = 2;
+        private static readonly string TILESET_DIR = "Content\\Tileset";
 
-        private List<InventoryItem> ItemList = new List<InventoryItem>();
+        private List<InventoryItem> Items = new List<InventoryItem>();
         private Texture2D InventoryBackground;
         private Tileset InventoryTileset;
 
-        public void Initialize(string tilesetDirPath)
+        public Inventory()
         {
             int tilesetFirstGid = 1; // default value
-            string tilesetXmlPath = Path.Combine(tilesetDirPath, "dogs.tsx");
+            string tilesetFilename = "dogs.tsx";
+            string tilesetXmlPath = Path.Combine(TILESET_DIR, tilesetFilename); // TODO: support several tilesets
             InventoryTileset = TilesetParser.ParseTilesetXml(tilesetXmlPath, tilesetFirstGid);
-            System.Console.WriteLine(InventoryTileset.name);
+            Debug.Assert(InventoryTileset.tileWidth == X_ITEM_SIZE, "Invalid item size in tileset " + tilesetFilename);
+            Debug.Assert(InventoryTileset.tileHeight == Y_ITEM_SIZE, "Invalid item size in tileset " + tilesetFilename);
         }
 
         public void LoadContent(ContentManager content)
@@ -47,12 +50,12 @@ namespace PixelHunter1995.InventoryLib
             int y_pos = Y_POS + Y_PADDING + row * (Y_ITEM_SIZE + Y_PADDING);
             return new Vector2(x_pos, y_pos);
         }
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
             // TODO: Some way to display more than COLUMNS * ROWS items
 
             // Temporary code give the player some stuff if empty inventory
-            if (ItemList.Count == 0)
+            if (Items.Count == 0)
             {
                 System.Console.WriteLine("You have nothing in your inventory, here take some stuff!");
                 Add("banana", "dogs");
@@ -61,10 +64,9 @@ namespace PixelHunter1995.InventoryLib
                 System.Console.WriteLine(this);
             }
             spriteBatch.Draw(InventoryBackground, new Vector2(X_POS, Y_POS), Color.White);
-            for (int i = 0; i < ItemList.Count; i++)
+            for (int i = 0; i < Items.Count; i++)
             {
-                System.Console.WriteLine("Draw " + ItemList[i] + " at " + GetItemTilePosition(i));
-                ItemList[i].Draw(graphics, spriteBatch, GetItemTilePosition(i));
+                Items[i].Draw(graphics, spriteBatch, scaling, GetItemTilePosition(i));
             }
         }
 
@@ -83,7 +85,7 @@ namespace PixelHunter1995.InventoryLib
                 case "broccoli":
                     return 3;
                 default:
-                    Debug.Fail(itemName.ToLower() + " do not exist in tileset " + tilesetName + ".");
+                    Debug.Fail(itemName.ToLower() + " does not exist in tileset " + tilesetName + ".");
                     return 0;
             }
 
@@ -91,7 +93,7 @@ namespace PixelHunter1995.InventoryLib
 
         public void Add(string itemName, string tilesetName)
         {
-            ItemList.Add(new InventoryItem(itemName, InventoryTileset, GetGidFromName(itemName, tilesetName)));
+            Items.Add(new InventoryItem(itemName, InventoryTileset, GetGidFromName(itemName, tilesetName)));
         }
 
         public void Remove(string itemName)
@@ -102,17 +104,16 @@ namespace PixelHunter1995.InventoryLib
 
         public override string ToString()
         {
-            if (ItemList.Count == 0)
+            if (Items.Count == 0)
             {
                 return "InventoryList is empty!";
             }
             string res = "InventoryList contains:\n";
-            for (int i = 0; i < ItemList.Count; i++)
+            for (int i = 0; i < Items.Count; i++)
             {
-                res += i + ":\t" + ItemList[i] + "\n";
+                res += i + ":\t" + Items[i] + "\n";
             }
             return res;
         }
-
     }
 }

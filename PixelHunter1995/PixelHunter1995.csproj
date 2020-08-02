@@ -79,7 +79,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="FontManager.cs" />
-    <Compile Include="InventoryLib\InventoryManager.cs" />
     <Compile Include="InventoryLib\InventoryItem.cs" />
     <Compile Include="InventoryLib\Inventory.cs" />
     <Compile Include="SceneLib\Background.cs" />

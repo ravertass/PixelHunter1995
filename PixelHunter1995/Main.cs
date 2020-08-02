@@ -19,7 +19,6 @@ namespace PixelHunter1995
         private SoundEffect music;
         private bool musicPlaying = false;
         private readonly SceneManager SceneManager = new SceneManager();
-        private readonly InventoryManager InventoryManager = new InventoryManager();
         private StateManager stateManager;
         private ShouldExit shouldExit;
         private RenderTarget2D renderTarget;
@@ -42,9 +41,9 @@ namespace PixelHunter1995
         {
             SceneManager.Initialize(Path.Combine("Content", "Scenes"), this);
             SceneManager.SetCurrentSceneByName("full_club_room.tmx");
-            InventoryManager.Initialize(Path.Combine("Content", "Tileset"));
             GlobalSettings.Instance.Debug = true;
             shouldExit = new ShouldExit();
+            stateManager = new StateManager(shouldExit);
             renderTarget = new RenderTarget2D(GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
             screen = new Screen(graphics, Window);
             base.Initialize();
@@ -59,9 +58,6 @@ namespace PixelHunter1995
             // Create a new SpriteBatch, which can be used to draw textures.
             this.spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
-            // Load images
-            Texture2D menu = Content.Load<Texture2D>("Images/Menu");
-
             // Load sounds
             music = Content.Load<SoundEffect>("Sounds/slow-music");
 
@@ -70,10 +66,8 @@ namespace PixelHunter1995
                 scene.LoadContent(Content);
             }
 
-            InventoryManager.inventory.LoadContent(Content);
-
             // Load game states
-            stateManager = new StateManager(shouldExit, menu);
+            stateManager.LoadContent(Content);
             stateManager.SetStateMenu();
 
             // Load fonts
@@ -138,7 +132,7 @@ namespace PixelHunter1995
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-            stateManager.currentState.Draw(graphics, spriteBatch, gameTime, SceneManager.currentScene, InventoryManager.inventory);
+            stateManager.currentState.Draw(graphics, spriteBatch, gameTime, SceneManager.currentScene);
             spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);

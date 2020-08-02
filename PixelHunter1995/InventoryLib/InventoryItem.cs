@@ -23,9 +23,9 @@ namespace PixelHunter1995.InventoryLib
             return Name;
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, Vector2 target)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling, Vector2 target)
         {
-            Tileset.Draw(spriteBatch, target, TilesetGid, 1);
+            Tileset.Draw(spriteBatch, target, TilesetGid, scaling);
         }
     }
 }
