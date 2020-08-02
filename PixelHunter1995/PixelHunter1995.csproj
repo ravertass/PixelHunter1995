@@ -127,6 +127,8 @@
   <ItemGroup>
     <Content Include="Content\Images\club_room.png" />
     <Content Include="Content\Images\full_club_room.png" />
+    <Content Include="Content\Images\hallway_club_room.png" />
+    <Content Include="Content\Images\hallway_soda.png" />
     <Content Include="Content\Sounds\495674__jack-urbanski__vibraphone-chord.wav" />
     <Content Include="Content\Sounds\92734__tj-mothy__slow-sad-tones.wav" />
     <Content Include="Content\Tileset\dogs.png" />
@@ -145,7 +147,15 @@
     <None Include="Content\Scenes\club_room.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Scenes\full_club_room.tmx" />
+    <None Include="Content\Scenes\full_club_room.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Scenes\hallway_club_room.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Scenes\hallway_soda.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Scenes\scene1.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
