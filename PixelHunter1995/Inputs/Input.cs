@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using PixelHunter1995.Utilities;
 
 namespace PixelHunter1995.Inputs
 {
@@ -12,9 +13,9 @@ namespace PixelHunter1995.Inputs
 
         public Actions Actions { get; }
 
-        public int X { get; private set; }
-        public int Y { get; private set; }
-        public Point Position { get => new Point(this.X, this.Y); }
+        public int MouseX { get; private set; }
+        public int MouseY { get; private set; }
+        public Point Position { get => new Point(this.MouseX, this.MouseY); }
 
         public int ScrollWheelValue { get; private set; }
         public int HorizontalScrollWheelValue { get; private set; }
@@ -24,7 +25,7 @@ namespace PixelHunter1995.Inputs
         {
             this.Actions = actions;
         }
-        public Input(Dictionary<Action, HashSet<Dictionary<Either<Keys, MouseKeys>, SignalState>>> binds)
+        public Input(Dictionary<Action, List<Dictionary<Either<Keys, MouseKeys>, SignalState>>> binds)
         {
             this.Actions = new Actions(binds);
         }
@@ -53,8 +54,8 @@ namespace PixelHunter1995.Inputs
             this.Update(pressedKeys);
             
             // mouse position
-            this.X = FullscreenFix.GetFixedX(mouseState.X);
-            this.Y = FullscreenFix.GetFixedX(mouseState.Y);
+            this.MouseX = FullscreenFix.GetFixedX(mouseState.X);
+            this.MouseY = FullscreenFix.GetFixedX(mouseState.Y);
             this.ScrollWheelValue = mouseState.ScrollWheelValue;
             this.HorizontalScrollWheelValue = mouseState.HorizontalScrollWheelValue;
 

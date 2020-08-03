@@ -91,11 +91,11 @@
     <Compile Include="Components\PositionComponent.cs" />
     <Compile Include="Components\CharacterComponent.cs" />
     <Compile Include="GameStates\StateManager.cs" />
+    <Compile Include="Utilities\Either.cs" />
     <Compile Include="Utilities\GlobalSettings.cs" />
     <Compile Include="HaveFunctionInterfaces\IDrawable.cs" />
     <Compile Include="HaveFunctionInterfaces\ILoadContent.cs" />
     <Compile Include="HaveFunctionInterfaces\IUpdateable.cs" />
-    <Compile Include="Either.cs" />
     <Compile Include="Inputs\Action.cs" />
     <Compile Include="Inputs\Actions.cs" />
     <Compile Include="Inputs\FullscreenFix.cs" />

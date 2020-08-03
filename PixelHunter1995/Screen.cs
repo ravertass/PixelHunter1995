@@ -65,9 +65,13 @@ namespace PixelHunter1995
         public void ToggleFullScreen()
         {
             if (window.IsBorderless)
+            {
                 SetToWindowed();
+            }
             else
+            {
                 SetToFullScreen();
+            }
         }
 
         private void SetToFullScreen()
@@ -100,14 +104,6 @@ namespace PixelHunter1995
 
                 return new Rectangle(0, (fullScreenHeight - newWindowHeight) / 2,
                     fullScreenWidth, newWindowHeight);
-            }
-        }
-        
-        public void CheckForFullScreen(Input input)
-        {
-            if (input.Actions.GetState(Action.ToggleFullscreen).IsEdgeDown)
-            {
-                ToggleFullScreen();
             }
         }
 

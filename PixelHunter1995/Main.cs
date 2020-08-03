@@ -109,7 +109,11 @@ namespace PixelHunter1995
             {
                 this.input.Update(); // handle input for global actions
                 
-                screen.CheckForFullScreen(this.input);
+                
+                if (input.Actions.GetState(Action.ToggleFullscreen).IsEdgeDown)
+                {
+                    screen.ToggleFullScreen();
+                }
             }
 
             stateManager.currentState.Update(gameTime, SceneManager.currentScene, this.input);

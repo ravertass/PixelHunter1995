@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PixelHunter1995.Inputs
 {
@@ -10,8 +6,8 @@ namespace PixelHunter1995.Inputs
     // TODO consider class vs struct. Overridden methods makes class work in dict anyway... while struct is value-type.
     // TODO As Input creates an "alias" for it thorugh inheritance, it needs to be class for now.
     /// <summary>
-    /// The state of a signal-graph, intended to use for keypressed as monogame does not give any information on
-    /// whether the key was released or pressed.
+    /// The state of a signal-graph, intended to use for keypresses as monogame only informs if a key is up or down
+    /// and does not give any information on whether the key was released or pressed this frame.
     /// Rather than an enum like one would expect, this is a class, meaning each ProperKeyState is an instance.
     /// There are static references for each permutation to instances describing them, to allow easier use.
     /// 
@@ -65,6 +61,13 @@ namespace PixelHunter1995.Inputs
                    IsUp == state.IsUp &&
                    IsEdge == state.IsEdge;
         }
+        
+        public bool NonStrictEquals(object obj)
+        {
+            return obj is SignalState state &&
+                   IsUp == state.IsUp &&
+                   (IsHeld || state.IsEdge);
+        }
 
         public override int GetHashCode()
         {
@@ -76,6 +79,7 @@ namespace PixelHunter1995.Inputs
 
         public static bool operator ==(SignalState c1, SignalState c2)
         {
+            Console.WriteLine("=====");
             return c1.Equals(c2);
         }
 

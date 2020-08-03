@@ -8,12 +8,10 @@ namespace PixelHunter1995.Inputs
 
         /// <summary>
         /// A dictionary where T maps to a corresponding state.
-        /// This is used to compare current state to the prior state, allowing to know if the state changed or not.
+        /// This is used to compare current state to the prior state,
+        /// allowing to know if the state changed or not.
         /// 
-        /// It has been decided that the dictionary should not store keys not currently pressed,
-        /// to avoid it increasing in size each time a new key is pressed until it potentially is as 'large' as
-        /// the set of possible keys.
-        /// As a result, if the key is not in the dictionary, its state is SignalState.Up.
+        /// If an item is not in the dictionary, its state is `SignalState.Up`.
         /// </summary>
         private readonly Dictionary<T, SignalState> state = new Dictionary<T, SignalState>();
 
@@ -21,39 +19,42 @@ namespace PixelHunter1995.Inputs
         {
         }
 
-        protected void Update(IEnumerable<T> pressedKeys)
+        protected void Update(IEnumerable<T> activeItems)
         {
-            var releasedKeys = state.Keys.Except(pressedKeys);
+            var releasedItems = state.Keys.Except(activeItems);
 
-            //Keys currently pressed
-            this.Update(pressedKeys, SignalState.Down);
+            // Active items are considered Down (or EdgeDown),
+            // as ones in the dictionary are defined as Up.
+            this.Update(activeItems, SignalState.Down);
 
-            // Keys not currently pressed, but were stored as something other than ProperKeyState.Up
-            this.Update(releasedKeys, SignalState.Up);
+            // Items that were stored as something other than ProperKeyState.Up,
+            // but that are not currently active. Should be EdgeUp or Up.
+            this.Update(releasedItems, SignalState.Up);
         }
 
         private void Update(IEnumerable<T> list, bool isUp)
         {
             // ToList ensures it is a copy, as `state` is mutated during the iteration and `list` might depend on it.
-            // Specifically, `state.Keys.Except(pressedKeys)` returns an IEnumerable that does.
-            foreach (var key in list.ToList())
+            // Specifically, `state.Keys.Except(activeItems)` returns an IEnumerable that does, and has to be copied.
+            foreach (var item in list.ToList())
             {
-                bool success = state.TryGetValue(key, out var priorState);
+                bool success = state.TryGetValue(item, out var priorState);
                 if (!success)
                 {
-                    priorState = SignalState.Up; // If not in dict, the key is considered to be Up.
+                    // If not in dict, the item is considered to be Up.
+                    priorState = SignalState.Up;
                 }
 
                 var currentState = new SignalState(isUp, priorState.IsUp != isUp);
                 if (currentState.Equals(SignalState.Up))
                 {
-                    state.Remove(key);
-                    //Console.WriteLine("key: " + key + " - state: " + currentState + " - Removed from dict!");
+                    state.Remove(item);
+                    //Console.WriteLine("item: " + item + " - state: " + currentState + " - Removed from dict!");
                 }
                 else
                 {
-                    state[key] = currentState;
-                    //Console.WriteLine("key: " + key + " - state: " + currentState);
+                    state[item] = currentState;
+                    //Console.WriteLine("item: " + item + " - state: " + currentState);
                 }
             }
         }
@@ -63,39 +64,39 @@ namespace PixelHunter1995.Inputs
         }
 
 
-        public SignalState GetState(T key)
+        public SignalState GetState(T item)
         {
-            bool success = state.TryGetValue(key, out var keyState);
+            bool success = state.TryGetValue(item, out var itemState);
             if (success)
             {
-                return keyState;
+                return itemState;
             }
             return SignalState.Up;
         }
 
-        public bool isPressed(T key)
+        public bool isPressed(T item)
         {
-            return GetState(key).IsEdgeDown;
+            return GetState(item).IsEdgeDown;
         }
-        public bool isDown(T key)
+        public bool isDown(T item)
         {
-            return GetState(key).IsDown;
+            return GetState(item).IsDown;
         }
-        public bool isStrictlyDown(T key)
+        public bool isStrictlyDown(T item)
         {
-            return GetState(key).IsHeldDown;
+            return GetState(item).IsHeldDown;
         }
-        public bool IsReleased(T key)
+        public bool IsReleased(T item)
         {
-            return GetState(key).IsEdgeUp;
+            return GetState(item).IsEdgeUp;
         }
-        public bool isUp(T key)
+        public bool isUp(T item)
         {
-            return GetState(key).IsUp;
+            return GetState(item).IsUp;
         }
-        public bool isStrictlyUp(T key)
+        public bool isStrictlyUp(T item)
         {
-            return GetState(key).IsHeldUp;
+            return GetState(item).IsHeldUp;
         }
 
     }

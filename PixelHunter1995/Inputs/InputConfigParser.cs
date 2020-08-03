@@ -2,11 +2,12 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
+using PixelHunter1995.Utilities;
 
 namespace PixelHunter1995.Inputs
 {
-    using KeyDisjunction = Dictionary<Either<Keys, MouseKeys>, SignalState>;
-    using KeyConjunction = HashSet<Dictionary<Either<Keys, MouseKeys>, SignalState>>;
+    using KeyDisjunction = List<Dictionary<Either<Keys, MouseKeys>, SignalState>>;
+    using KeyConjunction = Dictionary<Either<Keys, MouseKeys>, SignalState>;
     
     class InputConfigParser
     {
@@ -24,9 +25,9 @@ namespace PixelHunter1995.Inputs
             return inputs;
         }
         
-        private static Dictionary<string, Dictionary<Action, KeyConjunction>> ParseKeyConfig(string path) {
+        private static Dictionary<string, Dictionary<Action, KeyDisjunction>> ParseKeyConfig(string path) {
             
-            var contexts = new Dictionary<string, Dictionary<Action, KeyConjunction>>();
+            var contexts = new Dictionary<string, Dictionary<Action, KeyDisjunction>>();
             
             if (File.Exists(path))
             {
@@ -58,7 +59,7 @@ namespace PixelHunter1995.Inputs
                     {
                         if (!contexts.TryGetValue(context, out var binds))
                         {
-                            binds = new Dictionary<Action, KeyConjunction>();
+                            binds = new Dictionary<Action, KeyDisjunction>();
                             contexts[context] = binds;
                         }
                         binds[action] = ParseConjunction(kv[1]);
@@ -70,15 +71,15 @@ namespace PixelHunter1995.Inputs
             return contexts;
         }
         
-        private static KeyConjunction ParseConjunction(string conjunction)
+        private static KeyDisjunction ParseConjunction(string disjunction)
         {
-            KeyConjunction keyConjunction = new KeyConjunction();
-            foreach (string term in conjunction.Split('+'))
+            KeyDisjunction keyDisjunction = new KeyDisjunction();
+            foreach (string conjunction in disjunction.Split('|'))
             {
-                KeyDisjunction keyDisjunction = new KeyDisjunction();
-                foreach (string factor in term.Split('|'))
+                KeyConjunction keyConjunction = new KeyConjunction();
+                foreach (string term in conjunction.Split('+'))
                 {
-                    string key = factor.Trim();
+                    string key = term.Trim();
                     bool isUp = false;
                     bool isEdge = false;
                     if (key.Contains("^"))
@@ -94,20 +95,20 @@ namespace PixelHunter1995.Inputs
                     SignalState state = new SignalState(isUp, isEdge);
                     if (Keys.TryParse(key, true, out Keys keyboardKey))
                     {
-                        keyDisjunction[keyboardKey] = state;
+                        keyConjunction[keyboardKey] = state;
                     }
                     else if (MouseKeys.TryParse(key, true, out MouseKeys mouseKey))
                     {
-                        keyDisjunction[mouseKey] = state;
+                        keyConjunction[mouseKey] = state;
                     }
                     else
                     {
                         Console.Error.WriteLine(String.Format("ERROR! - Unable to parse key: {0}", key));
                     }
                 }
-                keyConjunction.Add(keyDisjunction);
+                keyDisjunction.Add(keyConjunction);
             }
-            return keyConjunction;
+            return keyDisjunction;
         }
         
     }
