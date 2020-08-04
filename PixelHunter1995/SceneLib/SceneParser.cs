@@ -19,7 +19,7 @@ namespace PixelHunter1995
             XmlDocument doc = new XmlDocument();
             doc.Load(sceneXmlPath);
             XmlNodeList nodes = doc.DocumentElement.ChildNodes;
-            Tileset tileset = null; // TODO: Possible to have many tilesets per scene?
+            Tileset tileset = null; // TODO: Make it possible to have many tilesets per scene
             List<IDrawable> drawables = new List<IDrawable>();
             List<IUpdateable> updateables = new List<IUpdateable>();
             List<ILoadContent> loadables = new List<ILoadContent>();
@@ -41,6 +41,7 @@ namespace PixelHunter1995
 
             foreach (XmlNode node in nodes)
             {
+                // TODO: Support "foreground" image layer as well.
                 if (node.Name == "imagelayer" && node.Attributes["name"]?.InnerText == "background")
                 {
                     Debug.Assert(node.ChildNodes.Count == 1);
