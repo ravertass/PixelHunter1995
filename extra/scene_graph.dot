@@ -1,0 +1,82 @@
+graph rooms {
+    node [shape="box"];
+
+    "Alchemy club's room";
+    "Hallway (club room)";
+    "Hallway (principal)";
+    "Hallway (vending machine)";
+    "Principal's office";
+    "Science teacher's classroom";
+    "History teacher's classroom";
+    "Chemistry lab";
+    "Stairs";
+    "Hallway (ground floor)";
+    "Lunch hall";
+    "Kitchen";
+    "Bathroom";
+    "Teacher's lounge";
+    "Janitor's room";
+    "Behind the school";
+    "In front of the school";
+    "Entrance hall";
+    "Swings";
+    "Library";
+    "Secret underground library";
+    "Secret catacombs entrance";
+    "Secret catacombs hallway";
+    "Alchemy principal's office";
+    "Gym";
+    "Band room";
+    "Alchemy principal's lab";
+    "Hallway (top floor)";
+    "Astronomy club's room";
+
+    "Alchemy club's room" -- "Hallway (club room)";
+
+    "Hallway (club room)" -- "Hallway (principal)";
+    "Hallway (club room)" -- "Hallway (vending machine)";
+    "Hallway (club room)" -- "Science teacher's classroom";
+    "Hallway (club room)" -- "Stairs";
+
+    "Hallway (vending machine)" -- "Teacher's lounge";
+    "Hallway (vending machine)" -- "History teacher's classroom";
+
+    "Science teacher's classroom" -- "Chemistry lab";
+
+    "Hallway (principal)" -- "Principal's office";
+
+    "Principal's office" -- "Alchemy principal's office";
+
+    "Stairs" -- "Hallway (ground floor)";
+    "Stairs" -- "Hallway (top floor)";
+
+    "Hallway (ground floor)" -- "Bathroom";
+    "Hallway (ground floor)" -- "Entrance hall";
+    "Hallway (ground floor)" -- "Janitor's room";
+    "Hallway (ground floor)" -- "Gym";
+    "Hallway (ground floor)" -- "Band room";
+
+    "Bathroom" -- "Secret catacombs entrance";
+
+    "Entrance hall" -- "Lunch hall";
+    "Entrance hall" -- "In front of the school";
+    "Entrance hall" -- "Library";
+
+    "Lunch hall" -- "Kitchen";
+
+    "Kitchen" -- "Behind the school";
+
+    "In front of the school" -- "Swings";
+    "In front of the school" -- "Behind the school";
+
+    "Library" -- "Secret underground library";
+
+    "Hallway (top floor)" -- "Astronomy club's room";
+
+    "Secret catacombs entrance" -- "Secret catacombs hallway";
+
+    "Secret catacombs hallway" -- "Secret underground library";
+    "Secret catacombs hallway" -- "Alchemy principal's office";
+
+    "Alchemy principal's office" -- "Alchemy principal's lab";
+}
