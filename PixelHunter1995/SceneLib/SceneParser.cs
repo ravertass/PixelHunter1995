@@ -43,6 +43,7 @@ namespace PixelHunter1995
 
             foreach (XmlNode node in nodes)
             {
+                // TODO: Support "foreground" image layer as well.
                 if (node.Name == "imagelayer" && node.Attributes["name"]?.InnerText == "background")
                 {
                     Debug.Assert(node.ChildNodes.Count == 1);
