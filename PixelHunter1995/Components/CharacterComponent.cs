@@ -6,20 +6,22 @@ using System;
 
 namespace PixelHunter1995.Components
 {
-    class CharacterComponent : IComponent, ICharacterComponent
+    class CharacterComponent : IUpdateable, IComponent, ICharacterComponent
     {
         private PositionComponent PositionComponent { get; set; }
         public Vector2 MoveDirection { get; set; }
         public AnimationTileset AnimationTileset { get; set; }
         public Color FontColor { get; set; }
-        public String FontName { get; set; }
+        public string FontName { get; set; }
+        private readonly Voice Voice;
 
         // alias
         private Vector2 Position { get => this.PositionComponent.Position; }
 
         public CharacterComponent(PositionComponent posComp)
         {
-            this.PositionComponent = this.NotNullDependency(posComp, "posComp");
+            PositionComponent = this.NotNullDependency(posComp, "posComp");
+            Voice = new Voice();
         }
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
@@ -34,6 +36,7 @@ namespace PixelHunter1995.Components
             }
 
             animationTileset.Draw(spriteBatch, Position, MoveDirection, scaling);
+            DrawSpeech(spriteBatch);
         }
 
         public void LoadContent(ContentManager content)
@@ -41,20 +44,21 @@ namespace PixelHunter1995.Components
             AnimationTileset.LoadContent(content);
         }
 
-        private Vector2 RelativePosition(int deltaX, int deltaY)
+        public void Say(string speech)
         {
-            return new Vector2(Position.X + deltaX, Position.Y + deltaY);
+            Voice.Say(speech);
         }
 
-        public void Talk(SpriteBatch spriteBatch, string text)
+        public void Update(GameTime gameTime)
         {
-            SpriteFont font = FontManager.Instance.getFontByName(FontName);
-            int textDeltaX = -(int)font.MeasureString(text).X / 2 + AnimationTileset.tileWidth / 2;
-            int textDeltaY = -(int)font.MeasureString(text).Y - 5;
-            // Draw black around the letters to see them better
-            spriteBatch.DrawString(font, text, RelativePosition(textDeltaX + 1, textDeltaY + 1), Color.Black);
-            spriteBatch.DrawString(font, text, RelativePosition(textDeltaX - 1, textDeltaY - 1), Color.Black);
-            spriteBatch.DrawString(font, text, RelativePosition(textDeltaX, textDeltaY), FontColor);
+            Voice.Update(gameTime);
+        }
+
+        public void DrawSpeech(SpriteBatch spriteBatch)
+        {
+            int deltaX = AnimationTileset.tileWidth / 2;
+            Vector2 charCenterPos = Position + new Vector2(deltaX, 0);
+            Voice.Draw(spriteBatch, FontName, FontColor, charCenterPos);
         }
 
         public int ZIndex()

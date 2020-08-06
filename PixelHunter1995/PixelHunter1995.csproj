@@ -78,6 +78,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Components\Voice.cs" />
     <Compile Include="FontManager.cs" />
     <Compile Include="InventoryLib\InventoryItem.cs" />
     <Compile Include="InventoryLib\Inventory.cs" />
@@ -85,7 +86,7 @@
     <Compile Include="Components\IComponent.cs" />
     <Compile Include="Components\IHasComponent.cs" />
     <Compile Include="Components\IHasComponents.cs" />
-    <Compile Include="HaveFunctionInterfaces\ITalkable.cs" />
+    <Compile Include="HaveFunctionInterfaces\ITalkative.cs" />
     <Compile Include="Components\IPositionComponent.cs" />
     <Compile Include="Components\ICharacterComponent.cs" />
     <Compile Include="Components\PositionComponent.cs" />

@@ -3,8 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PixelHunter1995
 {
-    interface ITalkable
+    interface ITalkative
     {
-        void Talk(SpriteBatch spriteBatch, string text);
+        void Say(string speech);
     }
 }
