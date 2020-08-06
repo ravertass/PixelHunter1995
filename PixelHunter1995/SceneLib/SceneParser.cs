@@ -19,7 +19,7 @@ namespace PixelHunter1995
             XmlDocument doc = new XmlDocument();
             doc.Load(sceneXmlPath);
             XmlNodeList nodes = doc.DocumentElement.ChildNodes;
-            Tileset tileset = null; // TODO: Possible to have many tilesets per scene?
+            List<Tileset> tilesets = new List<Tileset>();
             List<IDrawable> drawables = new List<IDrawable>();
             List<IUpdateable> updateables = new List<IUpdateable>();
             List<ILoadContent> loadables = new List<ILoadContent>();
@@ -35,7 +35,9 @@ namespace PixelHunter1995
                                                          Path.GetDirectoryName(tilesetXmlPathRelative),
                                                          Path.GetFileName(tilesetXmlPathRelative));
                     int tilesetFirstGid = int.Parse(node.Attributes["firstgid"].Value);
-                    tileset = TilesetParser.ParseTilesetXml(tilesetXmlPath, tilesetFirstGid);
+                    Tileset tileset = TilesetParser.ParseTilesetXml(tilesetXmlPath, tilesetFirstGid);
+                    tilesets.Add(tileset);
+                    loadables.Add(tileset);
                 }
             }
 
@@ -67,6 +69,7 @@ namespace PixelHunter1995
                         int height = (int)Math.Round(float.Parse(dogNode.Attributes["height"].Value));
                         int gid = int.Parse(dogNode.Attributes["gid"].Value);
                         y = y - height; // Compensate for Tiled's coordinate system
+                        Tileset tileset = GetTilesetFromGid(tilesets, gid);
                         Dog dog = new Dog(x, y, width, height, gid, tileset);
                         drawables.Add(dog);
                     }
@@ -86,10 +89,26 @@ namespace PixelHunter1995
                     }
                 }
             }
-            return new Scene(drawables, updateables, loadables, tileset);
+            return new Scene(drawables, updateables, loadables);
         }
 
-
+        private static Tileset GetTilesetFromGid(List<Tileset> tilesets, int gid)
+        {
+            // We sort Tilesets on first gid with largest first.
+            tilesets.Sort((a, b) => b.firstGid.CompareTo(a.firstGid));
+            foreach (var tileset in tilesets)
+            {
+                if (gid < tileset.firstGid)
+                {
+                    continue;
+                }
+                else
+                {
+                    return tileset;
+                }
+            }
+            throw new ArgumentException("Can't find tileset for gid " + gid + ".");
+        }
 
         private static WalkingArea ParseWalkingXml(XmlNode node)
         {
