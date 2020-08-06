@@ -81,7 +81,7 @@
     <Compile Include="FontManager.cs" />
     <Compile Include="InventoryLib\InventoryItem.cs" />
     <Compile Include="InventoryLib\Inventory.cs" />
-    <Compile Include="SceneLib\Background.cs" />
+    <Compile Include="SceneLib\ImageLayer.cs" />
     <Compile Include="Components\IComponent.cs" />
     <Compile Include="Components\IHasComponent.cs" />
     <Compile Include="Components\IHasComponents.cs" />
@@ -130,6 +130,7 @@
   <ItemGroup>
     <Content Include="Content\Images\club_room.png" />
     <Content Include="Content\Images\full_club_room.png" />
+    <Content Include="Content\Images\full_club_room_chemistry_table.png" />
     <Content Include="Content\Images\hallway_club_room.png" />
     <Content Include="Content\Images\hallway_principal.png" />
     <Content Include="Content\Images\hallway_soda.png" />
@@ -140,6 +141,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Animations\felixia.png" />
+    <Content Include="Content\Tileset\npc_dogs.png" />
+    <Content Include="Content\Tileset\npc_dogs.tsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

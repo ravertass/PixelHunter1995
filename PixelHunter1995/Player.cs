@@ -91,5 +91,10 @@ namespace PixelHunter1995
         {
             CharComp.LoadContent(content);
         }
+
+        public int ZIndex()
+        {
+            return CharComp.ZIndex();
+        }
     }
 }

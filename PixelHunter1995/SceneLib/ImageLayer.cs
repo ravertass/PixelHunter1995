@@ -5,17 +5,19 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PixelHunter1995.SceneLib
 {
-    class Background : IDrawable, ILoadContent
+    class ImageLayer : IDrawable, ILoadContent
     {
         string imagePath;
         int width;
         int height;
+        int z;
         public Texture2D image;
-        public Background(string imagePath, int width, int height)
+        public ImageLayer(string imagePath, int width, int height, int z)
         {
             this.imagePath = imagePath;
             this.width = width;
             this.height = height;
+            this.z = z;
         }
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
@@ -26,6 +28,11 @@ namespace PixelHunter1995.SceneLib
         public void LoadContent(ContentManager content)
         {
             image = content.Load<Texture2D>(imagePath);
+        }
+
+        public int ZIndex()
+        {
+            return z;
         }
     }
 }

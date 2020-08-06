@@ -56,5 +56,10 @@ namespace PixelHunter1995.Components
             spriteBatch.DrawString(font, text, RelativePosition(textDeltaX - 1, textDeltaY - 1), Color.Black);
             spriteBatch.DrawString(font, text, RelativePosition(textDeltaX, textDeltaY), FontColor);
         }
+
+        public int ZIndex()
+        {
+            return (int)Position.Y + AnimationTileset.tileHeight;
+        }
     }
 }

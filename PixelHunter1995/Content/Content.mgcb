@@ -68,6 +68,18 @@
 /processorParam:TextureFormat=Color
 /build:Images/full_club_room.png
 
+#begin Images/full_club_room_chemistry_table.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/full_club_room_chemistry_table.png
+
 #begin Images/hallway_club_room.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -175,4 +187,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Tileset/dogs.png
+
+#begin Tileset/npc_dogs.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Tileset/npc_dogs.png
 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using PixelHunter1995.TilesetLib;
 using System.Collections.Generic;
 
 namespace PixelHunter1995
@@ -11,18 +10,18 @@ namespace PixelHunter1995
         private List<IDrawable> drawables;
         private List<IUpdateable> updateables;
         private List<ILoadContent> loadables;
-        public Tileset tileset;
 
-        public Scene(List<IDrawable> drawables, List<IUpdateable> updateables, List<ILoadContent> loadables, Tileset tileset)
+        public Scene(List<IDrawable> drawables, List<IUpdateable> updateables, List<ILoadContent> loadables)
         {
             this.drawables = drawables;
             this.updateables = updateables;
             this.loadables = loadables;
-            this.tileset = tileset;
         }
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
+            // We sort on Z and draw lowest first.
+            drawables.Sort((a, b) => a.ZIndex().CompareTo(b.ZIndex()));
             foreach (IDrawable drawable in drawables)
             {
                 drawable.Draw(graphics, spriteBatch, scaling);
@@ -39,7 +38,6 @@ namespace PixelHunter1995
 
         public void LoadContent(ContentManager content)
         {
-            tileset.LoadContent(content);
             foreach (ILoadContent loadable in loadables)
             {
                 loadable.LoadContent(content); ;

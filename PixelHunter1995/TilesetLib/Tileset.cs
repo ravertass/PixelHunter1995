@@ -5,12 +5,12 @@ using System.Diagnostics;
 
 namespace PixelHunter1995.TilesetLib
 {
-    class Tileset
+    class Tileset : ILoadContent
     {
         private readonly string imagePath;
         private readonly int imageWidth;
         private readonly int imageHeight;
-        private readonly int firstGid;
+        public readonly int firstGid;
         public readonly string name;
         public readonly int tileWidth;
         public readonly int tileHeight;

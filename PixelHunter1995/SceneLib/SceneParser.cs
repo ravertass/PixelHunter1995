@@ -19,7 +19,7 @@ namespace PixelHunter1995
             XmlDocument doc = new XmlDocument();
             doc.Load(sceneXmlPath);
             XmlNodeList nodes = doc.DocumentElement.ChildNodes;
-            Tileset tileset = null; // TODO: Possible to have many tilesets per scene?
+            List<Tileset> tilesets = new List<Tileset>();
             List<IDrawable> drawables = new List<IDrawable>();
             List<IUpdateable> updateables = new List<IUpdateable>();
             List<ILoadContent> loadables = new List<ILoadContent>();
@@ -35,27 +35,30 @@ namespace PixelHunter1995
                                                          Path.GetDirectoryName(tilesetXmlPathRelative),
                                                          Path.GetFileName(tilesetXmlPathRelative));
                     int tilesetFirstGid = int.Parse(node.Attributes["firstgid"].Value);
-                    tileset = TilesetParser.ParseTilesetXml(tilesetXmlPath, tilesetFirstGid);
+                    Tileset tileset = TilesetParser.ParseTilesetXml(tilesetXmlPath, tilesetFirstGid);
+                    tilesets.Add(tileset);
+                    loadables.Add(tileset);
                 }
             }
 
             foreach (XmlNode node in nodes)
             {
-                if (node.Name == "imagelayer" && node.Attributes["name"]?.InnerText == "background")
+                if (node.Name == "imagelayer")
                 {
-                    Debug.Assert(node.ChildNodes.Count == 1);
-                    XmlNode imageNode = node.ChildNodes[0];
-                    string imagePathRelative = imageNode.Attributes["source"].Value;
-                    string imagePath = Path.Combine(Path.GetFileNameWithoutExtension(Path.GetDirectoryName(sceneXmlPath)),
-                                                    Path.GetDirectoryName(imagePathRelative),
-                                                    Path.GetFileNameWithoutExtension(imagePathRelative));
-                    int width = int.Parse(imageNode.Attributes["width"].Value);
-                    int height = int.Parse(imageNode.Attributes["height"].Value);
-                    Background background = new Background(imagePath, width, height);
-                    // TODO Preferably, all these things (background, player, etc.) should add themselves to the lists.
-                    // TODO Maybe as part of constructor?
-                    drawables.Add(background);
-                    loadables.Add(background);
+                    if (node.Attributes["name"]?.InnerText == "background")
+                    {
+                        Debug.Assert(node.ChildNodes.Count == 1, "More than one background layer in scene");
+                        ImageLayer background = ParseImageNode(node.ChildNodes[0], sceneXmlPath, 0);
+                        drawables.Add(background);
+                        loadables.Add(background);
+                    }
+                    else if (node.Attributes["name"]?.InnerText == "foreground")
+                    {
+                        Debug.Assert(node.ChildNodes.Count == 1, "More than one foreground layer in scene");
+                        ImageLayer foreground = ParseImageNode(node.ChildNodes[0], sceneXmlPath, 1000);
+                        drawables.Add(foreground);
+                        loadables.Add(foreground);
+                    }
                 }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "dogs")
                 {
@@ -67,6 +70,7 @@ namespace PixelHunter1995
                         int height = (int)Math.Round(float.Parse(dogNode.Attributes["height"].Value));
                         int gid = int.Parse(dogNode.Attributes["gid"].Value);
                         y = y - height; // Compensate for Tiled's coordinate system
+                        Tileset tileset = GetTilesetFromTileGid(tilesets, gid);
                         Dog dog = new Dog(x, y, width, height, gid, tileset);
                         drawables.Add(dog);
                     }
@@ -86,10 +90,37 @@ namespace PixelHunter1995
                     }
                 }
             }
-            return new Scene(drawables, updateables, loadables, tileset);
+            return new Scene(drawables, updateables, loadables);
         }
 
+        private static Tileset GetTilesetFromTileGid(List<Tileset> tilesets, int tileGid)
+        {
+            // We sort Tilesets on first gid with largest first.
+            tilesets.Sort((a, b) => b.firstGid.CompareTo(a.firstGid));
+            foreach (var tileset in tilesets)
+            {
+                if (tileGid < tileset.firstGid)
+                {
+                    continue;
+                }
+                else
+                {
+                    return tileset;
+                }
+            }
+            throw new ArgumentException("Can't find tileset for tile gid " + tileGid + ".");
+        }
 
+        private static ImageLayer ParseImageNode(XmlNode imageNode, string sceneXmlPath, int z)
+        {
+            string imagePathRelative = imageNode.Attributes["source"].Value;
+            string imagePath = Path.Combine(Path.GetFileNameWithoutExtension(Path.GetDirectoryName(sceneXmlPath)),
+                                            Path.GetDirectoryName(imagePathRelative),
+                                            Path.GetFileNameWithoutExtension(imagePathRelative));
+            int width = int.Parse(imageNode.Attributes["width"].Value);
+            int height = int.Parse(imageNode.Attributes["height"].Value);
+            return new ImageLayer(imagePath, width, height, z);
+        }
 
         private static WalkingArea ParseWalkingXml(XmlNode node)
         {
