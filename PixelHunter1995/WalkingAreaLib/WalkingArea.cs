@@ -29,7 +29,7 @@ namespace PixelHunter1995.WalkingAreaLib
             partition.Draw(graphics);
         }
 
-        public int ZOrder()
+        public int ZIndex()
         {
             return 10;
         }

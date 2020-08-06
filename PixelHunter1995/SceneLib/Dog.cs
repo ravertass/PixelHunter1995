@@ -27,9 +27,9 @@ namespace PixelHunter1995.SceneLib
             Tileset.Draw(spriteBatch, new Vector2(X, Y), Gid, scaling);
         }
 
-        public int ZOrder()
+        public int ZIndex()
         {
-            return 40; // TODO: Get value from somewhere
+            return Y + Height;
         }
     }
 }

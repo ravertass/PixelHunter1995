@@ -30,7 +30,7 @@ namespace PixelHunter1995.SceneLib
             image = content.Load<Texture2D>(imagePath);
         }
 
-        public int ZOrder()
+        public int ZIndex()
         {
             return z;
         }

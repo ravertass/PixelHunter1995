@@ -6,6 +6,6 @@ namespace PixelHunter1995
     interface IDrawable
     {
         void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling);
-        int ZOrder();
+        int ZIndex();
     }
 }

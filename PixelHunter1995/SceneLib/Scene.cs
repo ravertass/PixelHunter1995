@@ -21,7 +21,7 @@ namespace PixelHunter1995
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
             // We sort on Z and draw lowest first.
-            drawables.Sort((a, b) => a.ZOrder().CompareTo(b.ZOrder()));
+            drawables.Sort((a, b) => a.ZIndex().CompareTo(b.ZIndex()));
             foreach (IDrawable drawable in drawables)
             {
                 drawable.Draw(graphics, spriteBatch, scaling);

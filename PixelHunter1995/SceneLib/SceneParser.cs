@@ -70,7 +70,7 @@ namespace PixelHunter1995
                         int height = (int)Math.Round(float.Parse(dogNode.Attributes["height"].Value));
                         int gid = int.Parse(dogNode.Attributes["gid"].Value);
                         y = y - height; // Compensate for Tiled's coordinate system
-                        Tileset tileset = GetTilesetFromGid(tilesets, gid);
+                        Tileset tileset = GetTilesetFromTileGid(tilesets, gid);
                         Dog dog = new Dog(x, y, width, height, gid, tileset);
                         drawables.Add(dog);
                     }
@@ -93,13 +93,13 @@ namespace PixelHunter1995
             return new Scene(drawables, updateables, loadables);
         }
 
-        private static Tileset GetTilesetFromGid(List<Tileset> tilesets, int gid)
+        private static Tileset GetTilesetFromTileGid(List<Tileset> tilesets, int tileGid)
         {
             // We sort Tilesets on first gid with largest first.
             tilesets.Sort((a, b) => b.firstGid.CompareTo(a.firstGid));
             foreach (var tileset in tilesets)
             {
-                if (gid < tileset.firstGid)
+                if (tileGid < tileset.firstGid)
                 {
                     continue;
                 }
@@ -108,7 +108,7 @@ namespace PixelHunter1995
                     return tileset;
                 }
             }
-            throw new ArgumentException("Can't find tileset for gid " + gid + ".");
+            throw new ArgumentException("Can't find tileset for tile gid " + tileGid + ".");
         }
 
         private static ImageLayer ParseImageNode(XmlNode imageNode, string sceneXmlPath, int z)
