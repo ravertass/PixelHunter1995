@@ -56,7 +56,10 @@ namespace PixelHunter1995
 
             if (game.IsActive && mouseState.LeftButton == ButtonState.Pressed)
             {
-                this.MovePosition = new Vector2(mouseState.X, mouseState.Y);
+                // Compensate for Position being in top left corner
+                float x = mouseState.X - AnimationTileset.tileWidth / 2;
+                float y = mouseState.Y - AnimationTileset.tileHeight;
+                this.MovePosition = new Vector2(x,y);
             }
             this.MoveDirection = MovePosition - Position;
             this.Position = this.Approach(Position, MovePosition, 2);
