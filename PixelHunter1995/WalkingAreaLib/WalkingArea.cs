@@ -28,5 +28,10 @@ namespace PixelHunter1995.WalkingAreaLib
         {
             partition.Draw(graphics);
         }
+
+        public int ZOrder()
+        {
+            return 10;
+        }
     }
 }

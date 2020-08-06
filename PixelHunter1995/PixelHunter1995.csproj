@@ -81,7 +81,7 @@
     <Compile Include="FontManager.cs" />
     <Compile Include="InventoryLib\InventoryItem.cs" />
     <Compile Include="InventoryLib\Inventory.cs" />
-    <Compile Include="SceneLib\Background.cs" />
+    <Compile Include="SceneLib\ImageLayer.cs" />
     <Compile Include="Components\IComponent.cs" />
     <Compile Include="Components\IHasComponent.cs" />
     <Compile Include="Components\IHasComponents.cs" />

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using PixelHunter1995.TilesetLib;
 using System.Collections.Generic;
 
 namespace PixelHunter1995
@@ -21,6 +20,8 @@ namespace PixelHunter1995
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
+            // We sort on Z and draw lowest first.
+            drawables.Sort((a, b) => a.ZOrder().CompareTo(b.ZOrder()));
             foreach (IDrawable drawable in drawables)
             {
                 drawable.Draw(graphics, spriteBatch, scaling);

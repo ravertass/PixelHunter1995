@@ -43,22 +43,22 @@ namespace PixelHunter1995
 
             foreach (XmlNode node in nodes)
             {
-                // TODO: Support "foreground" image layer as well.
-                if (node.Name == "imagelayer" && node.Attributes["name"]?.InnerText == "background")
+                if (node.Name == "imagelayer")
                 {
-                    Debug.Assert(node.ChildNodes.Count == 1);
-                    XmlNode imageNode = node.ChildNodes[0];
-                    string imagePathRelative = imageNode.Attributes["source"].Value;
-                    string imagePath = Path.Combine(Path.GetFileNameWithoutExtension(Path.GetDirectoryName(sceneXmlPath)),
-                                                    Path.GetDirectoryName(imagePathRelative),
-                                                    Path.GetFileNameWithoutExtension(imagePathRelative));
-                    int width = int.Parse(imageNode.Attributes["width"].Value);
-                    int height = int.Parse(imageNode.Attributes["height"].Value);
-                    Background background = new Background(imagePath, width, height);
-                    // TODO Preferably, all these things (background, player, etc.) should add themselves to the lists.
-                    // TODO Maybe as part of constructor?
-                    drawables.Add(background);
-                    loadables.Add(background);
+                    if (node.Attributes["name"]?.InnerText == "background")
+                    {
+                        Debug.Assert(node.ChildNodes.Count == 1, "More than one background layer in scene");
+                        ImageLayer background = ParseImageNode(node.ChildNodes[0], sceneXmlPath, 0);
+                        drawables.Add(background);
+                        loadables.Add(background);
+                    }
+                    else if (node.Attributes["name"]?.InnerText == "foreground")
+                    {
+                        Debug.Assert(node.ChildNodes.Count == 1, "More than one foreground layer in scene");
+                        ImageLayer foreground = ParseImageNode(node.ChildNodes[0], sceneXmlPath, 1000);
+                        drawables.Add(foreground);
+                        loadables.Add(foreground);
+                    }
                 }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "dogs")
                 {
@@ -109,6 +109,17 @@ namespace PixelHunter1995
                 }
             }
             throw new ArgumentException("Can't find tileset for gid " + gid + ".");
+        }
+
+        private static ImageLayer ParseImageNode(XmlNode imageNode, string sceneXmlPath, int z)
+        {
+            string imagePathRelative = imageNode.Attributes["source"].Value;
+            string imagePath = Path.Combine(Path.GetFileNameWithoutExtension(Path.GetDirectoryName(sceneXmlPath)),
+                                            Path.GetDirectoryName(imagePathRelative),
+                                            Path.GetFileNameWithoutExtension(imagePathRelative));
+            int width = int.Parse(imageNode.Attributes["width"].Value);
+            int height = int.Parse(imageNode.Attributes["height"].Value);
+            return new ImageLayer(imagePath, width, height, z);
         }
 
         private static WalkingArea ParseWalkingXml(XmlNode node)

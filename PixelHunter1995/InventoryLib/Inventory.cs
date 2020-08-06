@@ -115,5 +115,10 @@ namespace PixelHunter1995.InventoryLib
             }
             return res;
         }
+
+        public int ZOrder()
+        {
+            return 0; // Not drawn by scene, value here does not matter
+        }
     }
 }
