@@ -1,15 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="712" height="160" tilewidth="1" tileheight="1" infinite="0" nextlayerid="9" nextobjectid="8">
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="712" height="160" tilewidth="1" tileheight="1" infinite="0" nextlayerid="9" nextobjectid="15">
+ <properties>
+  <property name="init" value="IntroInit"/>
+ </properties>
  <tileset firstgid="1" source="../Tileset/dogs.tsx"/>
  <tileset firstgid="65" source="../Tileset/npc_dogs.tsx"/>
  <imagelayer id="2" name="background">
   <image source="../Images/full_club_room.png" width="712" height="160"/>
  </imagelayer>
- <objectgroup id="4" name="dogs">
-  <object id="2" gid="1" x="479.091" y="98.1818" width="32" height="32"/>
+ <objectgroup color="#ff0000" id="4" name="dogs">
+  <object id="2" gid="1" x="501.091" y="103.182" width="32" height="32"/>
   <object id="3" gid="2" x="379.636" y="89.6364" width="32" height="32"/>
   <object id="4" gid="3" x="46.5455" y="125.455" width="32" height="32"/>
-  <object id="7" gid="65" x="120" y="139" width="32" height="48"/>
+  <object id="7" gid="65" x="120" y="139" width="32" height="48">
+   <properties>
+    <property name="item(charcoalPencils)" value="IntroNickGiveCharcoal"/>
+    <property name="item(chips)" value="IntroNickGiveChips"/>
+    <property name="item(conk)" value="IntroNickGiveConk"/>
+    <property name="item(fork)" value="IntroNickGiveFork"/>
+    <property name="talk" value="IntroTalkNick"/>
+   </properties>
+  </object>
+  <object id="8" gid="69" x="184" y="106" width="32" height="48">
+   <properties>
+    <property name="talk" value="IntroTalkUrsula"/>
+   </properties>
+  </object>
+  <object id="9" gid="68" x="414" y="126" width="32" height="48">
+   <properties>
+    <property name="talk" value="IntroTalkAlex"/>
+   </properties>
+  </object>
+  <object id="10" x="10.75" y="65.75">
+   <properties>
+    <property name="look" value="IntroLookWindow"/>
+   </properties>
+   <polygon points="0,0 26.25,-26.25 26.5,24.5 1.5,49.5"/>
+  </object>
+  <object id="11" x="671" y="137">
+   <properties>
+    <property name="look" value="IntroLookDoor"/>
+   </properties>
+   <polygon points="0,0 0.25,-50 -23.25,-69 -50.25,-67.25 -49.75,-22.75 -20.5,-20.25"/>
+  </object>
+  <object id="12" gid="5" x="435" y="105" width="32" height="32">
+   <properties>
+    <property name="look" value="IntroLookConk"/>
+   </properties>
+  </object>
+  <object id="13" gid="4" x="457" y="109" width="32" height="32">
+   <properties>
+    <property name="look" value="IntroLookChips"/>
+   </properties>
+  </object>
  </objectgroup>
  <imagelayer id="8" name="foreground">
   <image source="../Images/full_club_room_chemistry_table.png" width="712" height="160"/>
@@ -19,14 +62,5 @@
    <polygon points="0,0 25.6667,0.666667 66.6667,42 -460.333,40.6667 -451.667,11 -518.333,10.3333 -523.333,41 -622.333,42.3333 -622,32.3333 -571.333,-19 -256,-19.3333 -256,-15 -206.667,-13.6667 -206.667,9.33333 -165.667,13.3333 -92.3333,15.3333 -85,11.3333 -58.6667,6.66667 -60,-18.3333 -4,-18.6667 -2.66667,-1.66667"/>
   </object>
  </objectgroup>
- <objectgroup color="#006464" id="7" name="portals">
-  <object id="6" x="652.182" y="72.5455">
-   <properties>
-    <property name="destination" value="hallway_club_room"/>
-    <property name="destination_portal" value="0"/>
-    <property name="name" value="0"/>
-   </properties>
-   <polygon points="0,0 16.1818,15.4545 17.0909,62.7273 4.90909,67.4545 -9.09091,44.7273 -1.81818,44.1818"/>
-  </object>
- </objectgroup>
+ <objectgroup color="#006464" id="7" name="portals"/>
 </map>

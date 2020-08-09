@@ -1,0 +1,144 @@
+#IntroInit
+Nick: OK, so I've started the boiler and poured up the cooking oil.
+Nick: What's the next ingredient?
+Ursula: Let's see here...
+Ursula: Next, the recipe tells you to add charcoal, iron and salt.
+Nick: Charcoal, iron and salt, check! Felixia, could you fetch those for me?
+Felixia: Um, OK...
+<goto IntroNickOptions>
+
+#IntroTalkNick
+Ursula: Hey Nick, how's it bubbling?
+Nick: Could you get the remaining ingredients, please?
+<goto IntroNickOptions>
+
+#IntroNickOptions
+- [!found_salt] Where can I find salt?
+  Felixia: Where can I find salt?
+  Nick: There should probably be something around here containing salt.
+- [!found_charcoal] Where can I find charcoal?
+  Felixia: Where can I find charcoal?
+  Nick: No idea.
+- [!found_iron] Where can I find iron?
+  Felixia: Where can I find iron?
+  Nick: We have a box of forks from the cafeteria somewhere around here.
+- [!_1] Why should I do it? Go fetch it yourself!
+  Felixia: Why should I do it? Go fetch it yourself!
+  Nick: Hey, someone needs to overlook this boiler!
+  Nick: We don't want an accident in the club room, if we want to keep it...
+  <set _1>
+- [!_2] What are we even making here?
+  Felixia: What are we even making here?
+  Ursula: The elixir of life, of course!
+  Felixia: Oh, of course...
+  <set _2>
+- Let me look around.
+  Felixia: Let me look around.
+  <exit>
+
+#IntroNickGiveChips
+Felixia: Hey, do you think Alex's chips contain enough salt?
+Nick: I guess we can try?
+<removeFromInventory chips>
+
+#IntroNickGiveFork
+Felixia: Here's a stainless steel fork.
+Nick: Nice, that's one of the forks I stole from the cafeteria!
+Nick: It should contain some iron.
+<removeFromInventory fork>
+
+#IntroNickGiveCharcoal
+Felixia: Here are Ursula's drawing pencils.
+Felixia: They should contain enough charcoal.
+<removeFromInventory charcoalPencils>
+
+#IntroNickGiveConk
+Felixia: I got Alex to give up his can of Conk.
+Nick: Cool.
+<removeFromInventory conk>
+// TODO: Trigger animations and dialog ending the first puzzle.
+
+#IntroTalkUrsula
+Felixia: Hey, Ursula.
+Ursula: Hi, Felixia.
+- [!_1 && !found_salt] Where can I find salt?
+  Felixia: Where can I find salt?
+  Ursula: If you want the salt enough, the salt will find you.
+  Felixia: Um, OK...
+  <set _1>
+- [!found_charcoal] Where can I find charcoal?
+  Felixia: Where can I find charcoal?
+  Ursula: Don't you have any charcoal yourself?
+  <goto IntroTalkUrsulaAboutCharcoal>
+- [!_2 && !found_iron] Where can I find iron?
+  Felixia: Where can I find iron?
+  Ursula: In a mine, perhaps?
+  Felixia: Very helpful.
+  <set _2>
+- [!_3] Are you sure this recipe is correct?
+  Felixia: Are you sure this recipe is correct?
+  Ursula: Of course it is! The soul of the world has told me so.
+  Felixia: Of course it has...
+  <set _3>
+- Gotta look around some more.
+  Felixia: Gotta look around some more.
+  Ursula: May your search be fruitful.
+  <exit>
+
+#IntroTalkUrsulaAboutCharcoal
+- Not really?
+  Felixia: Not really?
+  Ursula: Well, OK...
+  Ursula: I guess you can take my drawing pencils.
+  <addToInventory charcoalPencils>
+  <set found_charcoal>
+  <goto IntroTalkUrsula>
+- I guess I can look around some more...
+  Felixia: I guess I can look around some more...
+  <exit>
+
+#IntroTalkAlex
+Felixia: Hey Al.
+Alex: Hi Fee.
+Felixia: Are ya winning?
+Alex: Not anymore.
+- [!_1] What are you playing?
+  Felixia: What are you playing?
+  Alex: Tootris. Always Tootris.
+  <set _1>
+- [!found_chips] Could I have some chips?
+  Felixia: Could I have some chips?
+  Alex: No.
+  Felixia: Pleeeaaase?
+  Alex: ... okay.
+  <addToInventory chips>
+  <set found_chips>
+- [!need_conk] Could I have some Conk?
+  Felixia: Could I have some Conk?
+  Alex: Don't I get to keep anything to myself?
+  Felixia: Pretty pleeeaaase?
+  Alex: ... allright.
+  <addToInventory chips>
+  <set found_conk>
+- Bye Al.
+  Felixia: Bye Al.
+  Alex: By Fee.
+  <exit>
+
+#IntroLookDoor
+Felixia: I think we should be able to find everything we need in here.
+
+#IntroLookWindow
+Felixia: Nice, sunny day.
+Felixia: It's only a week until the summer break is over.
+
+#IntroLookBoiler
+Felixia: Looks nasty.
+Ursula: Looks tasty!
+Nick: Could you please just help?
+
+#IntroLookChips
+Felixia: I should probably ask Alex if I want his chips.
+
+#IntroLookConk
+Felixia: Conk: 49% sugar, 49% hydrochloric acid, 2% "natural brown additives".
