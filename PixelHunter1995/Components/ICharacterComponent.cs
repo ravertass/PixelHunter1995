@@ -3,7 +3,7 @@ using PixelHunter1995.TilesetLib;
 
 namespace PixelHunter1995.Components
 {
-    interface ICharacterComponent : IDrawable, ITalkable
+    interface ICharacterComponent : IDrawable, ITalkative
     {
 
         AnimationTileset AnimationTileset { get; set; }
