@@ -14,20 +14,20 @@ namespace PixelHunter1995.Inputs
         
         public static readonly string DEFAULT_CONTEXT = "DEFAULT";
         
-        public static Dictionary<string, Input> ParseInputConfig(string path)
+        public static Dictionary<string, InputManager> ParseInputConfig(string path)
         {
-            var inputs = new Dictionary<string, Input>();
+            var inputs = new Dictionary<string, InputManager>();
             foreach (var kv in ParseKeyConfig(path)) {
                 var context = kv.Key;
-                var binds = kv.Value;
-                inputs[context] = new Input(binds);
+                var bindings = kv.Value;
+                inputs[context] = new InputManager(bindings);
             }
             return inputs;
         }
         
-        private static Dictionary<string, Dictionary<Action, KeyDisjunction>> ParseKeyConfig(string path) {
+        private static Dictionary<string, Dictionary<InputCommand, KeyDisjunction>> ParseKeyConfig(string path) {
             
-            var contexts = new Dictionary<string, Dictionary<Action, KeyDisjunction>>();
+            var contexts = new Dictionary<string, Dictionary<InputCommand, KeyDisjunction>>();
             
             if (File.Exists(path))
             {
@@ -55,11 +55,11 @@ namespace PixelHunter1995.Inputs
                         actionStr = lhs;
                     }
                     
-                    if (Action.TryParse(kv[0].Trim(), true, out Action action))
+                    if (InputCommand.TryParse(kv[0].Trim(), true, out InputCommand action))
                     {
                         if (!contexts.TryGetValue(context, out var binds))
                         {
-                            binds = new Dictionary<Action, KeyDisjunction>();
+                            binds = new Dictionary<InputCommand, KeyDisjunction>();
                             contexts[context] = binds;
                         }
                         binds[action] = ParseConjunction(kv[1]);

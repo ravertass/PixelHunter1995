@@ -8,27 +8,23 @@ namespace PixelHunter1995.Inputs
 {
     using AllKeys = Either<Keys, MouseKeys>;
 
-    class Input : StateMap<AllKeys>
+    class InputReader
     {
 
-        public Actions Actions { get; }
+        public StateMap<AllKeys> Statemap { get; }
 
         public int MouseX { get; private set; }
         public int MouseY { get; private set; }
         public Point Position { get => new Point(this.MouseX, this.MouseY); }
 
         public int ScrollWheelValue { get; private set; }
-        public int HorizontalScrollWheelValue { get; private set; }
+        // public int HorizontalScrollWheelValue { get; private set; }
 
-        
-        public Input(Actions actions)
+        public InputReader()
         {
-            this.Actions = actions;
+            this.Statemap = new StateMap<AllKeys>();
         }
-        public Input(Dictionary<Action, List<Dictionary<Either<Keys, MouseKeys>, SignalState>>> binds)
-        {
-            this.Actions = new Actions(binds);
-        }
+
 
         /// <summary>
         /// Called to update the state of inputs. Perhaps even more often than per-frame? Event-based?
@@ -54,14 +50,21 @@ namespace PixelHunter1995.Inputs
             this.Update(pressedKeys);
             
             // mouse position
-            this.MouseX = FullscreenFix.GetFixedX(mouseState.X);
-            this.MouseY = FullscreenFix.GetFixedX(mouseState.Y);
+            this.MouseX = Screen.GetFixedX(mouseState.X);
+            this.MouseY = Screen.GetFixedY(mouseState.Y);
             this.ScrollWheelValue = mouseState.ScrollWheelValue;
-            this.HorizontalScrollWheelValue = mouseState.HorizontalScrollWheelValue;
-
-            this.Actions.Update(this);
+            // this.HorizontalScrollWheelValue = mouseState.HorizontalScrollWheelValue;
         }
 
+        private void Update(IEnumerable<AllKeys> pressedKeys)
+        {
+            this.Statemap.Update(pressedKeys);
+        }
+
+        public SignalState GetKeyState(AllKeys key)
+        {
+            return this.Statemap.GetState(key);
+        }
     }
 
     /// <summary>

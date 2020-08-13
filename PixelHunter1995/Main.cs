@@ -23,7 +23,7 @@ namespace PixelHunter1995
         private ShouldExit shouldExit;
         private RenderTarget2D renderTarget;
         private Screen screen;
-        private Input input;
+        private InputManager input;
         
         private static readonly string inputConfigPath = "Content/Config/input.cfg";
 
@@ -49,7 +49,7 @@ namespace PixelHunter1995
             stateManager = new StateManager(shouldExit);
             renderTarget = new RenderTarget2D(GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
             screen = new Screen(graphics, Window);
-            FullscreenFix.Screen = screen;
+            Screen.Instance = screen;
             
             base.Initialize();
         }
@@ -110,7 +110,7 @@ namespace PixelHunter1995
                 this.input.Update(); // handle input for global actions
                 
                 
-                if (input.Actions.GetState(Action.ToggleFullscreen).IsEdgeDown)
+                if (input.GetState(InputCommand.ToggleFullscreen).IsEdgeDown)
                 {
                     screen.ToggleFullScreen();
                 }

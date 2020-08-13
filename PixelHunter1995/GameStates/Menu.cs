@@ -24,15 +24,15 @@ namespace PixelHunter1995.GameStates
             spriteBatch.Draw(menu, Vector2.Zero, Color.White);
         }
 
-        public void Update(GameTime gameTime, Scene scene, Input input)
+        public void Update(GameTime gameTime, Scene scene, InputManager input)
         {
-            if (input.Actions.GetState(Action.MENU_Exit).IsEdgeDown)
+            if (input.GetState(InputCommand.MENU_Exit).IsEdgeDown)
             {
                 stateManager.SetExit();
             }
             // Do not trigger at same time as ToggleFullscreen
-            if (input.Actions.GetState(Action.MENU_Accept).IsEdgeDown
-                    && input.Actions.GetState(Inputs.Action.ToggleFullscreen).IsUp)
+            if (input.GetState(InputCommand.MENU_Accept).IsEdgeDown
+                    && input.GetState(InputCommand.ToggleFullscreen).IsUp)
             {
                 stateManager.SetStatePlaying();
             }

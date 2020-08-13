@@ -96,11 +96,9 @@
     <Compile Include="HaveFunctionInterfaces\IDrawable.cs" />
     <Compile Include="HaveFunctionInterfaces\ILoadContent.cs" />
     <Compile Include="HaveFunctionInterfaces\IUpdateable.cs" />
-    <Compile Include="Inputs\Action.cs" />
-    <Compile Include="Inputs\Actions.cs" />
-    <Compile Include="Inputs\FullscreenFix.cs" />
-    <Compile Include="Inputs\IInputHandler.cs" />
-    <Compile Include="Inputs\Input.cs" />
+    <Compile Include="Inputs\InputCommand.cs" />
+    <Compile Include="Inputs\InputManager.cs" />
+    <Compile Include="Inputs\InputReader.cs" />
     <Compile Include="Inputs\InputConfigParser.cs" />
     <Compile Include="Inputs\SignalState.cs" />
     <Compile Include="Inputs\StateMap.cs" />

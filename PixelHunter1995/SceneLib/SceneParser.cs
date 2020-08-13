@@ -22,7 +22,6 @@ namespace PixelHunter1995
             XmlNodeList nodes = doc.DocumentElement.ChildNodes;
             List<Tileset> tilesets = new List<Tileset>();
             List<IDrawable> drawables = new List<IDrawable>();
-            List<IInputHandler> inputhandlers = new List<IInputHandler>();
             List<IUpdateable> updateables = new List<IUpdateable>();
             List<ILoadContent> loadables = new List<ILoadContent>();
             Player player = null;
@@ -92,7 +91,7 @@ namespace PixelHunter1995
                     }
                 }
             }
-            return new Scene(drawables, inputhandlers, updateables, loadables);
+            return new Scene(drawables, updateables, loadables);
         }
 
         private static Tileset GetTilesetFromTileGid(List<Tileset> tilesets, int tileGid)

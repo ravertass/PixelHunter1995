@@ -8,7 +8,7 @@ namespace PixelHunter1995.Inputs
     /// 
     /// Rename stuff (please give inputs! pun intended)
     /// </summary>
-    public enum Action
+    public enum InputCommand
     {
         ToggleFullscreen,
         

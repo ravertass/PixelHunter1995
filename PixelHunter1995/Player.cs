@@ -50,9 +50,9 @@ namespace PixelHunter1995
             this.AnimationTileset = new AnimationTileset("Animations/felixia");
         }
         bool said = false;
-        public void Update(GameTime gameTime, Input input)
+        public void Update(GameTime gameTime, InputManager input)
         {
-            if (input.Actions.GetState(Inputs.Action.PLAYING_Move).IsDown)
+            if (input.GetState(InputCommand.PLAYING_Move).IsDown)
             {
                 // Compensate for Position being in top left corner
                 float x = input.MouseX - AnimationTileset.tileWidth / 2;

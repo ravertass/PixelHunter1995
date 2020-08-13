@@ -5,6 +5,6 @@ namespace PixelHunter1995
 {
     interface IUpdateable
     {
-        void Update(GameTime gameTime, Input input);
+        void Update(GameTime gameTime, InputManager input);
     }
 }

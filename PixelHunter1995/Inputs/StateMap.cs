@@ -19,7 +19,7 @@ namespace PixelHunter1995.Inputs
         {
         }
 
-        protected void Update(IEnumerable<T> activeItems)
+        public void Update(IEnumerable<T> activeItems)
         {
             var releasedItems = state.Keys.Except(activeItems);
 

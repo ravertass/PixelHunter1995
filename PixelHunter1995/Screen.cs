@@ -107,5 +107,22 @@ namespace PixelHunter1995
             }
         }
 
+        // Fix for fullscreen
+        public static Screen Instance { private get; set; } //! ugly, I know...
+
+        public static int GetFixedX(int x)
+        {
+            double ratioWidth = GlobalSettings.WINDOW_WIDTH / (double)Instance.Width;
+            return (int)(x * ratioWidth);
+        }
+        public static int GetFixedY(int y)
+        {
+            double ratioHeight = GlobalSettings.WINDOW_HEIGHT / (double)Instance.Height;
+            return (int)(y * ratioHeight);
+        }
+        public static Point GetFixedPoint(Point p)
+        {
+            return new Point(GetFixedX(p.X), GetFixedY(p.Y));
+        }
     }
 }

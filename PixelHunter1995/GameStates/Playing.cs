@@ -26,14 +26,13 @@ namespace PixelHunter1995.GameStates
             Inventory.Draw(graphics, spriteBatch, 1);
         }
 
-        public void Update(GameTime gameTime, Scene scene, Input input)
+        public void Update(GameTime gameTime, Scene scene, InputManager input)
         {
-            if (input.Actions.GetState(Action.PLAYING_Pause).IsEdgeDown)
+            if (input.GetState(InputCommand.PLAYING_Pause).IsEdgeDown)
             {
                 StateManager.SetStateMenu();
             }
-
-            scene.HandleInput(gameTime, input);
+            
             scene.Update(gameTime, input);
         }
     }
