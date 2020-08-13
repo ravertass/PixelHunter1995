@@ -17,8 +17,10 @@ namespace PixelHunter1995.Inputs
         public int MouseY { get; private set; }
         public Point Position { get => new Point(this.MouseX, this.MouseY); }
 
+        private static int SCROLL_DETENTS_PER_TICK = 120; // TODO figure out if this differs between different mice
         public int ScrollWheelValue { get; private set; }
-        // public int HorizontalScrollWheelValue { get; private set; }
+        public int ScrollWheelDelta { get; private set; }
+        public int ScrollWheelTicksDelta { get; private set; }
 
         public InputReader()
         {
@@ -52,6 +54,8 @@ namespace PixelHunter1995.Inputs
             // mouse position
             this.MouseX = Screen.GetFixedX(mouseState.X);
             this.MouseY = Screen.GetFixedY(mouseState.Y);
+            this.ScrollWheelDelta = mouseState.ScrollWheelValue - this.ScrollWheelValue;
+            this.ScrollWheelTicksDelta = this.ScrollWheelDelta / SCROLL_DETENTS_PER_TICK;
             this.ScrollWheelValue = mouseState.ScrollWheelValue;
             // this.HorizontalScrollWheelValue = mouseState.HorizontalScrollWheelValue;
         }

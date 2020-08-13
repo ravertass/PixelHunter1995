@@ -95,9 +95,6 @@ namespace PixelHunter1995
                     if (player == null)
                     {
                         player = new Player(50, 50);
-                        drawables.Add(player);
-                        updateables.Add(player);
-                        loadables.Add(player);
                     }
                 }
             }

@@ -12,14 +12,13 @@ namespace PixelHunter1995
     public class Main : Game
     {
         GraphicsDeviceManager graphics;
-        GameManager GameManager;
         SpriteBatch spriteBatch;
         private SoundEffect music;
         private bool musicPlaying = false;
         private RenderTarget2D renderTarget;
         private Screen screen;
         private InputManager input;
-        
+
         private static readonly string inputConfigPath = "Content/Config/input.cfg";
 
         public Main()
@@ -38,13 +37,12 @@ namespace PixelHunter1995
         protected override void Initialize()
         {
             Camera camera = new Camera();
-            GameManager = new GameManager(camera);
-            GameManager.Initialize();
+            GameManager.Instance.Initialize(camera);
             GlobalSettings.Instance.Debug = true;
             renderTarget = new RenderTarget2D(GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
             screen = new Screen(graphics, Window, camera);
             Screen.Instance = screen;
-            
+
             base.Initialize();
         }
 
@@ -56,14 +54,14 @@ namespace PixelHunter1995
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             this.spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
-            
+
             this.input = InputConfigParser.ParseInputConfig(inputConfigPath)
                     [InputConfigParser.DEFAULT_CONTEXT];
 
             // Load sounds
             music = Content.Load<SoundEffect>("Sounds/Hallways");
 
-            GameManager.LoadContent(Content);
+            GameManager.Instance.LoadContent(Content);
 
             // Load fonts
             FontManager.Instance.LoadContent(Content);
@@ -92,18 +90,18 @@ namespace PixelHunter1995
             }
 
             // The game requires focus to handle input.
-            if (this.IsActive)
+            if (this.IsActive || GlobalSettings.Instance.Debug)
             {
                 this.input.Update(); // handle input for global actions
-                
-                
+
+
                 if (input.GetState(InputCommand.ToggleFullscreen).IsEdgeDown)
                 {
                     screen.ToggleFullScreen();
                 }
             }
 
-            GameManager.Update(gameTime, input);
+            GameManager.Instance.Update(gameTime, input);
             base.Update(gameTime);
 
             if (!musicPlaying)
@@ -137,7 +135,7 @@ namespace PixelHunter1995
             GraphicsDevice.SetRenderTarget(renderTarget);
             GraphicsDevice.Clear(Color.Black);
 
-            GameManager.Draw(graphics, spriteBatch, gameTime);
+            GameManager.Instance.Draw(graphics, spriteBatch, gameTime);
 
             GraphicsDevice.SetRenderTarget(null);
         }

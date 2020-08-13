@@ -9,33 +9,32 @@ namespace PixelHunter1995.GameStates
     /// </summary>
     class Menu : IGameState
     {
-        private readonly Texture2D menu;
-        private StateManager stateManager;
+        private readonly Texture2D Texture;
 
-        public Menu(StateManager stateManager, Texture2D menu)
+        public Menu(Texture2D texture)
         {
-            this.stateManager = stateManager;
-            this.menu = menu;
+            Texture = texture;
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime, Scene scene)
+
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(menu, Vector2.Zero, Color.White);
+            spriteBatch.Draw(Texture, Vector2.Zero, Color.White);
             spriteBatch.End();
         }
 
-        public void Update(GameTime gameTime, Scene scene, InputManager input)
+        public void Update(GameTime gameTime, InputManager input)
         {
             if (input.GetState(InputCommand.MENU_Exit).IsEdgeDown)
             {
-                stateManager.SetExit();
+                GameManager.Instance.SetExit();
             }
             // Do not trigger at same time as ToggleFullscreen
             if (input.GetState(InputCommand.MENU_Accept).IsEdgeDown
                     && input.GetState(InputCommand.ToggleFullscreen).IsUp)
             {
-                stateManager.SetStatePlaying();
+                GameManager.Instance.StartExploring();
             }
         }
     }

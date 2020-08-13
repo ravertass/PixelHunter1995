@@ -10,7 +10,7 @@ namespace PixelHunter1995.GameStates
     /// </summary>
     interface IGameState
     {
-        void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime, Scene scene);
-        void Update(GameTime gameTime, Scene scene, InputManager input);
+        void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime);
+        void Update(GameTime gameTime, InputManager input);
     }
 }

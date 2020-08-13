@@ -29,22 +29,15 @@ namespace PixelHunter1995
             spriteBatch.DrawString(font, Text, new Vector2(X_POS + deltaX, Y_POS), Color.Purple);
         }
 
-        internal void Update(InputManager input, List<IDog> dogs, List<InventoryItem> items)
+        public void SetText(string text)
         {
-            Coord mousePos = new Coord(input.MouseX, input.MouseY);
+            Active = true;
+            Text = text;
+        }
+
+        public void UnSetText()
+        {
             Active = false;
-            // We sort on Z index, to check the top dog first. Note that this is reversed from
-            // when we draw them, since in that case we want to draw the thing on top last.
-            dogs.Sort((a, b) => b.ZIndex().CompareTo(a.ZIndex()));
-            foreach (IDog dog in dogs.Concat(items)) // We need not sort the inventory items, since they have their own space
-            {
-                if (dog.Contains(mousePos))
-                {
-                    Active = true;
-                    Text = dog.Name;
-                    break;
-                }
-            }
         }
 
         public int ZIndex()
