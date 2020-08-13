@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.Utilities;
-using PixelHunter1995.Inputs;
 
 namespace PixelHunter1995
 {
