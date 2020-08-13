@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PixelHunter1995.Inputs;
 using PixelHunter1995.TilesetLib;
 using System;
 
@@ -49,9 +50,9 @@ namespace PixelHunter1995.Components
             Voice.Say(speech);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, InputManager input)
         {
-            Voice.Update(gameTime);
+            Voice.Update(gameTime, input);
         }
 
         public void DrawSpeech(SpriteBatch spriteBatch)

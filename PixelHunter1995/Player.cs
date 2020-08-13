@@ -69,7 +69,7 @@ namespace PixelHunter1995
             }
             this.MoveDirection = MovePosition - Position;
             this.Position = this.Approach(Position, MovePosition, 2);
-            CharComp.Update(gameTime);
+            CharComp.Update(gameTime, input);
         }
 
         public void Say(string speech)
