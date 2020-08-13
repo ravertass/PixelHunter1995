@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using PixelHunter1995.Utilities;
 
 namespace PixelHunter1995
@@ -9,19 +8,25 @@ namespace PixelHunter1995
      */
     internal class Screen
     {
+
+        public Rectangle renderTargetRect;
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+
         internal int fullScreenWidth;
         internal int fullScreenHeight;
-        public Rectangle renderTargetRect;
+
         private readonly GraphicsDeviceManager graphics;
         private readonly GameWindow window;
-        private bool justToggledFullscreen = false;
 
         public Screen(GraphicsDeviceManager graphics, GameWindow window)
         {
             this.graphics = graphics;
             this.window = window;
-            graphics.PreferredBackBufferWidth = GlobalSettings.WINDOW_WIDTH;
-            graphics.PreferredBackBufferHeight = GlobalSettings.WINDOW_HEIGHT;
+            this.Width = GlobalSettings.WINDOW_WIDTH;
+            this.Height = GlobalSettings.WINDOW_HEIGHT;
+            graphics.PreferredBackBufferWidth = this.Width;
+            graphics.PreferredBackBufferHeight = this.Height;
             Initialize();
         }
 
@@ -34,8 +39,10 @@ namespace PixelHunter1995
         private void SetToWindowed()
         {
             renderTargetRect = RenderTargetWindowRect();
-            graphics.PreferredBackBufferWidth = GlobalSettings.WINDOW_WIDTH;
-            graphics.PreferredBackBufferHeight = GlobalSettings.WINDOW_HEIGHT;
+            this.Width = GlobalSettings.WINDOW_WIDTH;
+            this.Height = GlobalSettings.WINDOW_HEIGHT;
+            graphics.PreferredBackBufferWidth = this.Width;
+            graphics.PreferredBackBufferHeight = this.Height;
             graphics.ApplyChanges();
             window.IsBorderless = false;
             window.Position = new Point((fullScreenWidth - GlobalSettings.WINDOW_WIDTH) / 2,
@@ -57,16 +64,22 @@ namespace PixelHunter1995
         public void ToggleFullScreen()
         {
             if (window.IsBorderless)
+            {
                 SetToWindowed();
+            }
             else
+            {
                 SetToFullScreen();
+            }
         }
 
         private void SetToFullScreen()
         {
             renderTargetRect = RenderTargetFullScreenRect();
-            graphics.PreferredBackBufferWidth = fullScreenWidth;
-            graphics.PreferredBackBufferHeight = fullScreenHeight;
+            this.Width = fullScreenWidth;
+            this.Height = fullScreenHeight;
+            graphics.PreferredBackBufferWidth = this.Width;
+            graphics.PreferredBackBufferHeight = this.Height;
             graphics.ApplyChanges();
             window.IsBorderless = true;
             window.Position = new Point(0, 0);
@@ -93,25 +106,22 @@ namespace PixelHunter1995
             }
         }
 
-        private bool IsAltEnterPressed(KeyboardState state)
+        // Fix for fullscreen
+        public static Screen Instance { private get; set; } //! ugly, I know...
+
+        public static int GetFixedX(int x)
         {
-            return (state.IsKeyDown(Keys.LeftAlt) || state.IsKeyDown(Keys.RightAlt)) && state.IsKeyDown(Keys.Enter);
+            double ratioWidth = GlobalSettings.WINDOW_WIDTH / (double)Instance.Width;
+            return (int)(x * ratioWidth);
         }
-
-        public void CheckForFullScreen()
+        public static int GetFixedY(int y)
         {
-            KeyboardState state = Keyboard.GetState();
-            if (!justToggledFullscreen && IsAltEnterPressed(state))
-            {
-                ToggleFullScreen();
-                justToggledFullscreen = true;
-            }
-
-            if (!IsAltEnterPressed(state))
-            {
-                justToggledFullscreen = false;
-            }
+            double ratioHeight = GlobalSettings.WINDOW_HEIGHT / (double)Instance.Height;
+            return (int)(y * ratioHeight);
         }
-
+        public static Point GetFixedPoint(Point p)
+        {
+            return new Point(GetFixedX(p.X), GetFixedY(p.Y));
+        }
     }
 }

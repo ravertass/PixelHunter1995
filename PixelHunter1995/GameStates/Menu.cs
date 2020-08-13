@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using PixelHunter1995.Inputs;
 
 namespace PixelHunter1995.GameStates
 {
@@ -11,35 +11,29 @@ namespace PixelHunter1995.GameStates
     {
         private readonly Texture2D menu;
         private StateManager stateManager;
-        private bool escapeHasBeenUp;
 
         public Menu(StateManager stateManager, Texture2D menu)
         {
             this.stateManager = stateManager;
             this.menu = menu;
-            this.escapeHasBeenUp = false;
         }
+
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime, Scene scene)
         {
             spriteBatch.Draw(menu, Vector2.Zero, Color.White);
         }
 
-        public void Update(GameTime gameTime, Scene scene)
+        public void Update(GameTime gameTime, Scene scene, InputManager input)
         {
-            KeyboardState state = Keyboard.GetState();
-            if (state.IsKeyUp(Keys.Escape))
-            {
-                escapeHasBeenUp = true;
-            }
-
-            if (state.IsKeyDown(Keys.Escape) && escapeHasBeenUp)
+            if (input.GetState(InputCommand.MENU_Exit).IsEdgeDown)
             {
                 stateManager.SetExit();
             }
-            else if (state.IsKeyDown(Keys.Enter))
+            // Do not trigger at same time as ToggleFullscreen
+            if (input.GetState(InputCommand.MENU_Accept).IsEdgeDown
+                    && input.GetState(InputCommand.ToggleFullscreen).IsUp)
             {
-                escapeHasBeenUp = false;
                 stateManager.SetStatePlaying();
             }
         }

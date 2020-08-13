@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -92,10 +91,17 @@
     <Compile Include="Components\PositionComponent.cs" />
     <Compile Include="Components\CharacterComponent.cs" />
     <Compile Include="GameStates\StateManager.cs" />
+    <Compile Include="Utilities\Either.cs" />
     <Compile Include="Utilities\GlobalSettings.cs" />
     <Compile Include="HaveFunctionInterfaces\IDrawable.cs" />
     <Compile Include="HaveFunctionInterfaces\ILoadContent.cs" />
     <Compile Include="HaveFunctionInterfaces\IUpdateable.cs" />
+    <Compile Include="Inputs\InputCommand.cs" />
+    <Compile Include="Inputs\InputManager.cs" />
+    <Compile Include="Inputs\InputReader.cs" />
+    <Compile Include="Inputs\InputConfigParser.cs" />
+    <Compile Include="Inputs\SignalState.cs" />
+    <Compile Include="Inputs\StateMap.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="WalkingAreaLib\Polygon.cs" />
     <Compile Include="Utilities\Coord.cs" />
@@ -129,6 +135,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Config\input.cfg" />
     <Content Include="Content\Images\club_room.png" />
     <Content Include="Content\Images\full_club_room.png" />
     <Content Include="Content\Images\full_club_room_chemistry_table.png" />
@@ -154,6 +161,9 @@
     <None Include="app.manifest" />
     <None Include="Content\Fonts\Alkhemikal.spritefont" />
     <None Include="Content\Fonts\Alkhemikal.ttf" />
+    <None Include="Content\Config\input.cfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Scenes\club_room.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -184,9 +194,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="obj\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

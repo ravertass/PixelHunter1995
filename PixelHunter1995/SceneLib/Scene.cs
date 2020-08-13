@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PixelHunter1995.Inputs;
 using System.Collections.Generic;
 
 namespace PixelHunter1995
@@ -22,23 +23,23 @@ namespace PixelHunter1995
         {
             // We sort on Z and draw lowest first.
             drawables.Sort((a, b) => a.ZIndex().CompareTo(b.ZIndex()));
-            foreach (IDrawable drawable in drawables)
+            foreach (IDrawable drawable in this.drawables)
             {
                 drawable.Draw(graphics, spriteBatch, scaling);
             }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, InputManager input)
         {
-            foreach (IUpdateable updateable in updateables)
+            foreach (IUpdateable updateable in this.updateables)
             {
-                updateable.Update(gameTime);
+                updateable.Update(gameTime, input);
             }
         }
 
         public void LoadContent(ContentManager content)
         {
-            foreach (ILoadContent loadable in loadables)
+            foreach (ILoadContent loadable in this.loadables)
             {
                 loadable.LoadContent(content); ;
             }

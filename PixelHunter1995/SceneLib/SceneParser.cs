@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using PixelHunter1995.SceneLib;
 using PixelHunter1995.TilesetLib;
 using PixelHunter1995.Utilities;
@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System;
+using PixelHunter1995.Inputs;
 
 namespace PixelHunter1995
 {

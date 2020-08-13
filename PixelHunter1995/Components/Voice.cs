@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using PixelHunter1995.Inputs;
 
 namespace PixelHunter1995.Components
 {
@@ -26,7 +26,7 @@ namespace PixelHunter1995.Components
             UpcomingLines.Enqueue(speech);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, InputManager input)
         {
             bool hasSpoken = LineEndTime != null;
             if (hasSpoken)

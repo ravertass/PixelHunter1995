@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using PixelHunter1995.InventoryLib;
+using PixelHunter1995.Inputs;
 
 namespace PixelHunter1995.GameStates
 {
@@ -15,7 +15,7 @@ namespace PixelHunter1995.GameStates
 
         public Playing(StateManager stateManager, Inventory inventory)
         {
-            StateManager = stateManager;
+            this.StateManager = stateManager;
             Inventory = inventory;
 
         }
@@ -26,15 +26,14 @@ namespace PixelHunter1995.GameStates
             Inventory.Draw(graphics, spriteBatch, 1);
         }
 
-        public void Update(GameTime gameTime, Scene scene)
+        public void Update(GameTime gameTime, Scene scene, InputManager input)
         {
-            KeyboardState state = Keyboard.GetState();
-            if (state.IsKeyDown(Keys.Escape))
+            if (input.GetState(InputCommand.PLAYING_Pause).IsEdgeDown)
             {
                 StateManager.SetStateMenu();
             }
-
-            scene.Update(gameTime);
+            
+            scene.Update(gameTime, input);
         }
     }
 }

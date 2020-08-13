@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using PixelHunter1995.Components;
 using PixelHunter1995.TilesetLib;
+using PixelHunter1995.Inputs;
 using System;
 
 namespace PixelHunter1995
@@ -50,15 +50,13 @@ namespace PixelHunter1995
             this.AnimationTileset = new AnimationTileset("Animations/felixia");
         }
         bool said = false;
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, InputManager input)
         {
-            var mouseState = Mouse.GetState();
-
-            if (game.IsActive && mouseState.LeftButton == ButtonState.Pressed)
+            if (input.GetState(InputCommand.PLAYING_Move).IsDown)
             {
                 // Compensate for Position being in top left corner
-                float x = mouseState.X - AnimationTileset.tileWidth / 2;
-                float y = mouseState.Y - AnimationTileset.tileHeight;
+                float x = input.MouseX - AnimationTileset.tileWidth / 2;
+                float y = input.MouseY - AnimationTileset.tileHeight;
                 this.MovePosition = new Vector2(x,y);
                 if (!said)  // TODO remove this once we have better input handling
                 {
@@ -71,7 +69,7 @@ namespace PixelHunter1995
             }
             this.MoveDirection = MovePosition - Position;
             this.Position = this.Approach(Position, MovePosition, 2);
-            CharComp.Update(gameTime);
+            CharComp.Update(gameTime, input);
         }
 
         public void Say(string speech)
