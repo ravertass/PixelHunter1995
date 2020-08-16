@@ -4,7 +4,7 @@ using PixelHunter1995.TilesetLib;
 
 namespace PixelHunter1995.SceneLib
 {
-    class Dog : IDrawable
+    class Dog : IDog, IDrawable
     {
         private readonly int X;
         private readonly int Y;

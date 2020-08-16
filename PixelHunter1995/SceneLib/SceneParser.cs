@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using PixelHunter1995.SceneLib;
 using PixelHunter1995.TilesetLib;
 using PixelHunter1995.Utilities;
@@ -67,18 +67,25 @@ namespace PixelHunter1995
                     {
                         int x = (int)Math.Round(float.Parse(dogNode.Attributes["x"].Value));
                         int y = (int)Math.Round(float.Parse(dogNode.Attributes["y"].Value));
-                        int width = (int)Math.Round(float.Parse(dogNode.Attributes["width"].Value));
-                        int height = (int)Math.Round(float.Parse(dogNode.Attributes["height"].Value));
-                        int gid = int.Parse(dogNode.Attributes["gid"].Value);
-                        y = y - height; // Compensate for Tiled's coordinate system
-                        Tileset tileset = GetTilesetFromTileGid(tilesets, gid);
-                        Dog dog = new Dog(x, y, width, height, gid, tileset);
-                        drawables.Add(dog);
+                        if (dogNode.Attributes["gid"] != null)
+                        {
+                            int width = (int)Math.Round(float.Parse(dogNode.Attributes["width"].Value));
+                            int height = (int)Math.Round(float.Parse(dogNode.Attributes["height"].Value));
+                            int gid = int.Parse(dogNode.Attributes["gid"].Value);
+                            y = y - height; // Compensate for Tiled's coordinate system
+                            Tileset tileset = GetTilesetFromTileGid(tilesets, gid);
+                            Dog dog = new Dog(x, y, width, height, gid, tileset);
+                            drawables.Add(dog);
+                        }
+                        else
+                        {
+                            PolygonDog dog = new PolygonDog(x, y, ParsePolygonXml(dogNode));
+                        }
                     }
                 }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "walking")
                 {
-                    WalkingArea walkingArea = ParseWalkingXml(node);
+                    WalkingArea walkingArea = new WalkingArea(ParsePolygonXml(node.ChildNodes[0]));
                     drawables.Add(walkingArea);
 
                     // TODO Make player its own objectgroup, or part of "portal", or something similar.
@@ -123,18 +130,23 @@ namespace PixelHunter1995
             return new ImageLayer(imagePath, width, height, z);
         }
 
-        private static WalkingArea ParseWalkingXml(XmlNode node)
+        private static List<Coord> ParsePolygonXml(XmlNode node)
         {
             // TODO: We should probably allow multiple walking areas.
 
+            float baseX = float.Parse(node.Attributes["x"]?.InnerText);
+            float baseY = float.Parse(node.Attributes["y"]?.InnerText);
+
             Debug.Assert(node.ChildNodes.Count > 0);
-            XmlNode walkingNode = node.ChildNodes[0];
-
-            float baseX = float.Parse(walkingNode.Attributes["x"]?.InnerText);
-            float baseY = float.Parse(walkingNode.Attributes["y"]?.InnerText);
-
-            Debug.Assert(walkingNode.ChildNodes.Count > 0);
-            XmlNode polygonNode = walkingNode.ChildNodes[0];
+            XmlNode polygonNode = null;
+            foreach (XmlNode childNode in node.ChildNodes)
+            {
+                if (childNode.Name == "polygon")
+                {
+                    polygonNode = childNode;
+                    break;
+                }
+            }
 
             String polygonPointsString = polygonNode.Attributes["points"]?.InnerText;
             List<String> splitPolygonPointsString = polygonPointsString.Split(' ').ToList();
@@ -150,7 +162,7 @@ namespace PixelHunter1995
                 points.Add(point);
             }
 
-            return new WalkingArea(points);
+            return points;
         }
     }
 }

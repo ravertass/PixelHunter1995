@@ -81,6 +81,8 @@
     <Compile Include="FontManager.cs" />
     <Compile Include="InventoryLib\InventoryItem.cs" />
     <Compile Include="InventoryLib\Inventory.cs" />
+    <Compile Include="SceneLib\IDog.cs" />
+    <Compile Include="SceneLib\PolygonDog.cs" />
     <Compile Include="SceneLib\ImageLayer.cs" />
     <Compile Include="Components\IComponent.cs" />
     <Compile Include="Components\IHasComponent.cs" />
