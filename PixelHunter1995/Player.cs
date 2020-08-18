@@ -49,7 +49,6 @@ namespace PixelHunter1995
             this.FontName = "Alkhemikal";
             this.AnimationTileset = new AnimationTileset("Animations/felixia");
         }
-        bool said = false;
         public void Update(GameTime gameTime, InputManager input)
         {
             if (input.GetState(InputCommand.PLAYING_Move).IsDown)
@@ -58,14 +57,13 @@ namespace PixelHunter1995
                 float x = input.MouseX - AnimationTileset.tileWidth / 2;
                 float y = input.MouseY - AnimationTileset.tileHeight;
                 this.MovePosition = new Vector2(x,y);
-                if (!said)  // TODO remove this once we have better input handling
-                {
-                    Say("Hi, I'm the player!");  // For debugging purposes, have the character talk when walking
-                    Say("Well, actually my name is Felixia.");
-                    Say("My interests include alchemy, solving ridiculously convoluted puzzles " +
-                        "and long pull requests on the shore.");
-                    said = true;
-                }
+            }
+            if (input.Input.GetKeyState(MouseKeys.LeftButton).IsEdgeDown)
+            {
+                Say("Hi, I'm the player!");  // For debugging purposes, have the character talk when walking
+                Say("Well, actually my name is Felixia.");
+                Say("My interests include alchemy, solving ridiculously convoluted puzzles " +
+                    "and long pull requests on the shore.");
             }
             this.MoveDirection = MovePosition - Position;
             this.Position = this.Approach(Position, MovePosition, 2);
