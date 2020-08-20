@@ -81,6 +81,7 @@
     <Compile Include="FontManager.cs" />
     <Compile Include="InventoryLib\InventoryItem.cs" />
     <Compile Include="InventoryLib\Inventory.cs" />
+    <Compile Include="SceneLib\HoverText.cs" />
     <Compile Include="SceneLib\IDog.cs" />
     <Compile Include="SceneLib\PolygonDog.cs" />
     <Compile Include="SceneLib\ImageLayer.cs" />
@@ -105,7 +106,7 @@
     <Compile Include="Inputs\SignalState.cs" />
     <Compile Include="Inputs\StateMap.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="WalkingAreaLib\Polygon.cs" />
+    <Compile Include="Utilities\Polygon.cs" />
     <Compile Include="Utilities\Coord.cs" />
     <Compile Include="TilesetLib\AnimationTileset.cs" />
     <Compile Include="TilesetLib\TilesetParser.cs" />
@@ -166,6 +167,8 @@
     <None Include="Content\Config\input.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Fonts\FreePixel.spritefont" />
+    <None Include="Content\Fonts\FreePixel.ttf" />
     <None Include="Content\Scenes\club_room.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

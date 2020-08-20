@@ -12,7 +12,7 @@ namespace PixelHunter1995.InventoryLib
     class Inventory: ILoadContent, IDrawable
     {
         private static readonly int X_POS = 120;
-        private static readonly int Y_POS = 160;
+        private static readonly int Y_POS = 175;
         private static readonly int X_PADDING = 5;
         private static readonly int Y_PADDING = 5;
         private static readonly int X_ITEM_SIZE = 32;

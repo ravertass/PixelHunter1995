@@ -37,7 +37,7 @@ namespace PixelHunter1995
         {
             Fonts = new Dictionary<string, SpriteFont>();
             // Add new fonts here
-            var fontNames = new List<string> { "Alkhemikal" };
+            var fontNames = new List<string> { "Alkhemikal", "FreePixel" };
             foreach (string fontName in fontNames)
             {
                 var font = content.Load<SpriteFont>("Fonts/" + fontName);
