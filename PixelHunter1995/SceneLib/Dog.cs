@@ -13,16 +13,19 @@ namespace PixelHunter1995.SceneLib
         private readonly int Height;
         private readonly int Gid;
         private readonly Tileset Tileset;
+        public string Name { get; }
 
         public Dog(int x, int y, int width, int height, int gid, Tileset tileset)
         {
-            this.X = x;
-            this.Y = y;
-            this.Width = width;
-            this.Height = height;
-            this.Gid = gid;
-            this.Tileset = tileset;
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
+            Gid = gid;
+            Tileset = tileset;
+            Name = "Dog " + Gid;
         }
+
 
         public bool Contains(Coord point)
         {

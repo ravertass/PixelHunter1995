@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.Inputs;
-using PixelHunter1995.SceneLib;
 using PixelHunter1995.Utilities;
 
-namespace PixelHunter1995
+namespace PixelHunter1995.SceneLib
 {
     internal class HoverText : IDrawable
     {
@@ -36,7 +35,7 @@ namespace PixelHunter1995
                 if (dog.Contains(mousePos))
                 {
                     Active = true;
-                    Text = "Apa"; // TODO replace this with data from dog
+                    Text = dog.Name;
                     break;
                 }
             }

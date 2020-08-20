@@ -5,5 +5,6 @@ namespace PixelHunter1995.SceneLib
     internal interface IDog
     {
         bool Contains(Coord point);
+        string Name { get; }
     }
 }

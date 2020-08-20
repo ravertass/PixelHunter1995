@@ -19,7 +19,10 @@ namespace PixelHunter1995.SceneLib
             X = x;
             Y = y;
             Polygon = new Polygon(points);
+            Name = "PolygonDog";
         }
+
+        public string Name { get; }
 
         public bool Contains(Coord point)
         {

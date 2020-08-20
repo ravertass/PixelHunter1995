@@ -179,10 +179,9 @@ namespace PixelHunter1995.WalkingAreaLib
         /// <returns></returns>
         public bool Contains(Coord point)
         {
-            int i, j = 0;
             bool contains = false;
 
-            for (i = 0, j = vertices.Count - 1; i < vertices.Count; j = i++)
+            for (int i = 0, j = vertices.Count - 1; i < vertices.Count; j = i++)
             {
                 if ((vertices[i].Y > point.Y) != (vertices[j].Y > point.Y) &&
                         (point.X < (vertices[j].X - vertices[i].X) * (point.Y - vertices[i].Y) /
