@@ -46,21 +46,7 @@ namespace PixelHunter1995
                 updateable.Update(gameTime, input);
             }
 
-            Coord mousePos = new Coord(input.MouseX, input.MouseY);
-            bool foundADog = false;
-            foreach (IDog dog in Dogs)
-            {
-                if (dog.Contains(mousePos))
-                {
-                    HoverText.Activate("Apa");
-                    foundADog = true;
-                    break;
-                }
-            }
-            if (!foundADog)
-            {
-                HoverText.Deactivate();
-            }
+            HoverText.Update(input, Dogs);
         }
 
         public void LoadContent(ContentManager content)
