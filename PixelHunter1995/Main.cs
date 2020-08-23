@@ -5,6 +5,7 @@ using PixelHunter1995.GameStates;
 using PixelHunter1995.Utilities;
 using PixelHunter1995.Inputs;
 using System.IO;
+using Microsoft.Xna.Framework.Media;
 
 namespace PixelHunter1995
 {
@@ -67,7 +68,7 @@ namespace PixelHunter1995
                     [InputConfigParser.DEFAULT_CONTEXT];
 
             // Load sounds
-            music = Content.Load<SoundEffect>("Sounds/slow-music");
+            music = Content.Load<SoundEffect>("Sounds/Hallways");
 
             foreach (Scene scene in SceneManager.scenes.Values)
             {
@@ -122,7 +123,7 @@ namespace PixelHunter1995
             if (!musicPlaying)
             {
                 SoundEffectInstance soundInst = music.CreateInstance();
-                soundInst.Volume = 0.01f;
+                soundInst.Volume = 0.1f;
                 soundInst.IsLooped = true;
                 soundInst.Play();
                 musicPlaying = true;
