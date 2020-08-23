@@ -33,7 +33,7 @@ namespace PixelHunter1995
         {
             Coord mousePos = new Coord(input.MouseX, input.MouseY);
             Active = false;
-            // We sort on Z index, to check the dog on top first. Note that this is reversed from
+            // We sort on Z index, to check the top dog first. Note that this is reversed from
             // when we draw them, since in that case we want to draw the thing on top last.
             dogs.Sort((a, b) => b.ZIndex().CompareTo(a.ZIndex()));
             foreach (IDog dog in dogs.Concat(items)) // We need not sort the inventory items, since they have their own space
