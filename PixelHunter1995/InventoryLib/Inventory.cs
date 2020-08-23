@@ -1,10 +1,12 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PixelHunter1995.Inputs;
 using PixelHunter1995.TilesetLib;
 
 namespace PixelHunter1995.InventoryLib
@@ -12,18 +14,18 @@ namespace PixelHunter1995.InventoryLib
     class Inventory: ILoadContent, IDrawable
     {
         private static readonly int X_POS = 120;
-        private static readonly int Y_POS = 160;
-        private static readonly int X_PADDING = 5;
-        private static readonly int Y_PADDING = 5;
-        private static readonly int X_ITEM_SIZE = 32;
-        private static readonly int Y_ITEM_SIZE = 32;
+        private static readonly int Y_POS = 175;
+        private static readonly int X_PADDING = 2;
+        private static readonly int Y_PADDING = 2;
+        public static readonly int ITEM_WIDTH = 40;
+        public static readonly int ITEM_HEIGHT = 30;
         private static readonly int COLUMNS = 6;
         private static readonly int ROWS = 2;
         private static readonly string TILESET_DIR = "Content\\Tileset";
 
-        private List<InventoryItem> Items = new List<InventoryItem>();
-        private Texture2D InventoryBackground;
+        public List<InventoryItem> Items = new List<InventoryItem>();
         private Tileset InventoryTileset;
+        private Texture2D ItemBackground = null;
 
         public Inventory()
         {
@@ -31,13 +33,10 @@ namespace PixelHunter1995.InventoryLib
             string tilesetFilename = "dogs.tsx";
             string tilesetXmlPath = Path.Combine(TILESET_DIR, tilesetFilename); // TODO: support several tilesets
             InventoryTileset = TilesetParser.ParseTilesetXml(tilesetXmlPath, tilesetFirstGid);
-            Debug.Assert(InventoryTileset.tileWidth == X_ITEM_SIZE, "Invalid item size in tileset " + tilesetFilename);
-            Debug.Assert(InventoryTileset.tileHeight == Y_ITEM_SIZE, "Invalid item size in tileset " + tilesetFilename);
         }
 
         public void LoadContent(ContentManager content)
         {
-            InventoryBackground = content.Load<Texture2D>("Images/inventory");
             InventoryTileset.LoadContent(content);
         }
 
@@ -46,27 +45,57 @@ namespace PixelHunter1995.InventoryLib
             Debug.Assert(tileNumber >= 0 && tileNumber < COLUMNS * ROWS, "tileNumber outside of valid range.");
             int row = tileNumber / COLUMNS;
             int column = tileNumber % COLUMNS;
-            int x_pos = X_POS + X_PADDING + column * (X_ITEM_SIZE + X_PADDING);
-            int y_pos = Y_POS + Y_PADDING + row * (Y_ITEM_SIZE + Y_PADDING);
+            int x_pos = X_POS + X_PADDING + column * (ITEM_WIDTH + X_PADDING);
+            int y_pos = Y_POS + Y_PADDING + row * (ITEM_HEIGHT + Y_PADDING);
             return new Vector2(x_pos, y_pos);
         }
+
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
             // TODO: Some way to display more than COLUMNS * ROWS items
 
-            // Temporary code give the player some stuff if empty inventory
+            // Temporary code to give the player some stuff if empty inventory
             if (Items.Count == 0)
             {
                 System.Console.WriteLine("You have nothing in your inventory, here take some stuff!");
                 Add("banana", "dogs");
                 Add("apple", "dogs");
                 Add("broccoli", "dogs");
+                Add("broccoli", "dogs");
+                Add("broccoli", "dogs");
+                Add("broccoli", "dogs");
+                Add("broccoli", "dogs");
+                Add("broccoli", "dogs");
                 System.Console.WriteLine(this);
             }
-            spriteBatch.Draw(InventoryBackground, new Vector2(X_POS, Y_POS), Color.White);
-            for (int i = 0; i < Items.Count; i++)
+            DrawBackground(graphics, spriteBatch);
+            foreach (InventoryItem item in Items)
             {
-                Items[i].Draw(graphics, spriteBatch, scaling, GetItemTilePosition(i));
+                item.Draw(graphics, spriteBatch, scaling);
+            }
+        }
+
+        private void DrawBackground(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
+        {
+            // Draw background boxes for each visible item slot
+            if (ItemBackground == null)
+            {
+                ItemBackground = new Texture2D(graphics.GraphicsDevice, ITEM_WIDTH, ITEM_HEIGHT);
+                Color[] data = new Color[ITEM_WIDTH * ITEM_HEIGHT];
+                for (int i = 0; i < data.Length; ++i)
+                {
+                    data[i] = Color.Gray;
+                }
+                ItemBackground.SetData(data);
+            }
+            for (int row = 0; row < ROWS; row++)
+            {
+                for (int column = 0; column < COLUMNS; column++)
+                {
+                    Vector2 pos = new Vector2(X_POS + column * (ITEM_WIDTH + X_PADDING),
+                                              Y_POS + row * (ITEM_HEIGHT + Y_PADDING));
+                    spriteBatch.Draw(ItemBackground, pos, Color.White);
+                }
             }
         }
 
@@ -93,7 +122,10 @@ namespace PixelHunter1995.InventoryLib
 
         public void Add(string itemName, string tilesetName)
         {
-            Items.Add(new InventoryItem(itemName, InventoryTileset, GetGidFromName(itemName, tilesetName)));
+            Vector2 itemPos = GetItemTilePosition(Items.Count);
+            Items.Add(new InventoryItem(itemName, InventoryTileset, GetGidFromName(itemName, tilesetName),
+                                        (int) itemPos.X, (int) itemPos.Y,
+                                        ITEM_WIDTH, ITEM_HEIGHT));
         }
 
         public void Remove(string itemName)

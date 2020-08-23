@@ -29,6 +29,6 @@ namespace PixelHunter1995.Utilities
             }
         }
 
-        public bool Debug { get; set; } = false;
+        public bool Debug { get; set; } = true;
     }
 }

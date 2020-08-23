@@ -8,7 +8,7 @@ using PixelHunter1995.Utilities;
 
 namespace PixelHunter1995.WalkingAreaLib
 {
-    class Polygon// : IDrawable
+    class Polygon
     {
         private List<Coord> vertices;
 
@@ -169,6 +169,26 @@ namespace PixelHunter1995.WalkingAreaLib
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Checks if point is contained in the polygon.
+        /// Taken from https://stackoverflow.com/a/2922778
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public bool Contains(Coord point)
+        {
+            bool contains = false;
+
+            for (int i = 0, j = vertices.Count - 1; i < vertices.Count; j = i++)
+            {
+                if ((vertices[i].Y > point.Y) != (vertices[j].Y > point.Y) &&
+                        (point.X < (vertices[j].X - vertices[i].X) * (point.Y - vertices[i].Y) /
+                        (vertices[j].Y - vertices[i].Y) + vertices[i].X))
+                    contains = !contains;
+            }
+            return contains;
         }
 
         /// <summary>

@@ -32,6 +32,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Alkhemikal.spritefont
 
+#begin Fonts/FreePixel.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/FreePixel.spritefont
+
 #begin Images/background.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -115,18 +122,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/hallway_soda.png
-
-#begin Images/inventory.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Images/inventory.png
 
 #begin Images/Menu.jpg
 /importer:TextureImporter

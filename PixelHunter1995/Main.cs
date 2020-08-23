@@ -16,7 +16,6 @@ namespace PixelHunter1995
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        FontManager fontManager;
         private SoundEffect music;
         private bool musicPlaying = false;
         private readonly SceneManager SceneManager = new SceneManager();
