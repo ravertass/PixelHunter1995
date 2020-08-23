@@ -11,7 +11,7 @@ using PixelHunter1995.TilesetLib;
 
 namespace PixelHunter1995.InventoryLib
 {
-    class Inventory: ILoadContent, IDrawable, IUpdateable
+    class Inventory: ILoadContent, IDrawable
     {
         private static readonly int X_POS = 120;
         private static readonly int Y_POS = 175;
@@ -88,14 +88,6 @@ namespace PixelHunter1995.InventoryLib
                                                Y_POS + row * (ITEM_HEIGHT + Y_PADDING));
                     spriteBatch.Draw(rect, coor, Color.White);
                 }
-            }
-        }
-
-        public void Update(GameTime gameTime, InputManager input)
-        {
-            for (int i = 0; i < Items.Count; i++)
-            {
-                Items[i].Position = GetItemTilePosition(i);
             }
         }
 

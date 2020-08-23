@@ -49,7 +49,6 @@ namespace PixelHunter1995.InventoryLib
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
             Tileset.Draw(spriteBatch, Position, TilesetGid, scaling);
-            int apa = 0;
         }
 
         public bool Contains(Coord point)

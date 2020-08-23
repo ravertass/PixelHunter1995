@@ -36,7 +36,6 @@ namespace PixelHunter1995.GameStates
             }
             
             scene.Update(gameTime, input);
-            Inventory.Update(gameTime, input);
             HoverText.Update(input, scene.Dogs, Inventory.Items);
         }
     }

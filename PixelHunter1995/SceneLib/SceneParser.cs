@@ -66,6 +66,7 @@ namespace PixelHunter1995
                 {
                     foreach (XmlNode dogNode in node.ChildNodes)
                     {
+                        IDog dog;
                         int x = (int)Math.Round(float.Parse(dogNode.Attributes["x"].Value));
                         int y = (int)Math.Round(float.Parse(dogNode.Attributes["y"].Value));
                         if (dogNode.Attributes["gid"] != null)
@@ -75,15 +76,14 @@ namespace PixelHunter1995
                             int gid = int.Parse(dogNode.Attributes["gid"].Value);
                             y = y - height; // Compensate for Tiled's coordinate system
                             Tileset tileset = GetTilesetFromTileGid(tilesets, gid);
-                            Dog dog = new Dog(x, y, width, height, gid, tileset);
-                            drawables.Add(dog);
-                            dogs.Add(dog);
+                            dog = new Dog(x, y, width, height, gid, tileset);
                         }
                         else
                         {
-                            PolygonDog dog = new PolygonDog(x, y, ParsePolygonXml(dogNode));
-                            dogs.Add(dog);
+                            dog = new PolygonDog(x, y, ParsePolygonXml(dogNode));
                         }
+                        drawables.Add(dog);
+                        dogs.Add(dog);
                     }
                 }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "walking")
