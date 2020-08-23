@@ -9,7 +9,7 @@ namespace PixelHunter1995.InventoryLib
 {
     class InventoryItem : IDog
     {
-        readonly string Name;
+        public string Name { get; set; }
         readonly Tileset Tileset;
         readonly int TilesetGid;
         private int X;
@@ -17,7 +17,6 @@ namespace PixelHunter1995.InventoryLib
         private readonly int Width;
         private readonly int Height;
 
-        string IDog.Name => throw new System.NotImplementedException();
         public Vector2 Position {
             get
             {

@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,16 +15,15 @@ namespace PixelHunter1995.InventoryLib
     {
         private static readonly int X_POS = 120;
         private static readonly int Y_POS = 175;
-        private static readonly int X_PADDING = 3;
+        private static readonly int X_PADDING = 2;
         private static readonly int Y_PADDING = 3;
-        public static readonly int ITEM_WIDTH = 32;
-        public static readonly int ITEM_HEIGHT = 32;
+        public static readonly int ITEM_WIDTH = 40;
+        public static readonly int ITEM_HEIGHT = 30;
         private static readonly int COLUMNS = 6;
         private static readonly int ROWS = 2;
         private static readonly string TILESET_DIR = "Content\\Tileset";
 
         public List<InventoryItem> Items = new List<InventoryItem>();
-        private Texture2D InventoryBackground;
         private Tileset InventoryTileset;
 
         public Inventory()
@@ -32,13 +32,10 @@ namespace PixelHunter1995.InventoryLib
             string tilesetFilename = "dogs.tsx";
             string tilesetXmlPath = Path.Combine(TILESET_DIR, tilesetFilename); // TODO: support several tilesets
             InventoryTileset = TilesetParser.ParseTilesetXml(tilesetXmlPath, tilesetFirstGid);
-            Debug.Assert(InventoryTileset.tileWidth == ITEM_WIDTH, "Invalid item size in tileset " + tilesetFilename);
-            Debug.Assert(InventoryTileset.tileHeight == ITEM_HEIGHT, "Invalid item size in tileset " + tilesetFilename);
         }
 
         public void LoadContent(ContentManager content)
         {
-            InventoryBackground = content.Load<Texture2D>("Images/inventory");
             InventoryTileset.LoadContent(content);
         }
 
@@ -69,10 +66,28 @@ namespace PixelHunter1995.InventoryLib
                 Add("broccoli", "dogs");
                 System.Console.WriteLine(this);
             }
-            spriteBatch.Draw(InventoryBackground, new Vector2(X_POS, Y_POS), Color.White);
+            DrawBackground(graphics, spriteBatch);
             foreach (InventoryItem item in Items)
             {
                 item.Draw(graphics, spriteBatch, scaling);
+            }
+        }
+
+        private void DrawBackground(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
+        {
+            // Draw background boxes for each visible item slot
+            Texture2D rect = new Texture2D(graphics.GraphicsDevice, ITEM_WIDTH, ITEM_HEIGHT);
+            Color[] data = new Color[ITEM_WIDTH * ITEM_HEIGHT];
+            for (int i = 0; i < data.Length; ++i) data[i] = Color.Gray;
+            rect.SetData(data);
+            for (int row = 0; row < ROWS; row++)
+            {
+                for (int column = 0; column < COLUMNS; column++)
+                {
+                    Vector2 coor = new Vector2(X_POS + column * (ITEM_WIDTH + X_PADDING),
+                                               Y_POS + row * (ITEM_HEIGHT + Y_PADDING));
+                    spriteBatch.Draw(rect, coor, Color.White);
+                }
             }
         }
 
