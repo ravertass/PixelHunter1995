@@ -16,7 +16,7 @@ namespace PixelHunter1995.InventoryLib
         private static readonly int X_POS = 120;
         private static readonly int Y_POS = 175;
         private static readonly int X_PADDING = 2;
-        private static readonly int Y_PADDING = 3;
+        private static readonly int Y_PADDING = 2;
         public static readonly int ITEM_WIDTH = 40;
         public static readonly int ITEM_HEIGHT = 30;
         private static readonly int COLUMNS = 6;
@@ -25,6 +25,7 @@ namespace PixelHunter1995.InventoryLib
 
         public List<InventoryItem> Items = new List<InventoryItem>();
         private Tileset InventoryTileset;
+        private Texture2D ItemBackground = null;
 
         public Inventory()
         {
@@ -48,11 +49,12 @@ namespace PixelHunter1995.InventoryLib
             int y_pos = Y_POS + Y_PADDING + row * (ITEM_HEIGHT + Y_PADDING);
             return new Vector2(x_pos, y_pos);
         }
+
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
             // TODO: Some way to display more than COLUMNS * ROWS items
 
-            // Temporary code give the player some stuff if empty inventory
+            // Temporary code to give the player some stuff if empty inventory
             if (Items.Count == 0)
             {
                 System.Console.WriteLine("You have nothing in your inventory, here take some stuff!");
@@ -76,17 +78,23 @@ namespace PixelHunter1995.InventoryLib
         private void DrawBackground(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
         {
             // Draw background boxes for each visible item slot
-            Texture2D rect = new Texture2D(graphics.GraphicsDevice, ITEM_WIDTH, ITEM_HEIGHT);
-            Color[] data = new Color[ITEM_WIDTH * ITEM_HEIGHT];
-            for (int i = 0; i < data.Length; ++i) data[i] = Color.Gray;
-            rect.SetData(data);
+            if (ItemBackground == null)
+            {
+                ItemBackground = new Texture2D(graphics.GraphicsDevice, ITEM_WIDTH, ITEM_HEIGHT);
+                Color[] data = new Color[ITEM_WIDTH * ITEM_HEIGHT];
+                for (int i = 0; i < data.Length; ++i)
+                {
+                    data[i] = Color.Gray;
+                }
+                ItemBackground.SetData(data);
+            }
             for (int row = 0; row < ROWS; row++)
             {
                 for (int column = 0; column < COLUMNS; column++)
                 {
-                    Vector2 coor = new Vector2(X_POS + column * (ITEM_WIDTH + X_PADDING),
-                                               Y_POS + row * (ITEM_HEIGHT + Y_PADDING));
-                    spriteBatch.Draw(rect, coor, Color.White);
+                    Vector2 pos = new Vector2(X_POS + column * (ITEM_WIDTH + X_PADDING),
+                                              Y_POS + row * (ITEM_HEIGHT + Y_PADDING));
+                    spriteBatch.Draw(ItemBackground, pos, Color.White);
                 }
             }
         }
