@@ -242,6 +242,7 @@ namespace PixelHunter1995.WalkingAreaLib
                     indexOffset,
                     drawIndices.Length - 1);
             }
+            basicEffect.Dispose();
         }
 
         public bool HasCommonEdgeWith(Polygon other)
