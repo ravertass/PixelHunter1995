@@ -2,7 +2,7 @@
 
 namespace PixelHunter1995.SceneLib
 {
-    internal interface IDog
+    internal interface IDog : IDrawable
     {
         bool Contains(Coord point);
         string Name { get; }

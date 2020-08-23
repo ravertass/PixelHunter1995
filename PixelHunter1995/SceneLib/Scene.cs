@@ -13,8 +13,7 @@ namespace PixelHunter1995
         private List<IDrawable> Drawables;
         private List<IUpdateable> Updateables;
         private List<ILoadContent> Loadables;
-        private List<IDog> Dogs;
-        private HoverText HoverText;
+        public List<IDog> Dogs;
 
         public Scene(List<IDrawable> drawables,
                      List<IUpdateable> updateables,
@@ -25,8 +24,6 @@ namespace PixelHunter1995
             Updateables = updateables;
             Loadables = loadables;
             Dogs = dogs;
-            HoverText = new HoverText();
-            Drawables.Add(HoverText);
         }
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
@@ -45,8 +42,6 @@ namespace PixelHunter1995
             {
                 updateable.Update(gameTime, input);
             }
-
-            HoverText.Update(input, Dogs);
         }
 
         public void LoadContent(ContentManager content)

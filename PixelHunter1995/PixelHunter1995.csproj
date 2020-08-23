@@ -81,7 +81,7 @@
     <Compile Include="FontManager.cs" />
     <Compile Include="InventoryLib\InventoryItem.cs" />
     <Compile Include="InventoryLib\Inventory.cs" />
-    <Compile Include="SceneLib\HoverText.cs" />
+    <Compile Include="HoverText.cs" />
     <Compile Include="SceneLib\IDog.cs" />
     <Compile Include="SceneLib\PolygonDog.cs" />
     <Compile Include="SceneLib\ImageLayer.cs" />
@@ -167,8 +167,10 @@
     <None Include="Content\Config\input.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Fonts\Pixeled.spritefont" />
     <None Include="Content\Fonts\FreePixel.spritefont" />
     <None Include="Content\Fonts\FreePixel.ttf" />
+    <None Include="Content\Fonts\Pixeled.ttf" />
     <None Include="Content\Scenes\club_room.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

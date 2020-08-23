@@ -5,7 +5,7 @@ using PixelHunter1995.Utilities;
 
 namespace PixelHunter1995.SceneLib
 {
-    class Dog : IDog, IDrawable
+    class Dog : IDog
     {
         private readonly int X;
         private readonly int Y;
@@ -25,7 +25,6 @@ namespace PixelHunter1995.SceneLib
             Tileset = tileset;
             Name = "Dog " + Gid;
         }
-
 
         public bool Contains(Coord point)
         {
