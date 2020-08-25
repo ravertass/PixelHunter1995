@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -222,13 +221,35 @@ namespace PixelHunter1995.WalkingAreaLib
             return string.Join<Coord>(", ", vertices);
         }
 
-        public void Draw(GraphicsDeviceManager graphics)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
             if (!GlobalSettings.Instance.Debug)
             {
                 return;
             }
-
+            
+            var renderTarget = this.DrawToRenderTarget(graphics);
+            spriteBatch.Draw((Texture2D)renderTarget, Vector2.Zero, Color.White);
+        }
+        
+        
+        private RenderTarget2D DrawToRenderTarget(GraphicsDeviceManager graphics)
+        {
+            var oldTargets = graphics.GraphicsDevice.GetRenderTargets();
+            var newTarget = new RenderTarget2D(graphics.GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
+            
+            graphics.GraphicsDevice.SetRenderTarget(newTarget);
+            graphics.GraphicsDevice.Clear(Color.Transparent);
+            
+            this.DrawPolygon(graphics);
+            
+            graphics.GraphicsDevice.SetRenderTargets(oldTargets);
+            
+            return newTarget;
+        }
+        
+        private void DrawPolygon(GraphicsDeviceManager graphics)
+        {
             VertexPositionColor[] drawVertices = new VertexPositionColor[vertices.Count];
             short[] drawIndices = new short[vertices.Count * 2];
             for (int i = 0; i < vertices.Count; i++)
@@ -241,6 +262,7 @@ namespace PixelHunter1995.WalkingAreaLib
                 float x = (coord.X / GlobalSettings.WINDOW_WIDTH) * 2.0f - 1.0f;
                 float y = -(coord.Y / GlobalSettings.WINDOW_HEIGHT) * 2.0f + 1.0f;
                 drawVertices[i].Position = new Vector3(x, y, 0.0f);
+                drawVertices[i].Color = Color.Red;
                 drawIndices[i * 2] = (short)i;
                 drawIndices[i * 2 + 1] = (short)((i + 1) % vertices.Count);
             }
@@ -250,6 +272,7 @@ namespace PixelHunter1995.WalkingAreaLib
 
             // Apparently, we need to use a shader for this.
             BasicEffect basicEffect = new BasicEffect(graphics.GraphicsDevice);
+            basicEffect.VertexColorEnabled = true;
             foreach (EffectPass effectPass in basicEffect.CurrentTechnique.Passes)
             {
                 effectPass.Apply();

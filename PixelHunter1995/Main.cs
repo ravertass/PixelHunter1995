@@ -5,7 +5,6 @@ using PixelHunter1995.GameStates;
 using PixelHunter1995.Utilities;
 using PixelHunter1995.Inputs;
 using System.IO;
-using Microsoft.Xna.Framework.Media;
 
 namespace PixelHunter1995
 {

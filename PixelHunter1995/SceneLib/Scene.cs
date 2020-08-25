@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.Inputs;
 using PixelHunter1995.SceneLib;
-using PixelHunter1995.Utilities;
 using System.Collections.Generic;
 
 namespace PixelHunter1995

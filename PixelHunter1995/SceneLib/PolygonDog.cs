@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.Utilities;
@@ -32,7 +28,7 @@ namespace PixelHunter1995.SceneLib
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
-            Polygon.Draw(graphics);
+            Polygon.Draw(graphics, spriteBatch, scaling);
         }
 
         public int ZIndex()

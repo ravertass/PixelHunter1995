@@ -1,12 +1,10 @@
 ﻿
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using PixelHunter1995.Inputs;
 using PixelHunter1995.TilesetLib;
 
 namespace PixelHunter1995.InventoryLib

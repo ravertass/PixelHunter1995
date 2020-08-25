@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace PixelHunter1995.WalkingAreaLib
 {
@@ -65,9 +66,9 @@ namespace PixelHunter1995.WalkingAreaLib
             return string.Join<Polygon>("; ", Polygons);
         }
 
-        public void Draw(GraphicsDeviceManager graphics)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
-            Polygons.ForEach(p => p.Draw(graphics));
+            Polygons.ForEach(p => p.Draw(graphics, spriteBatch, scaling));
         }
     }
 }
