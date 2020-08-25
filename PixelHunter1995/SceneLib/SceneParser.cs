@@ -14,7 +14,7 @@ namespace PixelHunter1995
 {
     class SceneParser
     {
-        public static Scene ParseSceneXml(string sceneXmlPath, Game game)
+        public static Scene ParseSceneXml(string sceneXmlPath)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(sceneXmlPath);
@@ -93,7 +93,7 @@ namespace PixelHunter1995
                     // TODO Make player its own objectgroup, or part of "portal", or something similar.
                     if (player == null)
                     {
-                        player = new Player(game, 50, 50);
+                        player = new Player(50, 50);
                         drawables.Add(player);
                         updateables.Add(player);
                         loadables.Add(player);

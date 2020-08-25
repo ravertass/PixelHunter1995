@@ -1,10 +1,8 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using PixelHunter1995.GameStates;
 using PixelHunter1995.Utilities;
 using PixelHunter1995.Inputs;
-using System.IO;
 
 namespace PixelHunter1995
 {
@@ -14,12 +12,10 @@ namespace PixelHunter1995
     public class Main : Game
     {
         GraphicsDeviceManager graphics;
+        GameManager GameManager;
         SpriteBatch spriteBatch;
         private SoundEffect music;
         private bool musicPlaying = false;
-        private readonly SceneManager SceneManager = new SceneManager();
-        private StateManager stateManager;
-        private ShouldExit shouldExit;
         private RenderTarget2D renderTarget;
         private Screen screen;
         private InputManager input;
@@ -29,6 +25,7 @@ namespace PixelHunter1995
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
+            GameManager = new GameManager();
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
         }
@@ -41,11 +38,8 @@ namespace PixelHunter1995
         /// </summary>
         protected override void Initialize()
         {
-            SceneManager.Initialize(Path.Combine("Content", "Scenes"), this);
-            SceneManager.SetCurrentSceneByName("full_club_room.tmx");
+            GameManager.Initialize();
             GlobalSettings.Instance.Debug = true;
-            shouldExit = new ShouldExit();
-            stateManager = new StateManager(shouldExit);
             renderTarget = new RenderTarget2D(GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
             screen = new Screen(graphics, Window);
             Screen.Instance = screen;
@@ -68,14 +62,7 @@ namespace PixelHunter1995
             // Load sounds
             music = Content.Load<SoundEffect>("Sounds/Hallways");
 
-            foreach (Scene scene in SceneManager.scenes.Values)
-            {
-                scene.LoadContent(Content);
-            }
-
-            // Load game states
-            stateManager.LoadContent(Content);
-            stateManager.SetStateMenu();
+            GameManager.LoadContent(Content);
 
             // Load fonts
             FontManager.Instance.LoadContent(Content);
@@ -98,7 +85,7 @@ namespace PixelHunter1995
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (shouldExit.exit)
+            if (ShouldExit.Instance.exit)
             {
                 Exit();
             }
@@ -115,7 +102,7 @@ namespace PixelHunter1995
                 }
             }
 
-            stateManager.currentState.Update(gameTime, SceneManager.currentScene, this.input);
+            GameManager.Update(gameTime, input);
             base.Update(gameTime);
 
             if (!musicPlaying)
@@ -150,7 +137,7 @@ namespace PixelHunter1995
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-            stateManager.currentState.Draw(graphics, spriteBatch, gameTime, SceneManager.currentScene);
+            GameManager.Draw(graphics, spriteBatch, gameTime);
             spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);
@@ -163,6 +150,20 @@ namespace PixelHunter1995
     /// </summary>
     public class ShouldExit
     {
+        private static ShouldExit instance;
+
+        public static ShouldExit Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new ShouldExit();
+                }
+                return instance;
+            }
+        }
+
         public bool exit = false;
     }
 }
