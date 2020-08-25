@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System;
-using PixelHunter1995.Inputs;
 
 namespace PixelHunter1995
 {

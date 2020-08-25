@@ -26,7 +26,7 @@ namespace PixelHunter1995.WalkingAreaLib
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
-            partition.Draw(graphics);
+            partition.Draw(graphics, spriteBatch, scaling);
         }
 
         public int ZIndex()
