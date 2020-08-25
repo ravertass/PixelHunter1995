@@ -28,7 +28,7 @@ namespace PixelHunter1995
             SceneManager.SetCurrentSceneByName("full_club_room.tmx");
         }
 
-        void LoadContent(ContentManager content)
+        public void LoadContent(ContentManager content)
         {
             foreach (Scene scene in SceneManager.scenes.Values)
             {
@@ -40,12 +40,12 @@ namespace PixelHunter1995
             StateManager.SetStateMenu();
         }
 
-        void Update(GameTime gameTime, InputManager input)
+        public void Update(GameTime gameTime, InputManager input)
         {
             StateManager.currentState.Update(gameTime, SceneManager.currentScene, input);
         }
 
-        void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
             StateManager.currentState.Draw(graphics, spriteBatch, gameTime, SceneManager.currentScene);
         }
