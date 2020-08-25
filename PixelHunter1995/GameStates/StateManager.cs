@@ -7,15 +7,8 @@ namespace PixelHunter1995.GameStates
     class StateManager : ILoadContent
     {
         public IGameState currentState { get; internal set; }
-        private readonly ShouldExit shouldExit;
         private readonly Inventory Inventory = new Inventory();
         private Texture2D Menu;
-
-
-        public StateManager (ShouldExit shouldExit)
-        {
-            this.shouldExit = shouldExit;
-        }
 
         // We need to save content here since we create new versions of the states each time.
         public void LoadContent(ContentManager content)
@@ -26,7 +19,7 @@ namespace PixelHunter1995.GameStates
 
         public void SetExit()
         {
-            shouldExit.exit = true;
+            ShouldExit.Instance.exit = true;
         }
 
         public void SetStateMenu()

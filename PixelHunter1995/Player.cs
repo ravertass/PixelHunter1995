@@ -31,15 +31,11 @@ namespace PixelHunter1995
         PositionComponent IHasComponent<PositionComponent>.Component => PosComp;
         CharacterComponent IHasComponent<CharacterComponent>.Component => CharComp;
 
-        private readonly Game game;
-
-        public Player(Game game) : this(game, 0, 0) { }
-        public Player(Game game, float x, float y)
+        public Player() : this(0, 0) { }
+        public Player(float x, float y)
         {
             this.PosComp = new PositionComponent();
             this.CharComp = new CharacterComponent(this.PosComp);
-
-            this.game = game;
 
             this.Position = new Vector2(x, y);
             this.MovePosition = this.Position;

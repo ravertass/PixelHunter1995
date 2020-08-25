@@ -13,14 +13,14 @@ namespace PixelHunter1995
         {
         }
 
-        public void Initialize(string scenesPath, Game game)
+        public void Initialize(string scenesPath)
         {
             scenes = new Dictionary<string, Scene>();
             foreach (string filepath in Directory.GetFiles(scenesPath))
             {
                 string filename = Path.GetFileName(filepath);
 
-                scenes.Add(filename, SceneParser.ParseSceneXml(filepath, game));
+                scenes.Add(filename, SceneParser.ParseSceneXml(filepath));
             };
         }
 
