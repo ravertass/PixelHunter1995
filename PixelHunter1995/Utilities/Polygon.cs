@@ -10,11 +10,20 @@ namespace PixelHunter1995.WalkingAreaLib
     class Polygon
     {
         private List<Coord> vertices;
+        private RenderTarget2D renderTarget = null;
 
         public Polygon(List<Coord> vertices)
         {
             Debug.Assert(vertices.Count > 2);
             this.vertices = vertices;
+        }
+
+        ~Polygon()
+        {
+            if (renderTarget != null)
+            {
+                renderTarget.Dispose();
+            }
         }
 
         public Polygon(params Coord[] vertices)
@@ -227,25 +236,28 @@ namespace PixelHunter1995.WalkingAreaLib
             {
                 return;
             }
+
+            if (renderTarget == null)
+            {
+                renderTarget = new RenderTarget2D(
+                    graphics.GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
+            }
             
-            var renderTarget = this.DrawToRenderTarget(graphics);
+            DrawToRenderTarget(graphics);
             spriteBatch.Draw((Texture2D)renderTarget, Vector2.Zero, Color.White);
         }
         
         
-        private RenderTarget2D DrawToRenderTarget(GraphicsDeviceManager graphics)
+        private void DrawToRenderTarget(GraphicsDeviceManager graphics)
         {
             var oldTargets = graphics.GraphicsDevice.GetRenderTargets();
-            var newTarget = new RenderTarget2D(graphics.GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
             
-            graphics.GraphicsDevice.SetRenderTarget(newTarget);
+            graphics.GraphicsDevice.SetRenderTarget(renderTarget);
             graphics.GraphicsDevice.Clear(Color.Transparent);
             
-            this.DrawPolygon(graphics);
+            DrawPolygon(graphics);
             
             graphics.GraphicsDevice.SetRenderTargets(oldTargets);
-            
-            return newTarget;
         }
         
         private void DrawPolygon(GraphicsDeviceManager graphics)
