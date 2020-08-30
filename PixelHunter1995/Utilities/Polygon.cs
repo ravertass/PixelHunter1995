@@ -230,37 +230,32 @@ namespace PixelHunter1995.WalkingAreaLib
             return string.Join<Coord>(", ", vertices);
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling, int sceneWidth)
         {
-            if (!GlobalSettings.Instance.Debug)
-            {
-                return;
-            }
-
             if (renderTarget == null)
             {
                 renderTarget = new RenderTarget2D(
-                    graphics.GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
+                    graphics.GraphicsDevice, sceneWidth, GlobalSettings.WINDOW_HEIGHT);
             }
             
-            DrawToRenderTarget(graphics);
+            DrawToRenderTarget(graphics, sceneWidth);
             spriteBatch.Draw((Texture2D)renderTarget, Vector2.Zero, Color.White);
         }
         
         
-        private void DrawToRenderTarget(GraphicsDeviceManager graphics)
+        private void DrawToRenderTarget(GraphicsDeviceManager graphics, int sceneWidth)
         {
             var oldTargets = graphics.GraphicsDevice.GetRenderTargets();
             
             graphics.GraphicsDevice.SetRenderTarget(renderTarget);
             graphics.GraphicsDevice.Clear(Color.Transparent);
             
-            DrawPolygon(graphics);
+            DrawPolygon(graphics, sceneWidth);
             
             graphics.GraphicsDevice.SetRenderTargets(oldTargets);
         }
         
-        private void DrawPolygon(GraphicsDeviceManager graphics)
+        private void DrawPolygon(GraphicsDeviceManager graphics, int sceneWidth)
         {
             VertexPositionColor[] drawVertices = new VertexPositionColor[vertices.Count];
             short[] drawIndices = new short[vertices.Count * 2];
@@ -271,7 +266,7 @@ namespace PixelHunter1995.WalkingAreaLib
                 // used when drawing primitives, with 0 in the middle of
                 // the screen, X positive going right and Y positive
                 // going up.
-                float x = (coord.X / GlobalSettings.WINDOW_WIDTH) * 2.0f - 1.0f;
+                float x = (coord.X / sceneWidth) * 2.0f - 1.0f;
                 float y = -(coord.Y / GlobalSettings.WINDOW_HEIGHT) * 2.0f + 1.0f;
                 drawVertices[i].Position = new Vector3(x, y, 0.0f);
                 drawVertices[i].Color = Color.Red;

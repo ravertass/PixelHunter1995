@@ -11,10 +11,13 @@ namespace PixelHunter1995.SceneLib
         private readonly int X;
         private readonly int Y;
         private readonly Polygon Polygon;
-        public PolygonDog(int x, int y, List<Coord> points)
+        private readonly int sceneWidth;
+
+        public PolygonDog(int x, int y, List<Coord> points, int sceneWidth)
         {
             X = x;
             Y = y;
+            this.sceneWidth = sceneWidth;
             Polygon = new Polygon(points);
             Name = "PolygonDog";
         }
@@ -28,7 +31,7 @@ namespace PixelHunter1995.SceneLib
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
-            Polygon.Draw(graphics, spriteBatch, scaling);
+            Polygon.Draw(graphics, spriteBatch, scaling, sceneWidth);
         }
 
         public int ZIndex()

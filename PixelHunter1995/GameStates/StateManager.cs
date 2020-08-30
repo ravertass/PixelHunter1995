@@ -9,6 +9,12 @@ namespace PixelHunter1995.GameStates
         public IGameState currentState { get; internal set; }
         private readonly Inventory Inventory = new Inventory();
         private Texture2D Menu;
+        private Camera camera;
+
+        public StateManager(Camera camera)
+        {
+            this.camera = camera;
+        }
 
         // We need to save content here since we create new versions of the states each time.
         public void LoadContent(ContentManager content)
@@ -29,8 +35,7 @@ namespace PixelHunter1995.GameStates
 
         public void SetStatePlaying()
         {
-            currentState = new Playing(this, Inventory);
+            currentState = new Playing(this, Inventory, camera);
         }
-
     }
 }

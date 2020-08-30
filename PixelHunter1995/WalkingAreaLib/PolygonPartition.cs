@@ -66,9 +66,9 @@ namespace PixelHunter1995.WalkingAreaLib
             return string.Join<Polygon>("; ", Polygons);
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling, int sceneWidth)
         {
-            Polygons.ForEach(p => p.Draw(graphics, spriteBatch, scaling));
+            Polygons.ForEach(p => p.Draw(graphics, spriteBatch, scaling, sceneWidth));
         }
     }
 }

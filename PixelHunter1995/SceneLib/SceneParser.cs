@@ -19,6 +19,7 @@ namespace PixelHunter1995
             XmlDocument doc = new XmlDocument();
             doc.Load(sceneXmlPath);
             XmlNodeList nodes = doc.DocumentElement.ChildNodes;
+            int sceneWidth = int.Parse(doc.DocumentElement.Attributes["width"].Value);
             List<Tileset> tilesets = new List<Tileset>();
             List<IDrawable> drawables = new List<IDrawable>();
             List<IUpdateable> updateables = new List<IUpdateable>();
@@ -79,7 +80,7 @@ namespace PixelHunter1995
                         }
                         else
                         {
-                            dog = new PolygonDog(x, y, ParsePolygonXml(dogNode));
+                            dog = new PolygonDog(x, y, ParsePolygonXml(dogNode), sceneWidth);
                         }
                         drawables.Add(dog);
                         dogs.Add(dog);
@@ -87,7 +88,7 @@ namespace PixelHunter1995
                 }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "walking")
                 {
-                    WalkingArea walkingArea = new WalkingArea(ParsePolygonXml(node.ChildNodes[0]));
+                    WalkingArea walkingArea = new WalkingArea(ParsePolygonXml(node.ChildNodes[0]), sceneWidth);
                     drawables.Add(walkingArea);
 
                     // TODO Make player its own objectgroup, or part of "portal", or something similar.
@@ -100,7 +101,7 @@ namespace PixelHunter1995
                     }
                 }
             }
-            return new Scene(drawables, updateables, loadables, dogs);
+            return new Scene(drawables, updateables, loadables, dogs, player, sceneWidth);
         }
 
         private static Tileset GetTilesetFromTileGid(List<Tileset> tilesets, int tileGid)

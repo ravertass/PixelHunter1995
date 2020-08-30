@@ -13,19 +13,26 @@ namespace PixelHunter1995.GameStates
         private readonly StateManager StateManager;
         private readonly Inventory Inventory;
         private HoverText HoverText;
+        private Camera camera;
 
-        public Playing(StateManager stateManager, Inventory inventory)
+        public Playing(StateManager stateManager, Inventory inventory, Camera camera)
         {
             StateManager = stateManager;
             Inventory = inventory;
             HoverText = new HoverText();
+            this.camera = camera;
         }
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime, Scene scene)
         {
+            spriteBatch.Begin(transformMatrix: camera.GetTransformation());
             scene.Draw(graphics, spriteBatch, 1);
+            spriteBatch.End();
+
+            spriteBatch.Begin();
             Inventory.Draw(graphics, spriteBatch, 1);
             HoverText.Draw(graphics, spriteBatch, 1);
+            spriteBatch.End();
         }
 
         public void Update(GameTime gameTime, Scene scene, InputManager input)
@@ -36,6 +43,7 @@ namespace PixelHunter1995.GameStates
             }
             
             scene.Update(gameTime, input);
+            camera.Update(scene.Player.FeetPosition, scene.Width);
             HoverText.Update(input, scene.Dogs, Inventory.Items);
         }
     }

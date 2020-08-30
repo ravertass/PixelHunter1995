@@ -18,11 +18,13 @@ namespace PixelHunter1995
 
         private readonly GraphicsDeviceManager graphics;
         private readonly GameWindow window;
+        private readonly Camera camera;
 
-        public Screen(GraphicsDeviceManager graphics, GameWindow window)
+        public Screen(GraphicsDeviceManager graphics, GameWindow window, Camera camera)
         {
             this.graphics = graphics;
             this.window = window;
+            this.camera = camera;
             this.Width = GlobalSettings.WINDOW_WIDTH;
             this.Height = GlobalSettings.WINDOW_HEIGHT;
             graphics.PreferredBackBufferWidth = this.Width;
@@ -112,13 +114,15 @@ namespace PixelHunter1995
         public static int GetFixedX(int x)
         {
             double ratioWidth = GlobalSettings.WINDOW_WIDTH / (double)Instance.Width;
-            return (int)(x * ratioWidth);
+            return (int)(x * ratioWidth) + (int)Instance.camera.X;
         }
+
         public static int GetFixedY(int y)
         {
             double ratioHeight = GlobalSettings.WINDOW_HEIGHT / (double)Instance.Height;
             return (int)(y * ratioHeight);
         }
+
         public static Point GetFixedPoint(Point p)
         {
             return new Point(GetFixedX(p.X), GetFixedY(p.Y));

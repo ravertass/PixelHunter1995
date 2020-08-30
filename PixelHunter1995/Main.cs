@@ -19,13 +19,13 @@ namespace PixelHunter1995
         private RenderTarget2D renderTarget;
         private Screen screen;
         private InputManager input;
+        private Camera camera;
         
         private static readonly string inputConfigPath = "Content/Config/input.cfg";
 
         public Main()
         {
             graphics = new GraphicsDeviceManager(this);
-            GameManager = new GameManager();
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
         }
@@ -38,10 +38,12 @@ namespace PixelHunter1995
         /// </summary>
         protected override void Initialize()
         {
+            camera = new Camera();
+            GameManager = new GameManager(camera);
             GameManager.Initialize();
             GlobalSettings.Instance.Debug = true;
             renderTarget = new RenderTarget2D(GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
-            screen = new Screen(graphics, Window);
+            screen = new Screen(graphics, Window, camera);
             Screen.Instance = screen;
             
             base.Initialize();
@@ -136,9 +138,7 @@ namespace PixelHunter1995
             GraphicsDevice.SetRenderTarget(renderTarget);
             GraphicsDevice.Clear(Color.Black);
 
-            spriteBatch.Begin();
             GameManager.Draw(graphics, spriteBatch, gameTime);
-            spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);
         }
