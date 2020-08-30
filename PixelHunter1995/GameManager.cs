@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,12 +9,15 @@ namespace PixelHunter1995
 {
     class GameManager
     {
-        private StateManager StateManager;
+        private Camera camera;
         private SceneManager SceneManager;
-        public GameManager()
+        private StateManager StateManager;
+
+        public GameManager(Camera camera)
         {
-            StateManager = new StateManager();
+            this.camera = camera;
             SceneManager = new SceneManager();
+            StateManager = new StateManager(camera);
         }
 
         public void Initialize()

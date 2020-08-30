@@ -13,16 +13,23 @@ namespace PixelHunter1995
         private List<IUpdateable> Updateables;
         private List<ILoadContent> Loadables;
         public List<IDog> Dogs;
+        // TODO: Should this be public? Would it even matter if it was gettable but not settable?
+        public Player Player;
+        public int Width { get; private set; }
 
         public Scene(List<IDrawable> drawables,
                      List<IUpdateable> updateables,
                      List<ILoadContent> loadables,
-                     List<IDog> dogs)
+                     List<IDog> dogs,
+                     Player player,
+                     int width)
         {
             Drawables = drawables;
             Updateables = updateables;
             Loadables = loadables;
             Dogs = dogs;
+            Player = player;
+            Width = width;
         }
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
@@ -47,7 +54,7 @@ namespace PixelHunter1995
         {
             foreach (ILoadContent loadable in this.Loadables)
             {
-                loadable.LoadContent(content); ;
+                loadable.LoadContent(content);
             }
         }
     }

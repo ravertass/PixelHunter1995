@@ -11,14 +11,13 @@ namespace PixelHunter1995
 
     class Player : IUpdateable, IDrawable, ILoadContent, IHasComponent<PositionComponent>, IHasComponent<CharacterComponent>, ICharacterComponent
     {
-
         private Vector2 MovePosition { get; set; }
 
         private PositionComponent PosComp { get; set; }
         private CharacterComponent CharComp { get; set; }
 
         // alias
-        private Vector2 Position { get => this.PosComp.Position; set => this.PosComp.Position = value; }
+        public Vector2 Position { get => this.PosComp.Position; private set => this.PosComp.Position = value; }
         public Vector2 MoveDirection { get => this.CharComp.MoveDirection; set => this.CharComp.MoveDirection = value; }
         public Color FontColor { get => this.CharComp.FontColor; set => this.CharComp.FontColor = value; }
         public String FontName { get => this.CharComp.FontName; set => this.CharComp.FontName = value; }
@@ -26,6 +25,16 @@ namespace PixelHunter1995
         {
             get => this.CharComp.AnimationTileset;
             set => this.CharComp.AnimationTileset = value;
+        }
+
+        public Vector2 FeetPosition
+        {
+            get
+            {
+                float x = Position.X + AnimationTileset.tileWidth / 2;
+                float y = Position.Y + AnimationTileset.tileHeight;
+                return new Vector2(x, y);
+            }
         }
 
         PositionComponent IHasComponent<PositionComponent>.Component => PosComp;
@@ -45,6 +54,7 @@ namespace PixelHunter1995
             this.FontName = "Alkhemikal";
             this.AnimationTileset = new AnimationTileset("Animations/felixia");
         }
+
         public void Update(GameTime gameTime, InputManager input)
         {
             if (input.GetState(InputCommand.PLAYING_Move).IsDown)
@@ -52,7 +62,7 @@ namespace PixelHunter1995
                 // Compensate for Position being in top left corner
                 float x = input.MouseX - AnimationTileset.tileWidth / 2;
                 float y = input.MouseY - AnimationTileset.tileHeight;
-                this.MovePosition = new Vector2(x,y);
+                this.MovePosition = new Vector2(x, y);
             }
             if (input.Input.GetKeyState(MouseKeys.LeftButton).IsEdgeDown)
             {

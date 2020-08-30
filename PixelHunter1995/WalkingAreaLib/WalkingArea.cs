@@ -9,13 +9,16 @@ namespace PixelHunter1995.WalkingAreaLib
     {
         private PolygonPartition partition;
 
-        public WalkingArea(Polygon polygon)
+        private int sceneWidth;
+
+        public WalkingArea(Polygon polygon, int sceneWidth)
         {
             partition = polygon.ConvexPartition();
+            this.sceneWidth = sceneWidth;
         }
 
-        public WalkingArea(List<Coord> points)
-            : this(new Polygon(points))
+        public WalkingArea(List<Coord> points, int sceneWidth)
+            : this(new Polygon(points), sceneWidth)
         {
         }
 
@@ -26,7 +29,12 @@ namespace PixelHunter1995.WalkingAreaLib
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
-            partition.Draw(graphics, spriteBatch, scaling);
+            if (!GlobalSettings.Instance.Debug)
+            {
+                return;
+            }
+
+            partition.Draw(graphics, spriteBatch, scaling, sceneWidth);
         }
 
         public int ZIndex()

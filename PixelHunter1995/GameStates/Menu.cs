@@ -18,10 +18,11 @@ namespace PixelHunter1995.GameStates
             this.menu = menu;
         }
 
-
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime, Scene scene)
         {
+            spriteBatch.Begin();
             spriteBatch.Draw(menu, Vector2.Zero, Color.White);
+            spriteBatch.End();
         }
 
         public void Update(GameTime gameTime, Scene scene, InputManager input)
