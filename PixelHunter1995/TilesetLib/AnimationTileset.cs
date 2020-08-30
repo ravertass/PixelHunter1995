@@ -25,7 +25,7 @@ namespace PixelHunter1995.TilesetLib
         private static readonly int MOVE_RIGHT = 4;
 
         // How fast to change between animation steps
-        private static readonly int FRAMES_PER_ANIMATION_STEP = 5; // TODO: Use real time instead of hard coding
+        private static readonly int FRAMES_PER_ANIMATION_STEP = 8; // TODO: Use real time instead of hard coding
 
         enum Direction
         {
@@ -38,6 +38,7 @@ namespace PixelHunter1995.TilesetLib
         int FrameCounter;
         int CurrentAnimationStep;
         Direction CurrentDirection;
+        bool AnimationReversing;
 
         public AnimationTileset(string imagePath)
             : base(imagePath, IMAGE_WIDTH, IMAGE_HEIGHT, FIRST_GID, NAME,
@@ -46,6 +47,7 @@ namespace PixelHunter1995.TilesetLib
             CurrentAnimationStep = 0;
             FrameCounter = 0;
             CurrentDirection = Direction.Down;
+            AnimationReversing = false;
         }
 
         private void DrawStanding(SpriteBatch spriteBatch, Vector2 destination, double scaling)
@@ -69,6 +71,7 @@ namespace PixelHunter1995.TilesetLib
             // Reset to start animation from beginning when we move next time
             CurrentAnimationStep = 0;
             FrameCounter = 0;
+            AnimationReversing = false;
         }
 
         private void DrawMoving(SpriteBatch spriteBatch, Vector2 destination, double scaling)
@@ -89,12 +92,20 @@ namespace PixelHunter1995.TilesetLib
                     break;
             }
 
-            // Change animation
+            // Change animation frame
             FrameCounter++;
             if (FrameCounter == FRAMES_PER_ANIMATION_STEP)
             {
                 FrameCounter = 0;
-                CurrentAnimationStep = (CurrentAnimationStep + 1) % NO_OF_COLUMNS;
+                CurrentAnimationStep = AnimationReversing ? --CurrentAnimationStep : ++CurrentAnimationStep;
+                if (CurrentAnimationStep == 0)
+                {
+                    AnimationReversing = false;
+                }
+                else if (CurrentAnimationStep == (NO_OF_COLUMNS - 1))
+                {
+                    AnimationReversing = true;
+                }
             }
         }
 
