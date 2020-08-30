@@ -29,11 +29,6 @@ namespace PixelHunter1995.WalkingAreaLib
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
-            if (!GlobalSettings.Instance.Debug)
-            {
-                return;
-            }
-
             partition.Draw(graphics, spriteBatch, scaling, sceneWidth);
         }
 

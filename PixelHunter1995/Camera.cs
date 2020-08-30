@@ -5,9 +5,9 @@ namespace PixelHunter1995
 {
     class Camera
     {
-        private readonly double CAMERA_SPEED = 1.5;
-        private readonly int START_MOVING_OFFSET = 100;
-        private readonly int STOP_MOVING_OFFSET = 2;
+        private static readonly double CAMERA_SPEED = 1.5;
+        private static readonly int START_MOVING_OFFSET = 100;
+        private static readonly int STOP_MOVING_OFFSET = 2;
 
         private bool moving;
         public double X { get; private set; }
