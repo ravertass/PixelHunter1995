@@ -19,7 +19,6 @@ namespace PixelHunter1995
         private RenderTarget2D renderTarget;
         private Screen screen;
         private InputManager input;
-        private Camera camera;
         
         private static readonly string inputConfigPath = "Content/Config/input.cfg";
 
@@ -38,7 +37,7 @@ namespace PixelHunter1995
         /// </summary>
         protected override void Initialize()
         {
-            camera = new Camera();
+            Camera camera = new Camera();
             GameManager = new GameManager(camera);
             GameManager.Initialize();
             GlobalSettings.Instance.Debug = true;

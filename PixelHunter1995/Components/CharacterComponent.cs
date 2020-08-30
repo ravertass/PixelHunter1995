@@ -19,6 +19,16 @@ namespace PixelHunter1995.Components
         // alias
         private Vector2 Position { get => this.PositionComponent.Position; }
 
+        public Vector2 FeetPosition
+        {
+            get
+            {
+                float x = Position.X + AnimationTileset.tileWidth / 2;
+                float y = Position.Y + AnimationTileset.tileHeight;
+                return new Vector2(x, y);
+            }
+        }
+
         public CharacterComponent(PositionComponent posComp)
         {
             PositionComponent = this.NotNullDependency(posComp, "posComp");

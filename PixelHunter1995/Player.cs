@@ -21,20 +21,12 @@ namespace PixelHunter1995
         public Vector2 MoveDirection { get => this.CharComp.MoveDirection; set => this.CharComp.MoveDirection = value; }
         public Color FontColor { get => this.CharComp.FontColor; set => this.CharComp.FontColor = value; }
         public String FontName { get => this.CharComp.FontName; set => this.CharComp.FontName = value; }
+        public Vector2 FeetPosition { get => CharComp.FeetPosition; }
+
         public AnimationTileset AnimationTileset
         {
             get => this.CharComp.AnimationTileset;
             set => this.CharComp.AnimationTileset = value;
-        }
-
-        public Vector2 FeetPosition
-        {
-            get
-            {
-                float x = Position.X + AnimationTileset.tileWidth / 2;
-                float y = Position.Y + AnimationTileset.tileHeight;
-                return new Vector2(x, y);
-            }
         }
 
         PositionComponent IHasComponent<PositionComponent>.Component => PosComp;

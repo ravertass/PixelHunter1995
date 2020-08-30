@@ -232,6 +232,11 @@ namespace PixelHunter1995.WalkingAreaLib
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling, int sceneWidth)
         {
+            if (!GlobalSettings.Instance.Debug)
+            {
+                return;
+            }
+
             if (renderTarget == null)
             {
                 renderTarget = new RenderTarget2D(
