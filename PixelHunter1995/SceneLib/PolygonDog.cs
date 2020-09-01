@@ -13,13 +13,13 @@ namespace PixelHunter1995.SceneLib
         private readonly Polygon Polygon;
         private readonly int sceneWidth;
 
-        public PolygonDog(int x, int y, List<Coord> points, int sceneWidth)
+        public PolygonDog(int x, int y, List<Coord> points, int sceneWidth, string name)
         {
             X = x;
             Y = y;
             this.sceneWidth = sceneWidth;
             Polygon = new Polygon(points);
-            Name = "PolygonDog";
+            Name = name;
         }
 
         public string Name { get; }

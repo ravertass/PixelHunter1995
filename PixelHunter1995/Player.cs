@@ -22,6 +22,7 @@ namespace PixelHunter1995
         public Color FontColor { get => this.CharComp.FontColor; set => this.CharComp.FontColor = value; }
         public String FontName { get => this.CharComp.FontName; set => this.CharComp.FontName = value; }
         public Vector2 FeetPosition { get => CharComp.FeetPosition; }
+        public string Name { get; }
 
         public AnimationTileset AnimationTileset
         {
@@ -32,8 +33,8 @@ namespace PixelHunter1995
         PositionComponent IHasComponent<PositionComponent>.Component => PosComp;
         CharacterComponent IHasComponent<CharacterComponent>.Component => CharComp;
 
-        public Player() : this(0, 0) { }
-        public Player(float x, float y)
+        public Player(string name) : this(0, 0, name) { }
+        public Player(float x, float y, string name)
         {
             this.PosComp = new PositionComponent();
             this.CharComp = new CharacterComponent(this.PosComp);
@@ -45,6 +46,7 @@ namespace PixelHunter1995
             this.FontColor = Color.Purple;
             this.FontName = "Alkhemikal";
             this.AnimationTileset = new AnimationTileset("Animations/felixia");
+            this.Name = name;
         }
 
         public void Update(GameTime gameTime, InputManager input, bool controllable)
