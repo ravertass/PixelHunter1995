@@ -7,13 +7,12 @@ using System.Collections.Generic;
 
 namespace PixelHunter1995
 {
-    class Scene : IUpdateable, ILoadContent
+    class Scene : ILoadContent
     {
         private List<IDrawable> Drawables;
         private List<IUpdateable> Updateables;
         private List<ILoadContent> Loadables;
         public List<IDog> Dogs;
-        // TODO: Should this be public? Would it even matter if it was gettable but not settable?
         public Player Player;
         public int Width { get; private set; }
 
@@ -24,9 +23,12 @@ namespace PixelHunter1995
                      Player player,
                      int width)
         {
+            Player = player;
             Drawables = drawables;
+            Drawables.Add(player);
             Updateables = updateables;
             Loadables = loadables;
+            Loadables.Add(player);
             Dogs = dogs;
             Player = player;
             Width = width;
@@ -42,8 +44,9 @@ namespace PixelHunter1995
             }
         }
 
-        public void Update(GameTime gameTime, InputManager input)
+        public void Update(GameTime gameTime, InputManager input, bool playerControllable)
         {
+            Player.Update(gameTime, input, playerControllable);
             foreach (IUpdateable updateable in this.Updateables)
             {
                 updateable.Update(gameTime, input);

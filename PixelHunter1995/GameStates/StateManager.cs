@@ -4,11 +4,9 @@ using PixelHunter1995.InventoryLib;
 
 namespace PixelHunter1995.GameStates
 {
-    class StateManager : ILoadContent
+    class StateManager
     {
         public IGameState currentState { get; internal set; }
-        private readonly Inventory Inventory = new Inventory();
-        private Texture2D Menu;
         private Camera camera;
 
         public StateManager(Camera camera)
@@ -16,26 +14,19 @@ namespace PixelHunter1995.GameStates
             this.camera = camera;
         }
 
-        // We need to save content here since we create new versions of the states each time.
-        public void LoadContent(ContentManager content)
+        public void SetStateMenu(Texture2D menuTexture)
         {
-            Inventory.LoadContent(content);
-            Menu = content.Load<Texture2D>("Images/Menu");
+            currentState = new Menu(menuTexture);
         }
 
-        public void SetExit()
+        public void SetStateExploring(Inventory inventory, Scene scene)
         {
-            ShouldExit.Instance.exit = true;
+            currentState = new Exploring(inventory, scene, camera);
         }
 
-        public void SetStateMenu()
+        public void SetStateTalking(Inventory inventory, Scene scene)
         {
-            currentState = new Menu(this, Menu);
-        }
-
-        public void SetStatePlaying()
-        {
-            currentState = new Playing(this, Inventory, camera);
+            currentState = new Talking(inventory, scene, camera);
         }
     }
 }

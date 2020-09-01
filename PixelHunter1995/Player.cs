@@ -9,7 +9,7 @@ using System;
 namespace PixelHunter1995
 {
 
-    class Player : IUpdateable, IDrawable, ILoadContent, IHasComponent<PositionComponent>, IHasComponent<CharacterComponent>, ICharacterComponent
+    class Player : IDrawable, ILoadContent, IHasComponent<PositionComponent>, IHasComponent<CharacterComponent>, ICharacterComponent
     {
         private Vector2 MovePosition { get; set; }
 
@@ -47,7 +47,18 @@ namespace PixelHunter1995
             this.AnimationTileset = new AnimationTileset("Animations/felixia");
         }
 
-        public void Update(GameTime gameTime, InputManager input)
+        public void Update(GameTime gameTime, InputManager input, bool controllable)
+        {
+            CharComp.Update(gameTime, input);
+            if (controllable)
+            {
+                HandleInput(input);
+            }
+            this.MoveDirection = MovePosition - Position;
+            this.Position = this.Approach(Position, MovePosition, 2);
+        }
+
+        public void HandleInput(InputManager input)
         {
             if (input.GetState(InputCommand.PLAYING_Move).IsDown)
             {
@@ -63,9 +74,6 @@ namespace PixelHunter1995
                 Say("My interests include alchemy, solving ridiculously convoluted puzzles " +
                     "and long pull requests on the shore.");
             }
-            this.MoveDirection = MovePosition - Position;
-            this.Position = this.Approach(Position, MovePosition, 2);
-            CharComp.Update(gameTime, input);
         }
 
         public void Say(string speech)
