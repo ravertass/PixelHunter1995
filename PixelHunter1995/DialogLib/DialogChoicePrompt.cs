@@ -16,9 +16,9 @@ namespace PixelHunter1995.DialogLib
     class DialogChoicePrompt : IDrawable, IUpdateable
     {
         public static SpriteFont Font = FontManager.Instance.getFontByName("FreePixel");
-        private static readonly int X_POS = 4;
-        public static readonly int Y_POS = 160 + X_POS; // Use same margin on all sides
-        private static readonly int WIDTH = GlobalSettings.WINDOW_WIDTH - (2 * X_POS);
+        private static readonly int PROMPT_X_POS = 4;
+        public static readonly int PROMPT_Y_POS = 160 + PROMPT_X_POS; // Use same margin on all sides
+        private static readonly int WIDTH = GlobalSettings.WINDOW_WIDTH - (2 * PROMPT_X_POS);
         private static readonly int TEXT_HEIGHT = (int)Font.MeasureString("o").Y - 2;
         private static readonly int LINES = 5;
 
@@ -39,6 +39,10 @@ namespace PixelHunter1995.DialogLib
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
+            if (!Active)
+            {
+                return;
+            }
             foreach (DialogChoice choice in Choices)
             {
                 choice.Draw(spriteBatch, ScrollIndex);
@@ -62,16 +66,11 @@ namespace PixelHunter1995.DialogLib
                 ScrollIndex = Math.Min(ScrollIndex, Choices.Count - LINES);
                 ScrollIndex = Math.Max(ScrollIndex, 0);
             }
-            Point mousePos = new Point(input.MouseX, input.MouseY);
+            Vector2 mousePos = new Vector2(input.MouseX, input.MouseY);
             foreach (DialogChoice choice in Choices)
             {
-                if (!choice.GetRect(ScrollIndex).Contains(mousePos))
-                {
-                    choice.Highlighted = false;
-                    continue;
-                }
-                choice.Highlighted = true;
-                if (input.Input.GetKeyState(MouseKeys.LeftButton).IsEdgeDown) // Left click
+                choice.Highlighted = choice.GetRect(ScrollIndex).Contains(mousePos);
+                if (choice.Highlighted && input.Input.GetKeyState(MouseKeys.LeftButton).IsEdgeDown) // Left click
                 {
                     Active = false;
                     return; // TODO figure out something smarter to do when someone clicks...
@@ -88,8 +87,8 @@ namespace PixelHunter1995.DialogLib
         {
             private readonly string ChoiceString;
             private readonly int Index;
-            private Color DefaultFontColor = Color.Purple; // TODO we have this both here and in Player. Could be centralized.
-            private Color HighlightFontColor = Color.MediumPurple;
+            private readonly Color DefaultFontColor = Color.Purple; // TODO we have this both here and in Player. Could be centralized.
+            private readonly Color HighlightFontColor = Color.MediumPurple;
             public bool Highlighted = false;
 
             public DialogChoice(string choiceString, int index)
@@ -106,7 +105,7 @@ namespace PixelHunter1995.DialogLib
 
             private Vector2 GetPos(int scrollIndex)
             {
-                return new Vector2(X_POS, Y_POS + (Index - scrollIndex) * TEXT_HEIGHT);
+                return new Vector2(PROMPT_X_POS, PROMPT_Y_POS + (Index - scrollIndex) * TEXT_HEIGHT);
             }
 
             public void Draw(SpriteBatch spriteBatch, int scrollIndex)

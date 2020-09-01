@@ -90,6 +90,8 @@ namespace PixelHunter1995
             }
 
             // The game requires focus to handle input.
+            // But, when debugging in Visual Studio it is nice if the game behaves the same
+            // even though it doesn't have focus.
             if (this.IsActive || GlobalSettings.Instance.Debug)
             {
                 this.input.Update(); // handle input for global actions
