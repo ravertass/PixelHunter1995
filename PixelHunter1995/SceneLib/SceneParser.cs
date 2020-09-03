@@ -75,15 +75,13 @@ namespace PixelHunter1995
                             int width = (int)Math.Round(float.Parse(dogNode.Attributes["width"].Value));
                             int height = (int)Math.Round(float.Parse(dogNode.Attributes["height"].Value));
                             int gid = int.Parse(dogNode.Attributes["gid"].Value);
-                            name = name ?? $"Dog {gid}";
                             y -= height; // Compensate for Tiled's coordinate system
                             Tileset tileset = GetTilesetFromTileGid(tilesets, gid);
-                            dog = new Dog(x, y, width, height, gid, tileset, name);
+                            dog = new Dog(x, y, width, height, gid, tileset, name ?? $"Dog {gid}");
                         }
                         else
                         {
-                            name = name ?? "PolygonDog";
-                            dog = new PolygonDog(x, y, ParsePolygonXml(dogNode), sceneWidth, name);
+                            dog = new PolygonDog(x, y, ParsePolygonXml(dogNode), sceneWidth, name ?? "PolygonDog");
                         }
                         drawables.Add(dog);
                         dogs.Add(dog);
@@ -95,11 +93,9 @@ namespace PixelHunter1995
                     XmlNode playerNode = node.ChildNodes[0];
                     int x = (int)Math.Round(float.Parse(playerNode.Attributes["x"].Value));
                     int y = (int)Math.Round(float.Parse(playerNode.Attributes["y"].Value));
-                    int height = (int)Math.Round(float.Parse(playerNode.Attributes["height"].Value));
-                    y -= height; // Compensate for Tiled's coordinate system
+                    y -= (int)Math.Round(float.Parse(playerNode.Attributes["height"].Value)); // Compensate for Tiled's coordinate system
                     string name = playerNode.Attributes["name"]?.InnerText;
-                    name = name ?? "Felixia";
-                    player = new Player(x, y, name);
+                    player = new Player(x, y, name ?? "Felixia");
                 }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "walking")
                 {
@@ -109,7 +105,7 @@ namespace PixelHunter1995
                 }
                 if (player == null)
                 {
-                    player = new Player(50, 50, "Felixia");
+                    player = new Player("Felixia");
                 }
             }
             return new Scene(drawables, updateables, loadables, dogs, player, sceneWidth);

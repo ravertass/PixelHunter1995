@@ -33,7 +33,7 @@ namespace PixelHunter1995
         PositionComponent IHasComponent<PositionComponent>.Component => PosComp;
         CharacterComponent IHasComponent<CharacterComponent>.Component => CharComp;
 
-        public Player(string name) : this(0, 0, name) { }
+        public Player(string name) : this(50, 50, name) { }
         public Player(float x, float y, string name)
         {
             this.PosComp = new PositionComponent();
