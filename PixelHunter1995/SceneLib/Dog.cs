@@ -15,7 +15,7 @@ namespace PixelHunter1995.SceneLib
         private readonly Tileset Tileset;
         public string Name { get; }
 
-        public Dog(int x, int y, int width, int height, int gid, Tileset tileset)
+        public Dog(int x, int y, int width, int height, int gid, Tileset tileset, string name)
         {
             X = x;
             Y = y;
@@ -23,7 +23,7 @@ namespace PixelHunter1995.SceneLib
             Height = height;
             Gid = gid;
             Tileset = tileset;
-            Name = "Dog " + Gid;
+            Name = name;
         }
 
         public bool Contains(Coord point)

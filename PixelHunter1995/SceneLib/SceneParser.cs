@@ -69,33 +69,43 @@ namespace PixelHunter1995
                         IDog dog;
                         int x = (int)Math.Round(float.Parse(dogNode.Attributes["x"].Value));
                         int y = (int)Math.Round(float.Parse(dogNode.Attributes["y"].Value));
+                        string name = dogNode.Attributes["name"]?.InnerText;
                         if (dogNode.Attributes["gid"] != null)
                         {
                             int width = (int)Math.Round(float.Parse(dogNode.Attributes["width"].Value));
                             int height = (int)Math.Round(float.Parse(dogNode.Attributes["height"].Value));
                             int gid = int.Parse(dogNode.Attributes["gid"].Value);
-                            y = y - height; // Compensate for Tiled's coordinate system
+                            y -= height; // Compensate for Tiled's coordinate system
                             Tileset tileset = GetTilesetFromTileGid(tilesets, gid);
-                            dog = new Dog(x, y, width, height, gid, tileset);
+                            dog = new Dog(x, y, width, height, gid, tileset, name ?? $"Dog {gid}");
                         }
                         else
                         {
-                            dog = new PolygonDog(x, y, ParsePolygonXml(dogNode), sceneWidth);
+                            dog = new PolygonDog(x, y, ParsePolygonXml(dogNode), sceneWidth, name ?? "PolygonDog");
                         }
                         drawables.Add(dog);
                         dogs.Add(dog);
                     }
+                }
+                else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "player")
+                {
+                    Debug.Assert(node.ChildNodes.Count == 1);
+                    XmlNode playerNode = node.ChildNodes[0];
+                    int x = (int)Math.Round(float.Parse(playerNode.Attributes["x"].Value));
+                    int y = (int)Math.Round(float.Parse(playerNode.Attributes["y"].Value));
+                    y -= (int)Math.Round(float.Parse(playerNode.Attributes["height"].Value)); // Compensate for Tiled's coordinate system
+                    string name = playerNode.Attributes["name"]?.InnerText;
+                    player = new Player(x, y, name ?? "Felixia");
                 }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "walking")
                 {
                     WalkingArea walkingArea = new WalkingArea(ParsePolygonXml(node.ChildNodes[0]), sceneWidth);
                     drawables.Add(walkingArea);
 
-                    // TODO Make player its own objectgroup, or part of "portal", or something similar.
-                    if (player == null)
-                    {
-                        player = new Player(50, 50);
-                    }
+                }
+                if (player == null)
+                {
+                    player = new Player("Felixia");
                 }
             }
             return new Scene(drawables, updateables, loadables, dogs, player, sceneWidth);
