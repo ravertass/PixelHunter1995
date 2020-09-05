@@ -177,7 +177,7 @@
     </None>
     <None Include="Content\Fonts\FreePixel.spritefont" />
     <None Include="Content\Fonts\FreePixel.ttf" />
-    <None Include="Content\Scenes\full_club_room.tmx">
+    <None Include="Content\Scenes\club_room.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Scenes\hallway_club_room.tmx">
@@ -187,6 +187,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Scenes\hallway_soda.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Scenes\intro_club_room.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Tileset\dogs.pyxel" />

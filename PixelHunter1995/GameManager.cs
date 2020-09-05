@@ -34,7 +34,7 @@ namespace PixelHunter1995
             this.camera = camera;
             StateManager = new StateManager(camera);
             SceneManager.Initialize(Path.Combine("Content", "Scenes"));
-            SceneManager.SetCurrentSceneByName("full_club_room.tmx");
+            SceneManager.SetCurrentSceneByName("intro_club_room.tmx");
         }
 
         public void LoadContent(ContentManager content)
