@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.InventoryLib;
 using PixelHunter1995.Inputs;
+using PixelHunter1995.SceneLib;
 
 namespace PixelHunter1995.GameStates
 {
@@ -41,6 +42,7 @@ namespace PixelHunter1995.GameStates
             Scene.Update(gameTime, input, true);
             camera.Update(Scene.Player.FeetPosition, Scene.Width);
             HandleDogs(input);
+            HandlePortals(input);
         }
 
         private void HandleDogs(InputManager input)
@@ -56,6 +58,21 @@ namespace PixelHunter1995.GameStates
             if (cursorStatus.RightClicked)
             {
                 GameManager.Instance.StartDialog();
+            }
+        }
+
+        private void HandlePortals(InputManager input)
+        {
+            Portal portal;
+            if (!Scene.GetPortalAtCursor(input, out portal))
+            {
+                return;
+            }
+
+            bool rightClicked = input.Input.GetKeyState(MouseKeys.RightButton).IsEdgeDown;
+            if (rightClicked)
+            {
+                GameManager.Instance.GoToPortal(portal.DestinationScene, portal.DestinationPortal);
             }
         }
     }

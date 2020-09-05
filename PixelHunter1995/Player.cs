@@ -111,5 +111,11 @@ namespace PixelHunter1995
         {
             return CharComp.ZIndex();
         }
+
+        public void SetPosition(Vector2 newPosition)
+        {
+            Position = newPosition;
+            MovePosition = Position;
+        }
     }
 }

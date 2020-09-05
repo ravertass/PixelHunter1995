@@ -13,6 +13,7 @@ namespace PixelHunter1995
         private List<IDrawable> Drawables;
         private List<IUpdateable> Updateables;
         private List<ILoadContent> Loadables;
+        private IDictionary<string, Portal> Portals;
         public List<IDog> Dogs;
         public Player Player;
         public int Width { get; private set; }
@@ -21,6 +22,7 @@ namespace PixelHunter1995
                      List<IUpdateable> updateables,
                      List<ILoadContent> loadables,
                      List<IDog> dogs,
+                     IDictionary<string, Portal> portals,
                      Player player,
                      int width)
         {
@@ -31,6 +33,7 @@ namespace PixelHunter1995
             Loadables = loadables;
             Loadables.Add(player);
             Dogs = dogs;
+            Portals = portals;
             Player = player;
             Width = width;
         }
@@ -80,6 +83,28 @@ namespace PixelHunter1995
             }
 
             return false;
+        }
+
+        public bool GetPortalAtCursor(InputManager input, out Portal portalAtCursor)
+        {
+            portalAtCursor = null;
+
+            Coord mousePos = new Coord(input.MouseSceneX, input.MouseSceneY);
+            foreach (Portal portal in Portals.Values)
+            {
+                if (portal.Contains(mousePos))
+                {
+                    portalAtCursor = portal;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public Portal GetPortalByName(string name)
+        {
+            return Portals[name];
         }
     }
 }
