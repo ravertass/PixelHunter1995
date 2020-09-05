@@ -1,51 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="712" height="160" tilewidth="1" tileheight="1" infinite="0" nextlayerid="10" nextobjectid="18">
- <properties>
-  <property name="init" value="IntroInit"/>
- </properties>
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="852" height="160" tilewidth="1" tileheight="1" infinite="0" nextlayerid="10" nextobjectid="19">
  <tileset firstgid="1" source="../Tileset/dogs.tsx"/>
  <tileset firstgid="65" source="../Tileset/npc_dogs.tsx"/>
  <tileset firstgid="129" source="../Tileset/player.tsx"/>
  <imagelayer id="2" name="background">
-  <image source="../Images/full_club_room.png" width="712" height="160"/>
+  <image source="../Images/full_club_room.png" width="852" height="160"/>
  </imagelayer>
  <objectgroup color="#ff0000" id="4" name="dogs">
-  <object id="2" gid="1" x="501.091" y="103.182" width="32" height="32"/>
-  <object id="3" gid="2" x="379.636" y="89.6364" width="32" height="32"/>
+  <object id="2" gid="1" x="642.758" y="102.515" width="32" height="32"/>
+  <object id="3" gid="2" x="518.636" y="97.9697" width="32" height="32"/>
   <object id="4" gid="3" x="46.5455" y="125.455" width="32" height="32"/>
-  <object id="7" name="Nick" gid="65" x="568.25" y="111.75" width="32" height="48"/>
-  <object id="8" name="Ursula" gid="69" x="472" y="139" width="32" height="48"/>
-  <object id="9" gid="68" x="414" y="126" width="32" height="48"/>
+  <object id="7" name="Nick" gid="65" x="723.917" y="112.75" width="32" height="48"/>
+  <object id="8" name="Ursula" gid="69" x="619.667" y="141.333" width="32" height="48"/>
+  <object id="9" gid="68" x="556" y="126.667" width="32" height="48"/>
   <object id="10" x="10.75" y="65.75">
    <properties>
     <property name="look" value="IntroLookWindow"/>
    </properties>
    <polygon points="0,0 26.25,-26.25 26.5,24.5 1.5,49.5"/>
   </object>
-  <object id="12" gid="5" x="435" y="105" width="32" height="32">
+  <object id="12" gid="5" x="576.667" y="104.333" width="32" height="32">
    <properties>
     <property name="look" value="IntroLookConk"/>
    </properties>
   </object>
-  <object id="13" gid="4" x="457" y="109" width="32" height="32">
+  <object id="13" gid="4" x="598.667" y="108.333" width="32" height="32">
    <properties>
     <property name="look" value="IntroLookChips"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="9" name="player">
-  <object id="16" gid="129" x="272.233" y="109.204" width="16" height="32"/>
+  <object id="16" gid="129" x="476.567" y="123.87" width="16" height="32"/>
  </objectgroup>
  <imagelayer id="8" name="foreground">
-  <image source="../Images/full_club_room_chemistry_table.png" width="712" height="160"/>
+  <image source="../Images/full_club_room_chemistry_table.png" width="856" height="160"/>
  </imagelayer>
  <objectgroup id="5" name="walking">
-  <object id="5" x="623.667" y="116.667">
-   <polygon points="0,0 25.6667,0.666667 66.6667,42 -460.333,40.6667 -451.667,11 -518.333,10.3333 -523.333,41 -622.333,42.3333 -622,32.3333 -571.333,-19 -256,-19.3333 -256,-15 -206.667,-13.6667 -206.667,9.33333 -165.667,13.3333 -92.3333,15.3333 -85,11.3333 -58.6667,6.66667 -60,-18.3333 -4,-18.6667 -2.66667,-1.66667"/>
+  <object id="18" x="703" y="98">
+   <polygon points="0,0 55.3333,-1 56,17.6667 85.3333,18.6667 128.333,61 -544,60 -532.667,29 -597,28.3333 -600,59.6667 -702.333,60.3333 -702.667,49.3333 -651.333,-1.33333 -196.333,-1 -196.333,5 -146.667,4.33333 -145.667,27 -76.6667,35.3333 -32,33.6667 8.33333,24.6667"/>
   </object>
  </objectgroup>
  <objectgroup color="#006464" id="7" name="portals">
-  <object id="17" x="651" y="68">
+  <object id="17" x="791" y="68">
    <properties>
     <property name="destination" value="hallway_club_room"/>
     <property name="destination_portal" value="0"/>
