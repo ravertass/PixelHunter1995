@@ -21,6 +21,8 @@ namespace PixelHunter1995.Inputs
         
         public int MouseX { get => this.Input.MouseX; }
         public int MouseY { get => this.Input.MouseY; }
+        public int MouseSceneX { get => this.Input.MouseSceneX; }
+        public int MouseSceneY { get => this.Input.MouseSceneY; }
         public int ScrollWheelValue { get => this.Input.ScrollWheelValue; }
         public int ScrollWheelDelta { get => this.Input.ScrollWheelDelta; }
         public int ScrollWheelTicksDelta { get => this.Input.ScrollWheelTicksDelta; }

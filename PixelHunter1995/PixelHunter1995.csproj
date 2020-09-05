@@ -82,6 +82,7 @@
     <Compile Include="Components\Voice.cs" />
     <Compile Include="DialogLib\DialogChoicePrompt.cs" />
     <Compile Include="FontManager.cs" />
+    <Compile Include="GameStates\CursorStatus.cs" />
     <Compile Include="GameStates\Talking.cs" />
     <Compile Include="InventoryLib\InventoryItem.cs" />
     <Compile Include="InventoryLib\Inventory.cs" />

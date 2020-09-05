@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using PixelHunter1995.Inputs;
+using PixelHunter1995.SceneLib;
 using PixelHunter1995.TilesetLib;
+using PixelHunter1995.Utilities;
 
 namespace PixelHunter1995.InventoryLib
 {
@@ -149,6 +153,24 @@ namespace PixelHunter1995.InventoryLib
         public int ZIndex()
         {
             return 0; // Not drawn by scene, value here does not matter
+        }
+
+        public bool GetDogAtCursor(InputManager input, out IDog dogAtCursor)
+        {
+            dogAtCursor = null;
+
+            Coord mousePos = new Coord(input.MouseX, input.MouseY);
+            List<IDog> dogs = Items.ToList<IDog>();
+            foreach (IDog dog in dogs)
+            {
+                if (dog.Contains(mousePos))
+                {
+                    dogAtCursor = dog;
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

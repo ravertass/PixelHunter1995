@@ -29,7 +29,6 @@ namespace PixelHunter1995.InventoryLib
             }
         }
 
-
         public InventoryItem(string name, Tileset tileset, int tilesetGid, int x, int y, int width, int height)
         {
             Name = name;

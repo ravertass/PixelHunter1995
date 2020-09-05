@@ -114,13 +114,23 @@ namespace PixelHunter1995
         public static int GetFixedX(int x)
         {
             double ratioWidth = GlobalSettings.WINDOW_WIDTH / (double)Instance.Width;
-            return (int)(x * ratioWidth) + (int)Instance.camera.X;
+            return (int)(x * ratioWidth);
         }
 
         public static int GetFixedY(int y)
         {
             double ratioHeight = GlobalSettings.WINDOW_HEIGHT / (double)Instance.Height;
             return (int)(y * ratioHeight);
+        }
+
+        public static int GetFixedSceneX(int x)
+        {
+            return GetFixedX(x) + (int)Instance.camera.X;
+        }
+
+        public static int GetFixedSceneY(int y)
+        {
+            return GetFixedY(y);
         }
 
         public static Point GetFixedPoint(Point p)

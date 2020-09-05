@@ -65,8 +65,8 @@ namespace PixelHunter1995
             if (input.GetState(InputCommand.PLAYING_Move).IsDown)
             {
                 // Compensate for Position being in top left corner
-                float x = input.MouseX - AnimationTileset.tileWidth / 2;
-                float y = input.MouseY - AnimationTileset.tileHeight;
+                float x = input.MouseSceneX - AnimationTileset.tileWidth / 2;
+                float y = input.MouseSceneY - AnimationTileset.tileHeight;
                 this.MovePosition = new Vector2(x, y);
             }
             if (input.Input.GetKeyState(MouseKeys.LeftButton).IsEdgeDown)
