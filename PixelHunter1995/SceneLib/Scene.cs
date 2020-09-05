@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.Inputs;
 using PixelHunter1995.SceneLib;
+using PixelHunter1995.Utilities;
 using System.Collections.Generic;
 
 namespace PixelHunter1995
@@ -59,6 +60,26 @@ namespace PixelHunter1995
             {
                 loadable.LoadContent(content);
             }
+        }
+
+        public bool GetDogAtCursor(InputManager input, out IDog dogAtCursor)
+        {
+            dogAtCursor = null;
+
+            Coord mousePos = new Coord(input.MouseSceneX, input.MouseSceneY);
+            // We sort on Z index, to check the top dog first. Note that this is reversed from
+            // when we draw them, since in that case we want to draw the thing on top last.
+            Dogs.Sort((a, b) => b.ZIndex().CompareTo(a.ZIndex()));
+            foreach (IDog dog in Dogs)
+            {
+                if (dog.Contains(mousePos))
+                {
+                    dogAtCursor = dog;
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
