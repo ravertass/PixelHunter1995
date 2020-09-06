@@ -99,6 +99,7 @@
     <Compile Include="Components\PositionComponent.cs" />
     <Compile Include="Components\CharacterComponent.cs" />
     <Compile Include="GameStates\StateManager.cs" />
+    <Compile Include="SceneLib\Portal.cs" />
     <Compile Include="Utilities\Either.cs" />
     <Compile Include="Utilities\GlobalSettings.cs" />
     <Compile Include="HaveFunctionInterfaces\IDrawable.cs" />

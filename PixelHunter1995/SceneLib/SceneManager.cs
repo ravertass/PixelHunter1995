@@ -18,14 +18,20 @@ namespace PixelHunter1995
             scenes = new Dictionary<string, Scene>();
             foreach (string filepath in Directory.GetFiles(scenesPath))
             {
-                string filename = Path.GetFileName(filepath);
+                string fileName = Path.GetFileName(filepath);
+                string suffix = ".tmx";
+                string sceneName = fileName.Substring(0, fileName.Length - suffix.Length);
 
-                scenes.Add(filename, SceneParser.ParseSceneXml(filepath));
-            };
+                scenes.Add(sceneName, SceneParser.ParseSceneXml(filepath));
+            }
         }
 
         public void SetCurrentSceneByName(string sceneName)
         {
+            if (!scenes.ContainsKey(sceneName))
+            {
+                throw new InvalidDataException(string.Format("Could not find scene with scene name {0}", sceneName));
+            }
             currentScene = scenes[sceneName];
         }
     }

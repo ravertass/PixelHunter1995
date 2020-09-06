@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.GameStates;
 using PixelHunter1995.Inputs;
 using PixelHunter1995.InventoryLib;
+using PixelHunter1995.SceneLib;
 
 namespace PixelHunter1995
 {
@@ -34,7 +35,9 @@ namespace PixelHunter1995
             this.camera = camera;
             StateManager = new StateManager(camera);
             SceneManager.Initialize(Path.Combine("Content", "Scenes"));
-            SceneManager.SetCurrentSceneByName("intro_club_room.tmx");
+            SceneManager.SetCurrentSceneByName("club_room");
+            camera.GoTo(
+                (int)SceneManager.currentScene.Player.Position.X, SceneManager.currentScene.Width);
         }
 
         public void LoadContent(ContentManager content)
@@ -77,6 +80,18 @@ namespace PixelHunter1995
         public void StartDialog()
         {
             StateManager.SetStateTalking(Inventory, SceneManager.currentScene);
+        }
+
+        public void GoToPortal(string sceneName, string portalName)
+        {
+            // TODO: Unsure where this logic should go...
+            // TODO: Should probably first change state to a transition state where the player
+            //       walks through the portal, then change room when the transition state is done.
+            SceneManager.SetCurrentSceneByName(sceneName);
+            StateManager.SetStateExploring(Inventory, SceneManager.currentScene);
+            Portal destinationPortal = SceneManager.currentScene.GetPortalByName(portalName);
+            SceneManager.currentScene.Player.SetPosition(destinationPortal.AppearancePosition);
+            camera.GoTo((int)destinationPortal.AppearancePosition.X, SceneManager.currentScene.Width);
         }
     }
 }

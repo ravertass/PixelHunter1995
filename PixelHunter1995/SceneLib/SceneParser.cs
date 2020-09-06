@@ -25,6 +25,7 @@ namespace PixelHunter1995
             List<IUpdateable> updateables = new List<IUpdateable>();
             List<IDog> dogs = new List<IDog>();
             List<ILoadContent> loadables = new List<ILoadContent>();
+            IDictionary<string, Portal> portals = new Dictionary<string, Portal>();
             Player player = null;
 
             // Get tileset first to be used when loading dogs
@@ -103,12 +104,63 @@ namespace PixelHunter1995
                     drawables.Add(walkingArea);
 
                 }
+                else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "portals")
+                {
+                    foreach (XmlNode portalNode in node.ChildNodes)
+                    {
+                        Portal portal = ParsePortalNode(portalNode, sceneWidth);
+                        portals[portal.Name] = portal;
+                        drawables.Add(portal);
+                    }
+                }
                 if (player == null)
                 {
                     player = new Player("Felixia");
                 }
             }
-            return new Scene(drawables, updateables, loadables, dogs, player, sceneWidth);
+            return new Scene(drawables, updateables, loadables, dogs, portals, player, sceneWidth);
+        }
+
+        private static Portal ParsePortalNode(XmlNode portalNode, int sceneWidth)
+        {
+            int x = (int)Math.Round(float.Parse(portalNode.Attributes["x"].Value));
+            int y = (int)Math.Round(float.Parse(portalNode.Attributes["y"].Value));
+
+            XmlNode propertiesNode = GetChildNode(portalNode, "properties");
+            string name = GetPropertyValue(propertiesNode, "name");
+            string destinationScene = GetPropertyValue(propertiesNode, "destination");
+            string destinationPortal = GetPropertyValue(propertiesNode, "destination_portal");
+
+            return new Portal(x, y, ParsePolygonXml(portalNode), sceneWidth, name, destinationScene, destinationPortal);
+        }
+
+        private static String GetPropertyValue(XmlNode propertiesNode, String propertyName)
+        {
+            foreach (XmlNode propertyNode in propertiesNode.ChildNodes)
+            {
+                String name = propertyNode.Attributes["name"].Value;
+                String value = propertyNode.Attributes["value"].Value;
+
+                if (name.Equals(propertyName))
+                {
+                    return value;
+                }
+            }
+
+            throw new InvalidOperationException(String.Format("No property with name {0} found", propertyName));
+        }
+
+        private static XmlNode GetChildNode(XmlNode node, String nodeName)
+        {
+            foreach (XmlNode childNode in node.ChildNodes)
+            {
+                if (childNode.Name == nodeName)
+                {
+                    return childNode;
+                }
+            }
+
+            throw new InvalidOperationException(String.Format("No node with name {0} found", nodeName));
         }
 
         private static Tileset GetTilesetFromTileGid(List<Tileset> tilesets, int tileGid)
@@ -142,21 +194,11 @@ namespace PixelHunter1995
 
         private static List<Coord> ParsePolygonXml(XmlNode node)
         {
-            // TODO: We should probably allow multiple walking areas.
-
             float baseX = float.Parse(node.Attributes["x"]?.InnerText);
             float baseY = float.Parse(node.Attributes["y"]?.InnerText);
 
             Debug.Assert(node.ChildNodes.Count > 0);
-            XmlNode polygonNode = null;
-            foreach (XmlNode childNode in node.ChildNodes)
-            {
-                if (childNode.Name == "polygon")
-                {
-                    polygonNode = childNode;
-                    break;
-                }
-            }
+            XmlNode polygonNode = GetChildNode(node, "polygon");
 
             String polygonPointsString = polygonNode.Attributes["points"]?.InnerText;
             List<String> splitPolygonPointsString = polygonPointsString.Split(' ').ToList();

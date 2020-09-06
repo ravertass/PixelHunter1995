@@ -67,5 +67,11 @@ namespace PixelHunter1995
                 X = currentSceneWidth - GlobalSettings.WINDOW_WIDTH;
             }
         }
+
+        public void GoTo(int x, int currentSceneWidth)
+        {
+            X = x - (GlobalSettings.WINDOW_WIDTH / 2);
+            ClampWithinScreen(currentSceneWidth);
+        }
     }
 }
