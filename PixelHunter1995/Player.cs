@@ -5,6 +5,8 @@ using PixelHunter1995.Components;
 using PixelHunter1995.TilesetLib;
 using PixelHunter1995.Inputs;
 using System;
+using PixelHunter1995.WalkingAreaLib;
+using PixelHunter1995.Utilities;
 
 namespace PixelHunter1995
 {
@@ -12,6 +14,7 @@ namespace PixelHunter1995
     class Player : IDrawable, ILoadContent, IHasComponent<PositionComponent>, IHasComponent<CharacterComponent>, ICharacterComponent
     {
         private Vector2 MovePosition { get; set; }
+        private Vector2 LastClickedPosition { get; set; }
 
         private PositionComponent PosComp { get; set; }
         private CharacterComponent CharComp { get; set; }
@@ -39,14 +42,31 @@ namespace PixelHunter1995
             this.PosComp = new PositionComponent();
             this.CharComp = new CharacterComponent(this.PosComp);
 
-            this.Position = new Vector2(x, y);
-            this.MovePosition = this.Position;
-            this.MoveDirection = new Vector2();
-
             this.FontColor = Color.Purple;
             this.FontName = "Alkhemikal";
             this.AnimationTileset = new AnimationTileset("Animations/felixia");
             this.Name = name;
+
+            this.Position = new Vector2(x, y);
+            this.MovePosition = this.Position;
+            this.LastClickedPosition = GetFeetPosition();
+            this.MoveDirection = new Vector2();
+        }
+
+        /// <summary>
+        /// Input center position of feet and get position of AnimationTilset
+        /// </summary>
+        private Vector2 GetPositionFromFeet(Vector2 feetPosition)
+        {
+            return new Vector2(feetPosition.X - AnimationTileset.tileWidth / 2, feetPosition.Y - AnimationTileset.tileHeight);
+        }
+
+        /// <summary>
+        /// Get position of feet
+        /// </summary>
+        private Vector2 GetFeetPosition()
+        {
+            return new Vector2(Position.X + AnimationTileset.tileWidth / 2, Position.Y + AnimationTileset.tileHeight);
         }
 
         public void Update(GameTime gameTime, InputManager input, bool controllable)
@@ -62,20 +82,20 @@ namespace PixelHunter1995
 
         public void HandleInput(InputManager input)
         {
-            if (input.GetState(InputCommand.PLAYING_Move).IsDown)
+            if (input.GetState(InputCommand.EXPLORING_Move).IsEdgeDown)
             {
-                // Compensate for Position being in top left corner
-                float x = input.MouseSceneX - AnimationTileset.tileWidth / 2;
-                float y = input.MouseSceneY - AnimationTileset.tileHeight;
-                this.MovePosition = new Vector2(x, y);
+                float x = input.MouseSceneX;
+                float y = input.MouseSceneY;
+                // Check if position is in Scene (and not inventory etc)
+                if (0 < y && y < GlobalSettings.SCENE_HEIGHT)
+                {
+                    LastClickedPosition = new Vector2(x, y);
+                }
             }
-            if (input.Input.GetKeyState(MouseKeys.LeftButton).IsEdgeDown)
-            {
-                Say("Hi, I'm the player!");  // For debugging purposes, have the character talk when walking
-                Say("Well, actually my name is Felixia.");
-                Say("My interests include alchemy, solving ridiculously convoluted puzzles " +
-                    "and long pull requests on the shore.");
-            }
+            WalkingArea currentWalkingArea = GameManager.Instance.SceneManager.currentScene.WalkingArea;
+            MovePosition = GetPositionFromFeet(currentWalkingArea.GetNextPosition(LastClickedPosition, GetFeetPosition()));
+            MoveDirection = MovePosition - Position;
+            Position = Approach(Position, MovePosition, 2);
         }
 
         public void Say(string speech)

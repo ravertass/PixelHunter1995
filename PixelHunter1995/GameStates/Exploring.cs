@@ -34,7 +34,7 @@ namespace PixelHunter1995.GameStates
 
         public void Update(GameTime gameTime, InputManager input)
         {
-            if (input.GetState(InputCommand.PLAYING_Pause).IsEdgeDown)
+            if (input.GetState(InputCommand.EXPLORING_Pause).IsEdgeDown)
             {
                 GameManager.Instance.OpenMenu();
             }

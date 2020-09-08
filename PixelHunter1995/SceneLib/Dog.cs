@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.TilesetLib;
-using PixelHunter1995.Utilities;
 
 namespace PixelHunter1995.SceneLib
 {
@@ -26,9 +25,9 @@ namespace PixelHunter1995.SceneLib
             Name = name;
         }
 
-        public bool Contains(Coord point)
+        public bool Contains(Vector2 point)
         {
-            return new Rectangle(X, Y, Width, Height).Contains(new Point((int)point.X, (int)point.Y));
+            return new Rectangle(X, Y, Width, Height).Contains(point);
         }
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)

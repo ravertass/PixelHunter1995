@@ -13,7 +13,7 @@ namespace PixelHunter1995
     {
         private Camera camera;
         private StateManager StateManager;
-        private readonly SceneManager SceneManager = new SceneManager();
+        public readonly SceneManager SceneManager = new SceneManager();
         private readonly Inventory Inventory = new Inventory();
         private Texture2D MenuTexture;
         private static GameManager instance;

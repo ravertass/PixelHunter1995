@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using PixelHunter1995.Utilities;
 using PixelHunter1995.WalkingAreaLib;
 
 namespace PixelHunter1995.SceneLib
@@ -14,7 +13,7 @@ namespace PixelHunter1995.SceneLib
         private readonly int sceneWidth;
         public string Name { get; }
 
-        public PolygonDog(int x, int y, List<Coord> points, int sceneWidth, string name)
+        public PolygonDog(int x, int y, List<Vector2> points, int sceneWidth, string name)
         {
             X = x;
             Y = y;
@@ -23,7 +22,7 @@ namespace PixelHunter1995.SceneLib
             Name = name;
         }
 
-        public bool Contains(Coord point)
+        public bool Contains(Vector2 point)
         {
             return Polygon.Contains(point);
         }

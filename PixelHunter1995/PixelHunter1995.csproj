@@ -100,6 +100,7 @@
     <Compile Include="Components\CharacterComponent.cs" />
     <Compile Include="GameStates\StateManager.cs" />
     <Compile Include="SceneLib\Portal.cs" />
+    <Compile Include="Utilities\PriorityQueue.cs" />
     <Compile Include="Utilities\Either.cs" />
     <Compile Include="Utilities\GlobalSettings.cs" />
     <Compile Include="HaveFunctionInterfaces\IDrawable.cs" />
@@ -113,7 +114,6 @@
     <Compile Include="Inputs\StateMap.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Utilities\Polygon.cs" />
-    <Compile Include="Utilities\Coord.cs" />
     <Compile Include="TilesetLib\AnimationTileset.cs" />
     <Compile Include="TilesetLib\TilesetParser.cs" />
     <Compile Include="TilesetLib\Tileset.cs" />
@@ -133,6 +133,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>

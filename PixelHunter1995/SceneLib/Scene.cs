@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.Inputs;
 using PixelHunter1995.SceneLib;
 using PixelHunter1995.Utilities;
+using PixelHunter1995.WalkingAreaLib;
 using System.Collections.Generic;
 
 namespace PixelHunter1995
@@ -16,6 +17,7 @@ namespace PixelHunter1995
         private IDictionary<string, Portal> Portals;
         public List<IDog> Dogs;
         public Player Player;
+        public WalkingArea WalkingArea;
         public int Width { get; private set; }
 
         public Scene(List<IDrawable> drawables,
@@ -24,6 +26,7 @@ namespace PixelHunter1995
                      List<IDog> dogs,
                      IDictionary<string, Portal> portals,
                      Player player,
+                     WalkingArea walkingArea,
                      int width)
         {
             Player = player;
@@ -36,6 +39,7 @@ namespace PixelHunter1995
             Portals = portals;
             Player = player;
             Width = width;
+            WalkingArea = walkingArea;
         }
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
@@ -69,7 +73,7 @@ namespace PixelHunter1995
         {
             dogAtCursor = null;
 
-            Coord mousePos = new Coord(input.MouseSceneX, input.MouseSceneY);
+            Vector2 mousePos = new Vector2(input.MouseSceneX, input.MouseSceneY);
             // We sort on Z index, to check the top dog first. Note that this is reversed from
             // when we draw them, since in that case we want to draw the thing on top last.
             Dogs.Sort((a, b) => b.ZIndex().CompareTo(a.ZIndex()));
@@ -89,7 +93,7 @@ namespace PixelHunter1995
         {
             portalAtCursor = null;
 
-            Coord mousePos = new Coord(input.MouseSceneX, input.MouseSceneY);
+            Vector2 mousePos = new Vector2(input.MouseSceneX, input.MouseSceneY);
             foreach (Portal portal in Portals.Values)
             {
                 if (portal.Contains(mousePos))

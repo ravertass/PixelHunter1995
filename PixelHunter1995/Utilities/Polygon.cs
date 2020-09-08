@@ -9,13 +9,15 @@ namespace PixelHunter1995.WalkingAreaLib
 {
     class Polygon
     {
-        private List<Coord> vertices;
+        private List<Vector2> vertices;
         private RenderTarget2D renderTarget = null;
+        public Vector2 Center { get; }
 
-        public Polygon(List<Coord> vertices)
+        public Polygon(List<Vector2> vertices)
         {
             Debug.Assert(vertices.Count > 2);
             this.vertices = vertices;
+            Center = vertices.Aggregate(Vector2.Zero, (acc, v) => acc + v) / vertices.Count;
         }
 
         ~Polygon()
@@ -26,13 +28,13 @@ namespace PixelHunter1995.WalkingAreaLib
             }
         }
 
-        public Polygon(params Coord[] vertices)
+        public Polygon(params Vector2[] vertices)
             : this(vertices.ToList())
         {
         }
 
         public Polygon(Polygon other)
-            : this(new List<Coord>(other.vertices))
+            : this(new List<Vector2>(other.vertices))
         {
         }
 
@@ -45,9 +47,9 @@ namespace PixelHunter1995.WalkingAreaLib
 
         private VertexType GetVertexType(int i)
         {
-            Coord previous = vertices[PreviousIndex(i)];
-            Coord current = vertices[i];
-            Coord next = vertices[NextIndex(i)];
+            Vector2 previous = vertices[PreviousIndex(i)];
+            Vector2 current = vertices[i];
+            Vector2 next = vertices[NextIndex(i)];
 
             // Sorry for the stupid naming, but this was based on code
             // with even stupider naming. This probably should have good names
@@ -185,7 +187,7 @@ namespace PixelHunter1995.WalkingAreaLib
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        public bool Contains(Coord point)
+        public bool Contains(Vector2 point)
         {
             bool contains = false;
 
@@ -203,16 +205,16 @@ namespace PixelHunter1995.WalkingAreaLib
         /// Checks if the triangle formed by vertices at indices (i - 1, i, i + 1)
         /// contains the given point.
         /// </summary>
-        private bool TriangleContainsPoint(int i, Coord point)
+        private bool TriangleContainsPoint(int i, Vector2 point)
         {
             // Based on
             // https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle/2049593#2049593
 
-            Coord previousVertex = vertices[PreviousIndex(i)];
-            Coord currentVertex = vertices[i];
-            Coord nextVertex = vertices[NextIndex(i)];
+            Vector2 previousVertex = vertices[PreviousIndex(i)];
+            Vector2 currentVertex = vertices[i];
+            Vector2 nextVertex = vertices[NextIndex(i)];
 
-            float sign(Coord p1, Coord p2, Coord p3) =>
+            float sign(Vector2 p1, Vector2 p2, Vector2 p3) =>
                     (p1.X - p3.X) * (p2.Y - p3.Y) - (p2.X - p3.X) * (p1.Y - p3.Y);
 
             float d1 = sign(point, previousVertex, currentVertex);
@@ -227,7 +229,7 @@ namespace PixelHunter1995.WalkingAreaLib
 
         public override string ToString()
         {
-            return string.Join<Coord>(", ", vertices);
+            return string.Join<Vector2>(", ", vertices);
         }
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling, int sceneWidth)
@@ -266,7 +268,7 @@ namespace PixelHunter1995.WalkingAreaLib
             short[] drawIndices = new short[vertices.Count * 2];
             for (int i = 0; i < vertices.Count; i++)
             {
-                Coord coord = vertices[i];
+                Vector2 coord = vertices[i];
                 // Convert coordinates to the coordinate system
                 // used when drawing primitives, with 0 in the middle of
                 // the screen, X positive going right and Y positive
@@ -304,12 +306,12 @@ namespace PixelHunter1995.WalkingAreaLib
         {
             for (int i = 0; i < vertices.Count; i++)
             {
-                Coord thisVertex = vertices[i];
-                Coord thisNextVertex = vertices[NextIndex(i)];
+                Vector2 thisVertex = vertices[i];
+                Vector2 thisNextVertex = vertices[NextIndex(i)];
                 for (int j = 0; j < other.vertices.Count; j++)
                 {
-                    Coord otherVertex = other.vertices[j];
-                    Coord otherPreviousVertex = other.vertices[other.PreviousIndex(j)];
+                    Vector2 otherVertex = other.vertices[j];
+                    Vector2 otherPreviousVertex = other.vertices[other.PreviousIndex(j)];
 
                     if (thisVertex.Equals(otherVertex) && thisNextVertex.Equals(otherPreviousVertex))
                     {
@@ -325,13 +327,13 @@ namespace PixelHunter1995.WalkingAreaLib
         {
             Debug.Assert(HasCommonEdgeWith(other));
 
-            List<Coord> newVertices = new List<Coord>();
+            List<Vector2> newVertices = new List<Vector2>();
             bool collectedFromOther = false;
 
             for (int i = 0; i < vertices.Count; i++)
             {
-                Coord currentVertex = vertices[i];
-                Coord nextVertex = vertices[NextIndex(i)];
+                Vector2 currentVertex = vertices[i];
+                Vector2 nextVertex = vertices[NextIndex(i)];
 
                 newVertices.Add(currentVertex);
 
@@ -370,19 +372,34 @@ namespace PixelHunter1995.WalkingAreaLib
         /// <param name="vertexA"></param>
         /// <param name="vertexB"></param>
         /// <returns></returns>
-        private int EdgeAt(Coord vertexA, Coord vertexB)
+        private int EdgeAt(Vector2 vertexA, Vector2 vertexB)
         {
             for (int i = 0; i < vertices.Count; i++)
             {
-                Coord currentVertex = vertices[i];
-                Coord nextVertex = vertices[NextIndex(i)];
+                Vector2 currentVertex = vertices[i];
+                Vector2 nextVertex = vertices[NextIndex(i)];
                 if (currentVertex.Equals(vertexA) && nextVertex.Equals(vertexB))
                 {
                     return i;
                 }
             }
-
             return -1;
+        }
+
+        public (Vector2, double) GetClosestVertex(Vector2 position)
+        {
+            Vector2 closestVertice = Vector2.Zero;
+            double closestDistance = double.MaxValue;
+            foreach (Vector2 vertex in vertices)
+            {
+                double distance = (vertex - position).Length();
+                if (distance < closestDistance)
+                {
+                    closestVertice = vertex;
+                    closestDistance = distance;
+                }
+            }
+            return (closestVertice, closestDistance);
         }
     }
 }

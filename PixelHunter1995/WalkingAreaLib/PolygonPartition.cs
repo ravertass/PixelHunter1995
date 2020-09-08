@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using System.Linq;
 
 namespace PixelHunter1995.WalkingAreaLib
 {
@@ -69,6 +70,11 @@ namespace PixelHunter1995.WalkingAreaLib
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling, int sceneWidth)
         {
             Polygons.ForEach(p => p.Draw(graphics, spriteBatch, scaling, sceneWidth));
+        }
+
+        public bool Contains(Vector2 position)
+        {
+            return Polygons.Any(polygon => polygon.Contains(position));
         }
     }
 }

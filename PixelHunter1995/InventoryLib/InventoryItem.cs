@@ -50,7 +50,7 @@ namespace PixelHunter1995.InventoryLib
             Tileset.Draw(spriteBatch, Position, TilesetGid, scaling);
         }
 
-        public bool Contains(Coord point)
+        public bool Contains(Vector2 point)
         {
             return new Rectangle(X, Y, Width, Height).Contains(new Vector2(point.X, point.Y));
         }
