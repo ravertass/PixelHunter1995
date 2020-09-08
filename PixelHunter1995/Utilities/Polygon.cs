@@ -386,16 +386,16 @@ namespace PixelHunter1995.WalkingAreaLib
             return -1;
         }
 
-        public (Vector2, double) GetClosestPosition(Vector2 position)
+        public (Vector2, double) GetClosestVertex(Vector2 position)
         {
             Vector2 closestVertice = Vector2.Zero;
             double closestDistance = double.MaxValue;
-            foreach (Vector2 vertice in vertices)
+            foreach (Vector2 vertex in vertices)
             {
-                double distance = (vertice - position).Length();
+                double distance = (vertex - position).Length();
                 if (distance < closestDistance)
                 {
-                    closestVertice = vertice;
+                    closestVertice = vertex;
                     closestDistance = distance;
                 }
             }

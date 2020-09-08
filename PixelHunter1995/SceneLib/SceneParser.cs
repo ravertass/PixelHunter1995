@@ -30,7 +30,6 @@ namespace PixelHunter1995
             Player player = null;
 
             // Get tileset first to be used when loading dogs
-            // WalkingArea needed for Player
             foreach (XmlNode node in nodes)
             {
                 if (node.Name == "tileset")
@@ -43,11 +42,6 @@ namespace PixelHunter1995
                     Tileset tileset = TilesetParser.ParseTilesetXml(tilesetXmlPath, tilesetFirstGid);
                     tilesets.Add(tileset);
                     loadables.Add(tileset);
-                }
-                else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "walking")
-                {
-                    walkingArea = new WalkingArea(ParsePolygonXml(node.ChildNodes[0]), sceneWidth);
-                    drawables.Add(walkingArea);
                 }
             }
 
@@ -103,7 +97,12 @@ namespace PixelHunter1995
                     int y = (int)Math.Round(float.Parse(playerNode.Attributes["y"].Value));
                     y -= (int)Math.Round(float.Parse(playerNode.Attributes["height"].Value)); // Compensate for Tiled's coordinate system
                     string name = playerNode.Attributes["name"]?.InnerText;
-                    player = new Player(x, y, name ?? "Felixia", walkingArea);
+                    player = new Player(x, y, name ?? "Felixia");
+                }
+                else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "walking")
+                {
+                    walkingArea = new WalkingArea(ParsePolygonXml(node.ChildNodes[0]), sceneWidth);
+                    drawables.Add(walkingArea);
                 }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "portals")
                 {
@@ -116,10 +115,10 @@ namespace PixelHunter1995
                 }
                 if (player == null)
                 {
-                    player = new Player("Felixia", walkingArea);
+                    player = new Player("Felixia");
                 }
             }
-            return new Scene(drawables, updateables, loadables, dogs, portals, player, sceneWidth);
+            return new Scene(drawables, updateables, loadables, dogs, portals, player, walkingArea, sceneWidth);
         }
 
         private static Portal ParsePortalNode(XmlNode portalNode, int sceneWidth)

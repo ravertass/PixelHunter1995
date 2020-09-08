@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.Inputs;
 using PixelHunter1995.SceneLib;
 using PixelHunter1995.Utilities;
+using PixelHunter1995.WalkingAreaLib;
 using System.Collections.Generic;
 
 namespace PixelHunter1995
@@ -16,6 +17,7 @@ namespace PixelHunter1995
         private IDictionary<string, Portal> Portals;
         public List<IDog> Dogs;
         public Player Player;
+        public WalkingArea WalkingArea;
         public int Width { get; private set; }
 
         public Scene(List<IDrawable> drawables,
@@ -24,6 +26,7 @@ namespace PixelHunter1995
                      List<IDog> dogs,
                      IDictionary<string, Portal> portals,
                      Player player,
+                     WalkingArea walkingArea,
                      int width)
         {
             Player = player;
@@ -36,6 +39,7 @@ namespace PixelHunter1995
             Portals = portals;
             Player = player;
             Width = width;
+            WalkingArea = walkingArea;
         }
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)

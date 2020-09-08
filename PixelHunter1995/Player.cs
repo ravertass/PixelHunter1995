@@ -15,7 +15,6 @@ namespace PixelHunter1995
     {
         private Vector2 MovePosition { get; set; }
         private Vector2 LastClickedPosition { get; set; }
-        private WalkingArea walkingArea;
 
         private PositionComponent PosComp { get; set; }
         private CharacterComponent CharComp { get; set; }
@@ -37,13 +36,11 @@ namespace PixelHunter1995
         PositionComponent IHasComponent<PositionComponent>.Component => PosComp;
         CharacterComponent IHasComponent<CharacterComponent>.Component => CharComp;
 
-        public Player(string name, WalkingArea walkingArea) : this(60, 60, name, walkingArea) { }
-        public Player(float x, float y, string name, WalkingArea walkingArea)
+        public Player(string name) : this(50, 50, name) { }
+        public Player(float x, float y, string name)
         {
             this.PosComp = new PositionComponent();
             this.CharComp = new CharacterComponent(this.PosComp);
-
-            this.walkingArea = walkingArea;
 
             this.FontColor = Color.Purple;
             this.FontName = "Alkhemikal";
@@ -57,7 +54,7 @@ namespace PixelHunter1995
         }
 
         /// <summary>
-        /// Input position of feet and get position of AnimationTilset
+        /// Input center position of feet and get position of AnimationTilset
         /// </summary>
         private Vector2 GetPositionFromFeet(Vector2 feetPosition)
         {
@@ -85,7 +82,7 @@ namespace PixelHunter1995
 
         public void HandleInput(InputManager input)
         {
-            if (input.GetState(InputCommand.PLAYING_Move).IsDown)
+            if (input.Input.GetKeyState(MouseKeys.LeftButton).IsEdgeDown)
             {
                 float x = input.MouseSceneX;
                 float y = input.MouseSceneY;
@@ -93,13 +90,10 @@ namespace PixelHunter1995
                 if (0 < y && y < GlobalSettings.SCENE_HEIGHT)
                 {
                     LastClickedPosition = new Vector2(x, y);
-                    Say("Hi, I'm the player!");  // For debugging purposes, have the character talk when walking
-                    Say("Well, actually my name is Felixia.");
-                    Say("My interests include alchemy, solving ridiculously convoluted puzzles " +
-                        "and long pull requests on the shore.");
                 }
             }
-            MovePosition = GetPositionFromFeet(walkingArea.GetNextPosition(LastClickedPosition, GetFeetPosition()));
+            WalkingArea currentWalkingArea = GameManager.Instance.SceneManager.currentScene.WalkingArea;
+            MovePosition = GetPositionFromFeet(currentWalkingArea.GetNextPosition(LastClickedPosition, GetFeetPosition()));
             MoveDirection = MovePosition - Position;
             Position = Approach(Position, MovePosition, 2);
         }

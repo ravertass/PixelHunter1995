@@ -33,7 +33,26 @@ namespace PixelHunter1995.WalkingAreaLib
 
         public Vector2 GetNextPosition(Vector2 clickPosition, Vector2 currentPosition)
         {
-            return partition.GetNextPosition(clickPosition, currentPosition);
+            // clickPosition outside of PolygonPartition
+            if (!partition.Contains(clickPosition))
+            {
+                // TODO: Get closest position on edge not just closest vertex
+                Vector2 closestVertice = Vector2.Zero;
+                double closestDistance = double.MaxValue;
+                foreach (var polygon in partition.Polygons)
+                {
+                    (Vector2 closest, double distance) = polygon.GetClosestVertex(clickPosition);
+
+                    if (distance < closestDistance)
+                    {
+                        closestVertice = closest;
+                        closestDistance = distance;
+                    }
+                }
+                clickPosition = closestVertice;
+            }
+            return clickPosition;
+            // TODO: Lot of smart things here, coming in next review on path finding...
         }
 
         public int ZIndex()
