@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using System.Linq;
 
 namespace PixelHunter1995.WalkingAreaLib
 {
@@ -70,5 +71,38 @@ namespace PixelHunter1995.WalkingAreaLib
         {
             Polygons.ForEach(p => p.Draw(graphics, spriteBatch, scaling, sceneWidth));
         }
+
+        public bool Contains(Vector2 position)
+        {
+            return Polygons.Any(polygon => polygon.Contains(position));
+        }
+
+        /// <summary>
+        /// Get next position to walk towards.
+        /// </summary>
+        public Vector2 GetNextPosition(Vector2 clickPosition, Vector2 currentPosition)
+        {
+            // clickPosition outside of PolygonPartition
+            if (!Contains(clickPosition))
+            {
+                // TODO: Get closest position on edge not just closest vertice
+                Vector2 closestVertice = Vector2.Zero;
+                double closestDistance = double.MaxValue;
+                foreach (var polygon in Polygons)
+                {
+                    (Vector2 closest, double distance) = polygon.GetClosestPosition(clickPosition);
+
+                    if (distance < closestDistance)
+                    {
+                        closestVertice = closest;
+                        closestDistance = distance;
+                    }
+                }
+                clickPosition = closestVertice;
+            }
+            return clickPosition;
+            // TODO: Lot of smart things here, coming in next review on path finding...
+        }
+
     }
 }

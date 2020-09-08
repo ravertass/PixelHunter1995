@@ -26,9 +26,11 @@ namespace PixelHunter1995
             List<IDog> dogs = new List<IDog>();
             List<ILoadContent> loadables = new List<ILoadContent>();
             IDictionary<string, Portal> portals = new Dictionary<string, Portal>();
+            WalkingArea walkingArea = null;
             Player player = null;
 
             // Get tileset first to be used when loading dogs
+            // WalkingArea needed for Player
             foreach (XmlNode node in nodes)
             {
                 if (node.Name == "tileset")
@@ -41,6 +43,11 @@ namespace PixelHunter1995
                     Tileset tileset = TilesetParser.ParseTilesetXml(tilesetXmlPath, tilesetFirstGid);
                     tilesets.Add(tileset);
                     loadables.Add(tileset);
+                }
+                else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "walking")
+                {
+                    walkingArea = new WalkingArea(ParsePolygonXml(node.ChildNodes[0]), sceneWidth);
+                    drawables.Add(walkingArea);
                 }
             }
 
@@ -96,13 +103,7 @@ namespace PixelHunter1995
                     int y = (int)Math.Round(float.Parse(playerNode.Attributes["y"].Value));
                     y -= (int)Math.Round(float.Parse(playerNode.Attributes["height"].Value)); // Compensate for Tiled's coordinate system
                     string name = playerNode.Attributes["name"]?.InnerText;
-                    player = new Player(x, y, name ?? "Felixia");
-                }
-                else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "walking")
-                {
-                    WalkingArea walkingArea = new WalkingArea(ParsePolygonXml(node.ChildNodes[0]), sceneWidth);
-                    drawables.Add(walkingArea);
-
+                    player = new Player(x, y, name ?? "Felixia", walkingArea);
                 }
                 else if (node.Name == "objectgroup" && node.Attributes["name"]?.InnerText == "portals")
                 {
@@ -115,7 +116,7 @@ namespace PixelHunter1995
                 }
                 if (player == null)
                 {
-                    player = new Player("Felixia");
+                    player = new Player("Felixia", walkingArea);
                 }
             }
             return new Scene(drawables, updateables, loadables, dogs, portals, player, sceneWidth);
@@ -192,7 +193,7 @@ namespace PixelHunter1995
             return new ImageLayer(imagePath, width, height, z);
         }
 
-        private static List<Coord> ParsePolygonXml(XmlNode node)
+        private static List<Vector2> ParsePolygonXml(XmlNode node)
         {
             float baseX = float.Parse(node.Attributes["x"]?.InnerText);
             float baseY = float.Parse(node.Attributes["y"]?.InnerText);
@@ -203,14 +204,14 @@ namespace PixelHunter1995
             String polygonPointsString = polygonNode.Attributes["points"]?.InnerText;
             List<String> splitPolygonPointsString = polygonPointsString.Split(' ').ToList();
 
-            List<Coord> points = new List<Coord>();
+            List<Vector2> points = new List<Vector2>();
             foreach (String singlePointString in splitPolygonPointsString)
             {
                 List<String> splitSinglePointString = singlePointString.Split(',').ToList();
                 Debug.Assert(splitSinglePointString.Count == 2);
                 float x = float.Parse(splitSinglePointString[0]);
                 float y = float.Parse(splitSinglePointString[1]);
-                Coord point = new Coord(baseX + x, baseY + y);
+                Vector2 point = new Vector2(baseX + x, baseY + y);
                 points.Add(point);
             }
 

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using PixelHunter1995.Utilities;
 using PixelHunter1995.WalkingAreaLib;
 
 namespace PixelHunter1995.SceneLib
@@ -20,7 +19,7 @@ namespace PixelHunter1995.SceneLib
 
         public Portal(int x,
                       int y,
-                      List<Coord> points,
+                      List<Vector2> points,
                       int sceneWidth,
                       string name,
                       string destinationScene,
@@ -35,7 +34,7 @@ namespace PixelHunter1995.SceneLib
             DestinationPortal = destinationPortal;
         }
 
-        public bool Contains(Coord point)
+        public bool Contains(Vector2 point)
         {
             return Polygon.Contains(point);
         }

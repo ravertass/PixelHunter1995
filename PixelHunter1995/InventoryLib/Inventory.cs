@@ -16,7 +16,7 @@ namespace PixelHunter1995.InventoryLib
     class Inventory: ILoadContent, IDrawable
     {
         private static readonly int X_POS = 120;
-        private static readonly int Y_POS = 175;
+        private static readonly int Y_POS = GlobalSettings.SCENE_HEIGHT + GlobalSettings.HOVER_TEXT_HEIGHT;
         private static readonly int X_PADDING = 2;
         private static readonly int Y_PADDING = 2;
         public static readonly int ITEM_WIDTH = 40;
@@ -159,7 +159,7 @@ namespace PixelHunter1995.InventoryLib
         {
             dogAtCursor = null;
 
-            Coord mousePos = new Coord(input.MouseX, input.MouseY);
+            Vector2 mousePos = new Vector2(input.MouseX, input.MouseY);
             List<IDog> dogs = Items.ToList<IDog>();
             foreach (IDog dog in dogs)
             {

@@ -11,6 +11,9 @@ namespace PixelHunter1995.Utilities
         private static GlobalSettings instance;
         public const int WINDOW_WIDTH = 426;
         public const int WINDOW_HEIGHT = 240;
+        public const int SCENE_WIDTH = WINDOW_WIDTH;
+        public const int SCENE_HEIGHT = 160;
+        public const int HOVER_TEXT_HEIGHT = 15;
 
         private GlobalSettings()
         {

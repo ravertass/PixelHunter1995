@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using PixelHunter1995.Inputs;
-using PixelHunter1995.InventoryLib;
-using PixelHunter1995.SceneLib;
 using PixelHunter1995.Utilities;
 
 namespace PixelHunter1995
@@ -15,7 +9,7 @@ namespace PixelHunter1995
         private bool Active = false;
         private string Text;
         private static readonly int X_POS = GlobalSettings.WINDOW_WIDTH/2;
-        private static readonly int Y_POS = 160;
+        private static readonly int Y_POS = GlobalSettings.SCENE_HEIGHT;
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {

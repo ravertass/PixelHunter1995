@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using PixelHunter1995.Utilities;
 using System.Collections.Generic;
 
 namespace PixelHunter1995.WalkingAreaLib
@@ -17,7 +16,7 @@ namespace PixelHunter1995.WalkingAreaLib
             this.sceneWidth = sceneWidth;
         }
 
-        public WalkingArea(List<Coord> points, int sceneWidth)
+        public WalkingArea(List<Vector2> points, int sceneWidth)
             : this(new Polygon(points), sceneWidth)
         {
         }
@@ -30,6 +29,11 @@ namespace PixelHunter1995.WalkingAreaLib
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
             partition.Draw(graphics, spriteBatch, scaling, sceneWidth);
+        }
+
+        public Vector2 GetNextPosition(Vector2 clickPosition, Vector2 currentPosition)
+        {
+            return partition.GetNextPosition(clickPosition, currentPosition);
         }
 
         public int ZIndex()
