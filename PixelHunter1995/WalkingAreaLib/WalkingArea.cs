@@ -37,7 +37,7 @@ namespace PixelHunter1995.WalkingAreaLib
             if (!partition.Contains(clickPosition))
             {
                 // TODO: Get closest position on edge not just closest vertex
-                Vector2 closestVertice = Vector2.Zero;
+                Vector2 closestVertex = Vector2.Zero;
                 double closestDistance = double.MaxValue;
                 foreach (var polygon in partition.Polygons)
                 {
@@ -45,11 +45,11 @@ namespace PixelHunter1995.WalkingAreaLib
 
                     if (distance < closestDistance)
                     {
-                        closestVertice = closest;
+                        closestVertex = closest;
                         closestDistance = distance;
                     }
                 }
-                clickPosition = closestVertice;
+                clickPosition = closestVertex;
             }
             return clickPosition;
             // TODO: Lot of smart things here, coming in next review on path finding...

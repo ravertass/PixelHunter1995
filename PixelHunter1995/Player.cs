@@ -82,7 +82,7 @@ namespace PixelHunter1995
 
         public void HandleInput(InputManager input)
         {
-            if (input.Input.GetKeyState(MouseKeys.LeftButton).IsEdgeDown)
+            if (input.GetState(InputCommand.EXPLORING_Move).IsEdgeDown)
             {
                 float x = input.MouseSceneX;
                 float y = input.MouseSceneY;

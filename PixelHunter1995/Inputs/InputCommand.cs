@@ -1,4 +1,4 @@
-namespace PixelHunter1995.Inputs
+﻿namespace PixelHunter1995.Inputs
 {
     /// <summary>
     /// Ideally, anything could be bound,
@@ -15,8 +15,8 @@ namespace PixelHunter1995.Inputs
         MENU_Exit,
         MENU_Accept,
         
-        PLAYING_Pause,
-        PLAYING_Move,
+        EXPLORING_Pause,
+        EXPLORING_Move,
         
         Dialog_Skip, // skip to next part player can do anything
         Dialog_HistoryBack, // Missed something?
