@@ -68,23 +68,7 @@ namespace PixelHunter1995
                 {
                     foreach (XmlNode dogNode in node.ChildNodes)
                     {
-                        IDog dog;
-                        int x = (int)Math.Round(float.Parse(dogNode.Attributes["x"].Value));
-                        int y = (int)Math.Round(float.Parse(dogNode.Attributes["y"].Value));
-                        string name = dogNode.Attributes["name"]?.InnerText;
-                        if (dogNode.Attributes["gid"] != null)
-                        {
-                            int width = (int)Math.Round(float.Parse(dogNode.Attributes["width"].Value));
-                            int height = (int)Math.Round(float.Parse(dogNode.Attributes["height"].Value));
-                            int gid = int.Parse(dogNode.Attributes["gid"].Value);
-                            y -= height; // Compensate for Tiled's coordinate system
-                            Tileset tileset = GetTilesetFromTileGid(tilesets, gid);
-                            dog = new Dog(x, y, width, height, gid, tileset, name ?? $"Dog {gid}");
-                        }
-                        else
-                        {
-                            dog = new PolygonDog(x, y, ParsePolygonXml(dogNode), sceneWidth, name ?? "PolygonDog");
-                        }
+                        IDog dog = ParseDogNode(dogNode, tilesets, sceneWidth);
                         drawables.Add(dog);
                         dogs.Add(dog);
                     }
@@ -119,6 +103,28 @@ namespace PixelHunter1995
                 }
             }
             return new Scene(drawables, updateables, loadables, dogs, portals, player, walkingArea, sceneWidth);
+        }
+
+        private static IDog ParseDogNode(XmlNode dogNode, List<Tileset> tilesets, int sceneWidth)
+        {
+            IDog dog;
+            int x = (int)Math.Round(float.Parse(dogNode.Attributes["x"].Value));
+            int y = (int)Math.Round(float.Parse(dogNode.Attributes["y"].Value));
+            string name = dogNode.Attributes["name"]?.InnerText;
+            if (dogNode.Attributes["gid"] != null)
+            {
+                int width = (int)Math.Round(float.Parse(dogNode.Attributes["width"].Value));
+                int height = (int)Math.Round(float.Parse(dogNode.Attributes["height"].Value));
+                int gid = int.Parse(dogNode.Attributes["gid"].Value);
+                y -= height; // Compensate for Tiled's coordinate system
+                Tileset tileset = GetTilesetFromTileGid(tilesets, gid);
+                dog = new Dog(x, y, width, height, gid, tileset, name ?? $"Dog {gid}");
+            }
+            else
+            {
+                dog = new PolygonDog(x, y, ParsePolygonXml(dogNode), sceneWidth, name ?? "PolygonDog");
+            }
+            return dog;
         }
 
         private static Portal ParsePortalNode(XmlNode portalNode, int sceneWidth)
