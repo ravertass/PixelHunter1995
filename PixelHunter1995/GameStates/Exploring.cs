@@ -22,13 +22,13 @@ namespace PixelHunter1995.GameStates
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Begin(transformMatrix: camera.GetTransformation());
-            Scene.Draw(graphics, spriteBatch, 1);
+            spriteBatch.Begin(transformMatrix: camera.GetTransformation(), samplerState: SamplerState.PointClamp);
+            Scene.Draw(graphics, spriteBatch);
             spriteBatch.End();
 
             spriteBatch.Begin();
-            Inventory.Draw(graphics, spriteBatch, 1);
-            HoverText.Draw(graphics, spriteBatch, 1);
+            Inventory.Draw(graphics, spriteBatch);
+            HoverText.Draw(graphics, spriteBatch);
             spriteBatch.End();
         }
 

@@ -13,7 +13,7 @@ using PixelHunter1995.Utilities;
 
 namespace PixelHunter1995.DialogLib
 {
-    class DialogChoicePrompt : IDrawable, IUpdateable
+    class DialogChoicePrompt : IUpdateable
     {
         public static SpriteFont Font = FontManager.Instance.getFontByName("FreePixel");
         private static readonly int PROMPT_X_POS = 4;
@@ -37,7 +37,7 @@ namespace PixelHunter1995.DialogLib
             Active = true;
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
         {
             if (!Active)
             {

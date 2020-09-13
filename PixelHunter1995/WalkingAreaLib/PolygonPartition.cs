@@ -67,9 +67,9 @@ namespace PixelHunter1995.WalkingAreaLib
             return string.Join<Polygon>("; ", Polygons);
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling, int sceneWidth)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, int sceneWidth)
         {
-            Polygons.ForEach(p => p.Draw(graphics, spriteBatch, scaling, sceneWidth));
+            Polygons.ForEach(p => p.Draw(graphics, spriteBatch, sceneWidth));
         }
 
         public bool Contains(Vector2 position)

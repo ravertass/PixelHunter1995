@@ -30,9 +30,9 @@ namespace PixelHunter1995.SceneLib
             return new Rectangle(X, Y, Width, Height).Contains(point);
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scalingMin)
         {
-            Tileset.Draw(spriteBatch, new Vector2(X, Y), Gid, scaling);
+            Tileset.Draw(spriteBatch, new Vector2(X, Y), Gid, 1.0);
         }
 
         public int ZIndex()

@@ -32,12 +32,12 @@ namespace PixelHunter1995.GameStates
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Begin(transformMatrix: camera.GetTransformation());
-            Scene.Draw(graphics, spriteBatch, 1);
+            Scene.Draw(graphics, spriteBatch);
             spriteBatch.End();
             if (Prompt != null)
             {
                 spriteBatch.Begin();
-                Prompt.Draw(graphics, spriteBatch, 1);
+                Prompt.Draw(graphics, spriteBatch);
                 spriteBatch.End();
             }
         }

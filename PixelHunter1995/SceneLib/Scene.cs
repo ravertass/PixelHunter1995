@@ -18,6 +18,8 @@ namespace PixelHunter1995
         public List<IDog> Dogs;
         public Player Player;
         public WalkingArea WalkingArea;
+        private readonly float CharacterScalingMin;
+
         public int Width { get; private set; }
 
         public Scene(List<IDrawable> drawables,
@@ -27,7 +29,8 @@ namespace PixelHunter1995
                      IDictionary<string, Portal> portals,
                      Player player,
                      WalkingArea walkingArea,
-                     int width)
+                     int width,
+                     float characterScalingMin)
         {
             Player = player;
             Drawables = drawables;
@@ -40,15 +43,16 @@ namespace PixelHunter1995
             Player = player;
             Width = width;
             WalkingArea = walkingArea;
+            CharacterScalingMin = characterScalingMin;
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
         {
             // We sort on Z and draw lowest first.
             Drawables.Sort((a, b) => a.ZIndex().CompareTo(b.ZIndex()));
             foreach (IDrawable drawable in this.Drawables)
             {
-                drawable.Draw(graphics, spriteBatch, scaling);
+                drawable.Draw(graphics, spriteBatch, CharacterScalingMin);
             }
         }
 

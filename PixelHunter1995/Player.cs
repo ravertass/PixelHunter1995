@@ -103,9 +103,16 @@ namespace PixelHunter1995
             CharComp.Say(speech);
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
+        private double Scaling(double scalingMin)
         {
-            CharComp.Draw(graphics, spriteBatch, scaling);
+            double scaling = scalingMin + (1.0 - scalingMin) * (FeetPosition.Y / GlobalSettings.SCENE_HEIGHT);
+            // Make scaling happen in more discrete steps.
+            return Math.Round(scaling / 0.1) * 0.1;
+        }
+
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scalingMin)
+        {
+            CharComp.Draw(graphics, spriteBatch, Scaling(scalingMin));
         }
 
         public Vector2 Approach(Vector2 start, Vector2 target, double speed)

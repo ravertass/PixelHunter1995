@@ -13,7 +13,7 @@ using PixelHunter1995.Utilities;
 
 namespace PixelHunter1995.InventoryLib
 {
-    class Inventory: ILoadContent, IDrawable
+    class Inventory: ILoadContent
     {
         private static readonly int X_POS = 120;
         private static readonly int Y_POS = GlobalSettings.SCENE_HEIGHT + GlobalSettings.HOVER_TEXT_HEIGHT;
@@ -52,7 +52,7 @@ namespace PixelHunter1995.InventoryLib
             return new Vector2(x_pos, y_pos);
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
         {
             // TODO: Some way to display more than COLUMNS * ROWS items
 
@@ -73,7 +73,7 @@ namespace PixelHunter1995.InventoryLib
             DrawBackground(graphics, spriteBatch);
             foreach (InventoryItem item in Items)
             {
-                item.Draw(graphics, spriteBatch, scaling);
+                item.Draw(graphics, spriteBatch, 1.0);
             }
         }
 

@@ -20,7 +20,7 @@ namespace PixelHunter1995.SceneLib
             this.z = z;
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scalingMin)
         {
             spriteBatch.Draw(image, Vector2.Zero, Color.White);
         }

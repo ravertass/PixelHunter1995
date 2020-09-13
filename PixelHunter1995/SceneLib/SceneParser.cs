@@ -28,6 +28,7 @@ namespace PixelHunter1995
             IDictionary<string, Portal> portals = new Dictionary<string, Portal>();
             WalkingArea walkingArea = null;
             Player player = null;
+            float characterScalingMin = 1.0F;
 
             // Get tileset first to be used when loading dogs
             foreach (XmlNode node in nodes)
@@ -97,12 +98,16 @@ namespace PixelHunter1995
                         drawables.Add(portal);
                     }
                 }
+                else if (node.Name == "properties")
+                {
+                    characterScalingMin = float.Parse(GetPropertyValueOrDefault(node, "scaling_min", "1.0"));
+                }
                 if (player == null)
                 {
                     player = new Player("Felixia");
                 }
             }
-            return new Scene(drawables, updateables, loadables, dogs, portals, player, walkingArea, sceneWidth);
+            return new Scene(drawables, updateables, loadables, dogs, portals, player, walkingArea, sceneWidth, characterScalingMin);
         }
 
         private static IDog ParseDogNode(XmlNode dogNode, List<Tileset> tilesets, int sceneWidth)
@@ -154,6 +159,18 @@ namespace PixelHunter1995
             }
 
             throw new InvalidOperationException(String.Format("No property with name {0} found", propertyName));
+        }
+
+        private static String GetPropertyValueOrDefault(XmlNode propertiesNode, String propertyName, String defaultValue)
+        {
+            try
+            {
+                return GetPropertyValue(propertiesNode, propertyName);
+            }
+            catch (InvalidOperationException)
+            {
+                return defaultValue;
+            }
         }
 
         private static XmlNode GetChildNode(XmlNode node, String nodeName)

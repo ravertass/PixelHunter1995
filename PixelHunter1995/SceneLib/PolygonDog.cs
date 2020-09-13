@@ -27,9 +27,9 @@ namespace PixelHunter1995.SceneLib
             return Polygon.Contains(point);
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scalingMin)
         {
-            Polygon.Draw(graphics, spriteBatch, scaling, sceneWidth);
+            Polygon.Draw(graphics, spriteBatch, sceneWidth);
         }
 
         public int ZIndex()
