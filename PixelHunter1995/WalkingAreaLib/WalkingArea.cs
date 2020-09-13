@@ -26,9 +26,9 @@ namespace PixelHunter1995.WalkingAreaLib
             return partition.ToString();
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scalingMin)
         {
-            partition.Draw(graphics, spriteBatch, scaling, sceneWidth);
+            partition.Draw(graphics, spriteBatch, sceneWidth);
         }
 
         public Vector2 GetNextPosition(Vector2 clickPosition, Vector2 currentPosition)

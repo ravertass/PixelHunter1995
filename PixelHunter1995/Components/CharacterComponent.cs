@@ -35,6 +35,13 @@ namespace PixelHunter1995.Components
             Voice = new Voice();
         }
 
+        private Vector2 DrawPosition(double scaling)
+        {
+            float drawPositionX = Position.X + (AnimationTileset.tileWidth / 2) * (1 - (float)scaling);
+            float drawPositionY = Position.Y + AnimationTileset.tileHeight * (1 - (float)scaling);
+            return new Vector2(drawPositionX, drawPositionY);
+        }
+
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
         {
             var animationTileset = this.AnimationTileset;
@@ -46,7 +53,7 @@ namespace PixelHunter1995.Components
                 return;
             }
 
-            animationTileset.Draw(spriteBatch, Position, MoveDirection, scaling);
+            animationTileset.Draw(spriteBatch, DrawPosition(scaling), MoveDirection, scaling);
             DrawSpeech(spriteBatch);
         }
 

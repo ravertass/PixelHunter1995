@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="426" height="160" tilewidth="1" tileheight="1" infinite="0" nextlayerid="7" nextobjectid="6">
+ <properties>
+  <property name="scaling_min" type="float" value="0.7"/>
+ </properties>
  <tileset firstgid="1" source="../Tileset/dogs.tsx"/>
  <imagelayer id="2" name="background">
   <image source="../Images/hallway_club_room.png" width="426" height="160"/>

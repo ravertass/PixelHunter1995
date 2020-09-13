@@ -45,9 +45,9 @@ namespace PixelHunter1995.InventoryLib
             return Name;
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scalingMin)
         {
-            Tileset.Draw(spriteBatch, Position, TilesetGid, scaling);
+            Tileset.Draw(spriteBatch, Position, TilesetGid, 1.0);
         }
 
         public bool Contains(Vector2 point)

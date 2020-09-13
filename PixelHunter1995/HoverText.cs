@@ -4,14 +4,14 @@ using PixelHunter1995.Utilities;
 
 namespace PixelHunter1995
 {
-    internal class HoverText : IDrawable
+    internal class HoverText
     {
         private bool Active = false;
         private string Text;
         private static readonly int X_POS = GlobalSettings.WINDOW_WIDTH/2;
         private static readonly int Y_POS = GlobalSettings.SCENE_HEIGHT;
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)
         {
             if (!Active)
             {

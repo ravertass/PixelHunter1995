@@ -232,7 +232,7 @@ namespace PixelHunter1995.WalkingAreaLib
             return string.Join<Vector2>(", ", vertices);
         }
 
-        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, double scaling, int sceneWidth)
+        public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, int sceneWidth)
         {
             if (!GlobalSettings.Instance.Debug)
             {
