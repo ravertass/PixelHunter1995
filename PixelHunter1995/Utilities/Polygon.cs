@@ -200,11 +200,10 @@ namespace PixelHunter1995.WalkingAreaLib
                     contains = !contains;
             }
             // As can be seen when following the documentation link edge cases are not certain to be included,
-            // but we need them to be (since we go there when someone click outside)
+            // but we need them to be (since we go there when someone clicks outside)
             // TODO: Solve it for when we are on the edges and not only at the vertices.
             if (!contains && vertices.Contains(point))
             {
-                Console.WriteLine("At vertex but counted as outside...");
                 return true;
             }
             return contains;
