@@ -55,8 +55,6 @@ namespace PixelHunter1995.WalkingAreaLib
             }
             int currentIndex = partition.ContainingPolygonIndex(currentPosition);
             int clickIndex = partition.ContainingPolygonIndex(clickPosition);
-            //Console.WriteLine("Player in polygon: " + currentIndex);
-            //Console.WriteLine("Clicked in polygon: " + clickIndex);
             // Case1: In correct polygon
             if (clickIndex == currentIndex)
             {
