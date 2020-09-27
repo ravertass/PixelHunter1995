@@ -1,0 +1,10 @@
+{
+    "mystery_hallways": {
+        "intro": "mystery_hallways_intro",
+        "loop": "mystery_hallways_loop"
+    },
+
+    "empty_hallways": {
+        "loop": "empty_hallways_loop"
+    }
+}

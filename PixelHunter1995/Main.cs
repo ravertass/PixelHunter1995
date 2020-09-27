@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using PixelHunter1995.Utilities;
 using PixelHunter1995.Inputs;
@@ -13,8 +12,6 @@ namespace PixelHunter1995
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        private SoundEffect music;
-        private bool musicPlaying = false;
         private RenderTarget2D renderTarget;
         private Screen screen;
         private InputManager input;
@@ -57,9 +54,6 @@ namespace PixelHunter1995
 
             this.input = InputConfigParser.ParseInputConfig(inputConfigPath)
                     [InputConfigParser.DEFAULT_CONTEXT];
-
-            // Load sounds
-            music = Content.Load<SoundEffect>("Sounds/Hallways");
 
             GameManager.Instance.LoadContent(Content);
 
@@ -105,15 +99,6 @@ namespace PixelHunter1995
 
             GameManager.Instance.Update(gameTime, input);
             base.Update(gameTime);
-
-            if (!musicPlaying)
-            {
-                SoundEffectInstance soundInst = music.CreateInstance();
-                soundInst.Volume = 0.1f;
-                soundInst.IsLooped = true;
-                soundInst.Play();
-                musicPlaying = true;
-            }
         }
 
         /// <summary>

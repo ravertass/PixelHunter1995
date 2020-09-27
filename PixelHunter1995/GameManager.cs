@@ -14,6 +14,7 @@ namespace PixelHunter1995
         private Camera camera;
         private StateManager StateManager;
         public readonly SceneManager SceneManager = new SceneManager();
+        public readonly MusicManager MusicManager = new MusicManager();
         private readonly Inventory Inventory = new Inventory();
         private Texture2D MenuTexture;
         private static GameManager instance;
@@ -50,6 +51,8 @@ namespace PixelHunter1995
             }
 
             Inventory.LoadContent(content);
+
+            MusicManager.LoadContent(content);
         }
 
         internal void SetExit()
@@ -60,6 +63,7 @@ namespace PixelHunter1995
         public void Update(GameTime gameTime, InputManager input)
         {
             StateManager.currentState.Update(gameTime, input);
+            MusicManager.Update();
         }
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, GameTime gameTime)
@@ -69,6 +73,9 @@ namespace PixelHunter1995
 
         public void StartExploring()
         {
+            // TODO: Put this somewhere else. But not in Initialize(), since LoadContent() isn't called before?
+            // TODO: Song should be based on a property in the scene.
+            MusicManager.StartSong("mystery_hallways");
             StateManager.SetStateExploring(Inventory, SceneManager.currentScene);
         }
 

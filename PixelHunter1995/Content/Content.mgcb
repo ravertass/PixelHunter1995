@@ -111,11 +111,23 @@
 /processorParam:TextureFormat=Color
 /build:Images/Menu.jpg
 
-#begin Sounds/Hallways.wav
+#begin Music/empty_hallways_loop.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Sounds/Hallways.wav
+/build:Music/empty_hallways_loop.wav
+
+#begin Music/mystery_hallways_intro.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/mystery_hallways_intro.wav
+
+#begin Music/mystery_hallways_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/mystery_hallways_loop.wav
 
 #begin Tileset/dogs.png
 /importer:TextureImporter
