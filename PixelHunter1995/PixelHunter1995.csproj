@@ -157,6 +157,7 @@
     <Content Include="Content\Images\hallway_club_room.png" />
     <Content Include="Content\Images\hallway_principal.png" />
     <Content Include="Content\Images\hallway_soda.png" />
+    <Content Include="Content\Music\club_room_loop.wav" />
     <Content Include="Content\Music\empty_hallways_loop.wav" />
     <Content Include="Content\Music\mystery_hallways_intro.wav" />
     <Content Include="Content\Music\mystery_hallways_loop.wav" />

@@ -6,5 +6,9 @@
 
     "empty_hallways": {
         "loop": "empty_hallways_loop"
+    },
+
+    "club_room": {
+        "loop": "club_room_loop"
     }
 }

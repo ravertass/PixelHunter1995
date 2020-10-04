@@ -111,6 +111,12 @@
 /processorParam:TextureFormat=Color
 /build:Images/Menu.jpg
 
+#begin Music/club_room_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/club_room_loop.wav
+
 #begin Music/empty_hallways_loop.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

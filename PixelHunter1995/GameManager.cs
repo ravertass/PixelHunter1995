@@ -75,7 +75,7 @@ namespace PixelHunter1995
         {
             // TODO: Put this somewhere else. But not in Initialize(), since LoadContent() isn't called before?
             // TODO: Song should be based on a property in the scene.
-            MusicManager.StartSong("mystery_hallways");
+            MusicManager.StartSong("club_room");
             StateManager.SetStateExploring(Inventory, SceneManager.currentScene);
         }
 
