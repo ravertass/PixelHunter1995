@@ -7,13 +7,14 @@ using PixelHunter1995.Inputs;
 using System;
 using PixelHunter1995.WalkingAreaLib;
 using PixelHunter1995.Utilities;
+using PixelHunter1995.SceneLib;
 
 namespace PixelHunter1995
 {
 
     class Player : IDrawable, ILoadContent, IHasComponent<PositionComponent>, IHasComponent<CharacterComponent>, ICharacterComponent
     {
-        private Vector2 MovePosition { get; set; }
+        public Vector2 MovePosition { get; set; }
         private Vector2 LastClickedPosition { get; set; }
 
         private PositionComponent PosComp { get; set; }
@@ -76,8 +77,8 @@ namespace PixelHunter1995
             {
                 HandleInput(input);
             }
-            this.MoveDirection = MovePosition - Position;
-            this.Position = this.Approach(Position, MovePosition, 2);
+            MoveDirection = MovePosition - Position;
+            Position = Approach(Position, MovePosition, 2);
         }
 
         public void HandleInput(InputManager input)
@@ -94,8 +95,6 @@ namespace PixelHunter1995
             }
             WalkingArea currentWalkingArea = GameManager.Instance.SceneManager.currentScene.WalkingArea;
             MovePosition = GetPositionFromFeet(currentWalkingArea.GetNextPosition(LastClickedPosition, GetFeetPosition()));
-            MoveDirection = MovePosition - Position;
-            Position = Approach(Position, MovePosition, 2);
         }
 
         public void Say(string speech)
@@ -132,10 +131,31 @@ namespace PixelHunter1995
             return CharComp.ZIndex();
         }
 
-        public void SetPosition(Vector2 newPosition)
+        public void SetPosition(Vector2 newPosition, ExitDirection exitDirection)
         {
+            Vector2 offset = new Vector2(0, 0);
+            if (exitDirection == ExitDirection.Left)
+            {
+                offset = new Vector2(-4, 0);
+            }
+            else if (exitDirection == ExitDirection.Right)
+            {
+                offset = new Vector2(4, 0);
+            }
+            else if (exitDirection == ExitDirection.Up)
+            {
+                offset = new Vector2(0, -4);
+            }
+            else if (exitDirection == ExitDirection.Down)
+            {
+                offset = new Vector2(0, 4);
+            }
+
+            // Super hacky way to get the last clicked position to be set to the feet position of this offset position...
+            Position = newPosition + offset;
+            LastClickedPosition = FeetPosition;
+
             Position = newPosition;
-            MovePosition = Position;
         }
     }
 }

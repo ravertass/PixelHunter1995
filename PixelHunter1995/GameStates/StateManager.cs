@@ -1,6 +1,9 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.InventoryLib;
+using PixelHunter1995.SceneLib;
 
 namespace PixelHunter1995.GameStates
 {
@@ -27,6 +30,12 @@ namespace PixelHunter1995.GameStates
         public void SetStateTalking(Inventory inventory, Scene scene)
         {
             currentState = new Talking(inventory, scene, camera);
+        }
+
+        internal void SetStateChangeScene(Inventory inventory, Scene currentScene, Portal portal)
+        {
+            // TODO: Set end position correctly...
+            currentState = new ChangeScene(inventory, currentScene, camera, portal);
         }
     }
 }

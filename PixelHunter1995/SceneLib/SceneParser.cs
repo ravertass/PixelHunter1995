@@ -20,6 +20,7 @@ namespace PixelHunter1995
             doc.Load(sceneXmlPath);
             XmlNodeList nodes = doc.DocumentElement.ChildNodes;
             int sceneWidth = int.Parse(doc.DocumentElement.Attributes["width"].Value);
+            int sceneHeight = int.Parse(doc.DocumentElement.Attributes["height"].Value);
             List<Tileset> tilesets = new List<Tileset>();
             List<IDrawable> drawables = new List<IDrawable>();
             List<IUpdateable> updateables = new List<IUpdateable>();
@@ -92,7 +93,7 @@ namespace PixelHunter1995
                 {
                     foreach (XmlNode portalNode in node.ChildNodes)
                     {
-                        Portal portal = ParsePortalNode(portalNode, sceneWidth);
+                        Portal portal = ParsePortalNode(portalNode, sceneWidth, sceneHeight);
                         portals[portal.Name] = portal;
                         drawables.Add(portal);
                     }
@@ -127,25 +128,36 @@ namespace PixelHunter1995
             return dog;
         }
 
-        private static Portal ParsePortalNode(XmlNode portalNode, int sceneWidth)
+        private static Portal ParsePortalNode(XmlNode portalNode, int sceneWidth, int sceneHeight)
         {
-            int x = (int)Math.Round(float.Parse(portalNode.Attributes["x"].Value));
-            int y = (int)Math.Round(float.Parse(portalNode.Attributes["y"].Value));
-
             XmlNode propertiesNode = GetChildNode(portalNode, "properties");
+
+            int x = int.Parse(GetPropertyValue(propertiesNode, "pos_x"));
+            int y = int.Parse(GetPropertyValue(propertiesNode, "pos_y"));
+
             string name = GetPropertyValue(propertiesNode, "name");
             string destinationScene = GetPropertyValue(propertiesNode, "destination");
             string destinationPortal = GetPropertyValue(propertiesNode, "destination_portal");
 
-            return new Portal(x, y, ParsePolygonXml(portalNode), sceneWidth, name, destinationScene, destinationPortal);
+            string exitDirectionString = GetPropertyValue(propertiesNode, "exit_direction");
+            ExitDirection exitDirection = (ExitDirection)Enum.Parse(typeof(ExitDirection), exitDirectionString);
+
+            return new Portal(new Vector2(x, y),
+                              ParsePolygonXml(portalNode),
+                              sceneWidth,
+                              sceneHeight,
+                              name,
+                              destinationScene,
+                              destinationPortal,
+                              exitDirection);
         }
 
-        private static String GetPropertyValue(XmlNode propertiesNode, String propertyName)
+        private static string GetPropertyValue(XmlNode propertiesNode, string propertyName)
         {
             foreach (XmlNode propertyNode in propertiesNode.ChildNodes)
             {
-                String name = propertyNode.Attributes["name"].Value;
-                String value = propertyNode.Attributes["value"].Value;
+                string name = propertyNode.Attributes["name"].Value;
+                string value = propertyNode.Attributes["value"].Value;
 
                 if (name.Equals(propertyName))
                 {
@@ -153,10 +165,10 @@ namespace PixelHunter1995
                 }
             }
 
-            throw new InvalidOperationException(String.Format("No property with name {0} found", propertyName));
+            throw new InvalidOperationException(string.Format("No property with name {0} found", propertyName));
         }
 
-        private static XmlNode GetChildNode(XmlNode node, String nodeName)
+        private static XmlNode GetChildNode(XmlNode node, string nodeName)
         {
             foreach (XmlNode childNode in node.ChildNodes)
             {
@@ -166,7 +178,7 @@ namespace PixelHunter1995
                 }
             }
 
-            throw new InvalidOperationException(String.Format("No node with name {0} found", nodeName));
+            throw new InvalidOperationException(string.Format("No node with name {0} found", nodeName));
         }
 
         private static Tileset GetTilesetFromTileGid(List<Tileset> tilesets, int tileGid)

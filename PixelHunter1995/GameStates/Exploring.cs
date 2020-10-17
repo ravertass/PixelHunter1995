@@ -69,10 +69,14 @@ namespace PixelHunter1995.GameStates
                 return;
             }
 
-            bool rightClicked = input.Input.GetKeyState(MouseKeys.RightButton).IsEdgeDown;
-            if (rightClicked)
+            HoverText.SetText(portal.HoverText());
+
+            bool leftClicked = input.Input.GetKeyState(MouseKeys.LeftButton).IsEdgeDown;
+            if (leftClicked)
             {
-                GameManager.Instance.GoToPortal(portal.DestinationScene, portal.DestinationPortal);
+                // TODO: Should just go to portal, and then call GoThroughPortal when player
+                //       is at the portal.
+                GameManager.Instance.GoThroughPortal(portal);
             }
         }
     }
