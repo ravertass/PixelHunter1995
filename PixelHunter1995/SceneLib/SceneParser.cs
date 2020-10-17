@@ -18,8 +18,9 @@ namespace PixelHunter1995
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(sceneXmlPath);
-            XmlNodeList nodes = doc.DocumentElement.ChildNodes;
-            int sceneWidth = int.Parse(doc.DocumentElement.Attributes["width"].Value);
+            XmlNode baseNode = doc.DocumentElement;
+            XmlNodeList nodes = baseNode.ChildNodes;
+            int sceneWidth = int.Parse(baseNode.Attributes["width"].Value);
             List<Tileset> tilesets = new List<Tileset>();
             List<IDrawable> drawables = new List<IDrawable>();
             List<IUpdateable> updateables = new List<IUpdateable>();
@@ -29,6 +30,9 @@ namespace PixelHunter1995
             WalkingArea walkingArea = null;
             Player player = null;
             float characterScalingMin = 1.0F;
+
+            XmlNode propertiesNode = GetChildNode(baseNode, "properties");
+            string songName = GetPropertyValue(propertiesNode, "song");
 
             // Get tileset first to be used when loading dogs
             foreach (XmlNode node in nodes)
@@ -107,7 +111,16 @@ namespace PixelHunter1995
                     player = new Player("Felixia");
                 }
             }
-            return new Scene(drawables, updateables, loadables, dogs, portals, player, walkingArea, sceneWidth, characterScalingMin);
+            return new Scene(drawables,
+                             updateables,
+                             loadables,
+                             dogs,
+                             portals,
+                             player,
+                             walkingArea,
+                             sceneWidth,
+                             characterScalingMin,
+                             songName);
         }
 
         private static IDog ParseDogNode(XmlNode dogNode, List<Tileset> tilesets, int sceneWidth)

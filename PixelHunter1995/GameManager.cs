@@ -34,8 +34,7 @@ namespace PixelHunter1995
         public void Initialize(Camera camera)
         {
             this.camera = camera;
-            StateManager = new StateManager(camera);
-            SceneManager.Initialize(Path.Combine("Content", "Scenes"));
+            StateManager.SetCamera(camera);
             SceneManager.SetCurrentSceneByName("club_room");
             camera.GoTo(
                 (int)SceneManager.currentScene.Player.Position.X, SceneManager.currentScene.Width);
@@ -44,7 +43,10 @@ namespace PixelHunter1995
         public void LoadContent(ContentManager content)
         {
             MenuTexture = content.Load<Texture2D>("Images/Menu");
+            StateManager = new StateManager();
+            SceneManager.Initialize(Path.Combine("Content", "Scenes"));
             StateManager.SetStateMenu(MenuTexture);
+
             foreach (Scene scene in SceneManager.scenes.Values)
             {
                 scene.LoadContent(content);
@@ -73,9 +75,6 @@ namespace PixelHunter1995
 
         public void StartExploring()
         {
-            // TODO: Put this somewhere else. But not in Initialize(), since LoadContent() isn't called before?
-            // TODO: Song should be based on a property in the scene.
-            MusicManager.StartSong("club_room");
             StateManager.SetStateExploring(Inventory, SceneManager.currentScene);
         }
 

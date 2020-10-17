@@ -33,6 +33,7 @@ namespace PixelHunter1995
                 throw new InvalidDataException(string.Format("Could not find scene with scene name {0}", sceneName));
             }
             currentScene = scenes[sceneName];
+            GameManager.Instance.MusicManager.ChangeSong(currentScene.SongName);
         }
     }
 }

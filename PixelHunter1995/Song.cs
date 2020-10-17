@@ -6,36 +6,24 @@ namespace PixelHunter1995
     {
         private SoundEffectInstance introInstance;
         private SoundEffectInstance loopInstance;
-        private bool hasIntro;
+        private SoundEffectInstance currentInstance;
 
         public Song(SoundEffect intro, SoundEffect loop)
         {
             introInstance = intro.CreateInstance();
             loopInstance = loop.CreateInstance();
-            hasIntro = true;
+            PlayIntro();
         }
 
         public Song(SoundEffect loop)
         {
             loopInstance = loop.CreateInstance();
-            hasIntro = false;
+            PlayLoop();
         }
 
         public void Update()
         {
-            if (hasIntro && introInstance.State == SoundState.Stopped)
-            {
-                PlayLoop();
-            }
-        }
-
-        public void Start()
-        {
-            if (hasIntro)
-            {
-                PlayIntro();
-            }
-            else
+            if (introInstance != null && introInstance.State == SoundState.Stopped)
             {
                 PlayLoop();
             }
@@ -43,21 +31,30 @@ namespace PixelHunter1995
 
         private void PlayIntro()
         {
-            introInstance.Volume = 0.1f;
-            introInstance.IsLooped = false;
-            introInstance.Play();
+            currentInstance = introInstance;
+            currentInstance.IsLooped = false;
         }
 
         private void PlayLoop()
         {
-            loopInstance.Volume = 0.1f;
-            loopInstance.IsLooped = true;
-            loopInstance.Play();
+            currentInstance = loopInstance;
+            currentInstance.IsLooped = true;
+        }
+
+        public void Start(float volume)
+        {
+            currentInstance.Volume = volume;
+            currentInstance.Play();
         }
 
         public void Stop()
         {
-            loopInstance.Stop();
+            currentInstance.Stop();
+        }
+
+        public void SetVolume(float volume)
+        {
+            currentInstance.Volume = volume;
         }
     }
 }
