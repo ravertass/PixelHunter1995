@@ -14,6 +14,7 @@ namespace PixelHunter1995.Utilities
         public const int SCENE_WIDTH = WINDOW_WIDTH;
         public const int SCENE_HEIGHT = 160;
         public const int HOVER_TEXT_HEIGHT = 15;
+        public const float MAX_VOLUME = 0.1F;
 
         private GlobalSettings()
         {

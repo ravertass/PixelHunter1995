@@ -33,14 +33,14 @@ namespace PixelHunter1995
         /// </summary>
         protected override void Initialize()
         {
+            base.Initialize();
+
             Camera camera = new Camera();
             GameManager.Instance.Initialize(camera);
             GlobalSettings.Instance.Debug = true;
             renderTarget = new RenderTarget2D(GraphicsDevice, GlobalSettings.WINDOW_WIDTH, GlobalSettings.WINDOW_HEIGHT);
             screen = new Screen(graphics, Window, camera);
             Screen.Instance = screen;
-
-            base.Initialize();
         }
 
         /// <summary>

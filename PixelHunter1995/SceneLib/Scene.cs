@@ -15,6 +15,7 @@ namespace PixelHunter1995
         private List<IUpdateable> Updateables;
         private List<ILoadContent> Loadables;
         private IDictionary<string, Portal> Portals;
+        public readonly string SongName;
         public List<IDog> Dogs;
         public Player Player;
         public WalkingArea WalkingArea;
@@ -30,7 +31,8 @@ namespace PixelHunter1995
                      Player player,
                      WalkingArea walkingArea,
                      int width,
-                     float characterScalingMin)
+                     float characterScalingMin,
+                     string songName)
         {
             Player = player;
             Drawables = drawables;
@@ -44,6 +46,7 @@ namespace PixelHunter1995
             Width = width;
             WalkingArea = walkingArea;
             CharacterScalingMin = characterScalingMin;
+            SongName = songName;
         }
 
         public void Draw(GraphicsDeviceManager graphics, SpriteBatch spriteBatch)

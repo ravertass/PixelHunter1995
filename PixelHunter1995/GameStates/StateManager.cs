@@ -9,7 +9,11 @@ namespace PixelHunter1995.GameStates
         public IGameState currentState { get; internal set; }
         private Camera camera;
 
-        public StateManager(Camera camera)
+        public StateManager()
+        {
+        }
+
+        public void SetCamera(Camera camera)
         {
             this.camera = camera;
         }
