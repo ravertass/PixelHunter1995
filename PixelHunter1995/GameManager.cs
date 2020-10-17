@@ -89,15 +89,17 @@ namespace PixelHunter1995
             StateManager.SetStateTalking(Inventory, SceneManager.currentScene);
         }
 
-        public void GoToPortal(string sceneName, string portalName)
+        public void GoThroughPortal(Portal portal)
         {
-            // TODO: Unsure where this logic should go...
-            // TODO: Should probably first change state to a transition state where the player
-            //       walks through the portal, then change room when the transition state is done.
+            StateManager.SetStateChangeScene(Inventory, SceneManager.currentScene, portal);
+        }
+
+        public void ChangeScene(string sceneName, string portalName)
+        {
             SceneManager.SetCurrentSceneByName(sceneName);
             StateManager.SetStateExploring(Inventory, SceneManager.currentScene);
             Portal destinationPortal = SceneManager.currentScene.GetPortalByName(portalName);
-            SceneManager.currentScene.Player.SetPosition(destinationPortal.AppearancePosition);
+            SceneManager.currentScene.Player.SetPosition(destinationPortal.AppearancePosition, destinationPortal.ReverseExitDirection());
             camera.GoTo((int)destinationPortal.AppearancePosition.X, SceneManager.currentScene.Width);
         }
     }

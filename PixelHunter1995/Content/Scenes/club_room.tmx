@@ -46,7 +46,10 @@
    <properties>
     <property name="destination" value="hallway_club_room"/>
     <property name="destination_portal" value="0"/>
+    <property name="exit_direction" value="Right"/>
     <property name="name" value="0"/>
+    <property name="pos_x" type="int" value="782"/>
+    <property name="pos_y" type="int" value="80"/>
    </properties>
    <polygon points="0,0 20.5,20.25 19.25,71.75 -2,50"/>
   </object>
