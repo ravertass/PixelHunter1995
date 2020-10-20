@@ -5,6 +5,7 @@
     },
 
     "empty_hallways": {
+        "intro": "empty_hallways_intro",
         "loop": "empty_hallways_loop"
     },
 
