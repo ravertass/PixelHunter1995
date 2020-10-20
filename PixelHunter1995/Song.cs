@@ -12,30 +12,29 @@ namespace PixelHunter1995
         {
             introInstance = intro.CreateInstance();
             loopInstance = loop.CreateInstance();
-            PlayIntro();
         }
 
         public Song(SoundEffect loop)
         {
             loopInstance = loop.CreateInstance();
-            PlayLoop();
         }
 
         public void Update()
         {
             if (introInstance != null && introInstance.State == SoundState.Stopped)
             {
-                PlayLoop();
+                SetLoop();
+                currentInstance.Play();
             }
         }
 
-        private void PlayIntro()
+        private void SetIntro()
         {
             currentInstance = introInstance;
             currentInstance.IsLooped = false;
         }
 
-        private void PlayLoop()
+        private void SetLoop()
         {
             currentInstance = loopInstance;
             currentInstance.IsLooped = true;
@@ -43,6 +42,15 @@ namespace PixelHunter1995
 
         public void Start(float volume)
         {
+            if (introInstance != null)
+            {
+                SetIntro();
+            }
+            else
+            {
+                SetLoop();
+            }
+
             currentInstance.Volume = volume;
             currentInstance.Play();
         }
