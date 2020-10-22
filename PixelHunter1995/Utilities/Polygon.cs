@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.Utilities;
+using System;
 
 namespace PixelHunter1995.WalkingAreaLib
 {
@@ -183,7 +184,7 @@ namespace PixelHunter1995.WalkingAreaLib
 
         /// <summary>
         /// Checks if point is contained in the polygon.
-        /// Taken from https://stackoverflow.com/a/2922778
+        /// Taken from https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
@@ -197,6 +198,13 @@ namespace PixelHunter1995.WalkingAreaLib
                         (point.X < (vertices[j].X - vertices[i].X) * (point.Y - vertices[i].Y) /
                         (vertices[j].Y - vertices[i].Y) + vertices[i].X))
                     contains = !contains;
+            }
+            // As can be seen when following the documentation link edge cases are not certain to be included,
+            // but we need them to be (since we go there when someone clicks outside)
+            // TODO: Solve it for when we are on the edges and not only at the vertices.
+            if (!contains && vertices.Contains(point))
+            {
+                return true;
             }
             return contains;
         }
