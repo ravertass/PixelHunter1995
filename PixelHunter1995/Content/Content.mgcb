@@ -111,6 +111,18 @@
 /processorParam:TextureFormat=Color
 /build:Images/Menu.jpg
 
+#begin Music/abandoned_library_intro.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/abandoned_library_intro.wav
+
+#begin Music/abandoned_library_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Music/abandoned_library_loop.wav
+
 #begin Music/club_room_loop.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
