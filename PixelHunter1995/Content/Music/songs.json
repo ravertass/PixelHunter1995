@@ -11,5 +11,10 @@
 
     "club_room": {
         "loop": "club_room_loop"
+    },
+
+    "abandoned_library": {
+        "intro": "abandoned_library_intro",
+        "loop": "abandoned_library_loop"
     }
 }
