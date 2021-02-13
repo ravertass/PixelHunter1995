@@ -33,26 +33,34 @@ namespace PixelHunter1995.WalkingAreaLib
             partition.Draw(graphics, spriteBatch, scaling, sceneWidth);
         }
 
+        private Vector2 ClosestPositionInWalkingArea(Vector2 inPosition)
+        {
+            if (partition.Contains(inPosition))
+            {
+                return inPosition;
+            }
+
+            Vector2 closestPoint = Vector2.Zero;
+            double closestDistance = double.MaxValue;
+            foreach (var polygon in partition.Polygons)
+            {
+                (Vector2 closest, double distance) = polygon.ClosestPositionInPolygon(inPosition);
+
+                if (distance < closestDistance)
+                {
+                    closestPoint = closest;
+                    closestDistance = distance;
+                }
+            }
+
+            return closestPoint;
+        }
+
         public Vector2 GetNextPosition(Vector2 clickPosition, Vector2 currentPosition)
         {
-            // clickPosition outside of PolygonPartition
-            if (!partition.Contains(clickPosition))
-            {
-                // TODO: Get closest position on edge not just closest vertex
-                Vector2 closestVertex = Vector2.Zero;
-                double closestDistance = double.MaxValue;
-                foreach (var polygon in partition.Polygons)
-                {
-                    (Vector2 closest, double distance) = polygon.GetClosestVertex(clickPosition);
+            clickPosition = ClosestPositionInWalkingArea(clickPosition);
+            currentPosition = ClosestPositionInWalkingArea(currentPosition);
 
-                    if (distance < closestDistance)
-                    {
-                        closestVertex = closest;
-                        closestDistance = distance;
-                    }
-                }
-                clickPosition = closestVertex;
-            }
             int currentIndex = partition.ContainingPolygonIndex(currentPosition);
             int clickIndex = partition.ContainingPolygonIndex(clickPosition);
             // Case1: In correct polygon

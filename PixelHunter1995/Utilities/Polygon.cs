@@ -184,7 +184,7 @@ namespace PixelHunter1995.WalkingAreaLib
 
         /// <summary>
         /// Checks if point is contained in the polygon.
-        /// Taken from https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
+        /// Based on https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
@@ -192,21 +192,53 @@ namespace PixelHunter1995.WalkingAreaLib
         {
             bool contains = false;
 
-            for (int i = 0, j = vertices.Count - 1; i < vertices.Count; j = i++)
+            for (int i = 0; i < vertices.Count; i++)
             {
-                if ((vertices[i].Y > point.Y) != (vertices[j].Y > point.Y) &&
-                        (point.X < (vertices[j].X - vertices[i].X) * (point.Y - vertices[i].Y) /
-                        (vertices[j].Y - vertices[i].Y) + vertices[i].X))
+                Vector2 previousVertex = vertices[PreviousIndex(i)];
+                Vector2 currentVertex = vertices[i];
+                if ((currentVertex.Y > point.Y) != (previousVertex.Y > point.Y) &&
+                    (point.X < ((previousVertex.X - currentVertex.X) * (point.Y - currentVertex.Y) /
+                                (previousVertex.Y - currentVertex.Y) + currentVertex.X)))
+                {
                     contains = !contains;
+                }
             }
+
             // As can be seen when following the documentation link edge cases are not certain to be included,
             // but we need them to be (since we go there when someone clicks outside)
-            // TODO: Solve it for when we are on the edges and not only at the vertices.
-            if (!contains && vertices.Contains(point))
+            if (AtPolygonEdge(point))
             {
                 return true;
             }
+
             return contains;
+        }
+
+        private bool AtPolygonEdge(Vector2 point)
+        {
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Vector2 previousVertex = vertices[PreviousIndex(i)];
+                Vector2 currentVertex = vertices[i];
+                if (OnLine(point, previousVertex, currentVertex))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool OnLine(Vector2 pointOfInterest, Vector2 linePointA, Vector2 linePointB)
+        {
+            Vector2 pointAToPOI = pointOfInterest - linePointA;
+            Vector2 pointBToPOI = pointOfInterest - linePointB;
+            Vector2 pointAToPointB = linePointB - linePointA;
+
+            double lengthViaPOI = pointAToPOI.Length() + pointBToPOI.Length();
+            double lineLength = pointAToPointB.Length();
+
+            return Math.Abs(lengthViaPOI - lineLength) < 0.0000001;
         }
 
         /// <summary>
@@ -394,20 +426,59 @@ namespace PixelHunter1995.WalkingAreaLib
             return -1;
         }
 
-        public (Vector2, double) GetClosestVertex(Vector2 position)
+        private static Vector2 ProjectOntoLine(Vector2 pointOfInterest, Vector2 pointA, Vector2 pointB)
         {
-            Vector2 closestVertice = Vector2.Zero;
-            double closestDistance = double.MaxValue;
-            foreach (Vector2 vertex in vertices)
+            Vector2 pointAToPointB = pointB - pointA;
+            Vector2 pointAToPOI = pointOfInterest - pointA;
+
+            Vector2 normalizedPointAToPointB = pointAToPointB;
+            normalizedPointAToPointB.Normalize();
+
+            float scalarProjection = Vector2.Dot(pointAToPOI, normalizedPointAToPointB);
+            Vector2 pointProjection = new Vector2(normalizedPointAToPointB.X * scalarProjection, normalizedPointAToPointB.Y * scalarProjection);
+
+            Vector2 pointOnInfiniteLine = pointProjection + pointA;
+
+            if (!OnLine(pointOnInfiniteLine, pointA, pointB))
             {
-                double distance = (vertex - position).Length();
+                if ((pointA - pointOfInterest).Length() < (pointB - pointOfInterest).Length())
+                {
+                    return pointA;
+                }
+                else
+                {
+                    return pointB;
+                }
+            }
+
+            return pointOnInfiniteLine;
+        }
+
+        public (Vector2, double) ClosestPositionInPolygon(Vector2 pointOfInterest)
+        {
+            if (Contains(pointOfInterest))
+            {
+                return (pointOfInterest, 0.0);
+            }
+
+            Vector2 closestPoint = Vector2.Zero;
+            double closestDistance = double.MaxValue;
+
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Vector2 currentVertex = vertices[i];
+                Vector2 nextVertex = vertices[NextIndex(i)];
+
+                Vector2 pointOnLine = ProjectOntoLine(pointOfInterest, currentVertex, nextVertex);
+                double distance = (pointOnLine - pointOfInterest).Length();
                 if (distance < closestDistance)
                 {
-                    closestVertice = vertex;
+                    closestPoint = pointOnLine;
                     closestDistance = distance;
                 }
             }
-            return (closestVertice, closestDistance);
+
+            return (closestPoint, closestDistance);
         }
     }
 }

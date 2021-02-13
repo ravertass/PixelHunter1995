@@ -76,8 +76,8 @@ namespace PixelHunter1995
             {
                 HandleInput(input);
             }
-            this.MoveDirection = MovePosition - Position;
-            this.Position = this.Approach(Position, MovePosition, 2);
+            MoveDirection = MovePosition - Position;
+            Position = Approach(Position, MovePosition, 2);
         }
 
         public void HandleInput(InputManager input)
@@ -94,8 +94,6 @@ namespace PixelHunter1995
             }
             WalkingArea currentWalkingArea = GameManager.Instance.SceneManager.currentScene.WalkingArea;
             MovePosition = GetPositionFromFeet(currentWalkingArea.GetNextPosition(LastClickedPosition, GetFeetPosition()));
-            MoveDirection = MovePosition - Position;
-            Position = Approach(Position, MovePosition, 2);
         }
 
         public void Say(string speech)
