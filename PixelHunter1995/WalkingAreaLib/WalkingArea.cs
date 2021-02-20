@@ -64,10 +64,9 @@ namespace PixelHunter1995.WalkingAreaLib
             int clickIndex = partition.ContainingPolygonIndex(clickPosition);
             int currentIndex = partition.ContainingPolygonIndex(currentPosition);
 
-            // Case 1: In correct polygon
-            // TODO: Check if line from currentPosition to clickPosition is within the polygon partition
-            //       instead (if this is easy, then maybe the polygon partitioning is pretty pointless...).
-            if (partition.Polygons[clickIndex].Contains(currentPosition))
+            // Case 1: There's a straight line within the walking area
+            //         between the current position and the clicked position.
+            if (partition.ContainsLine(currentPosition, clickPosition))
             {
                 return clickPosition;
             }

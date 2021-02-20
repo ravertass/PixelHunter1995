@@ -97,14 +97,14 @@ namespace PixelHunter1995.WalkingAreaLib
 
         public PolygonPartition ConvexPartition()
         {
-            // TODO: Use an actual convex partition algorithn, e.g. Hertel-Mehlhorn,
+            // TODO: Use an actual convex partition algorithm, e.g. Hertel-Mehlhorn,
             //       instead of only using triangulation.
             if (IsConvex())
             {
-                return new PolygonPartition(new List<Polygon>() { this });
+                return new PolygonPartition(new List<Polygon>() { this }, this);
             }
 
-            return new PolygonPartition(Triangulate()).RemoveUnnecessaryEdges();
+            return new PolygonPartition(Triangulate(), this).RemoveUnnecessaryEdges();
         }
 
         /// <summary>
@@ -479,6 +479,53 @@ namespace PixelHunter1995.WalkingAreaLib
             }
 
             return (closestPoint, closestDistance);
+        }
+
+        private static (bool, Vector2) LinesIntersect(Vector2 line1PointA,
+                                                      Vector2 line1PointB,
+                                                      Vector2 line2PointA,
+                                                      Vector2 line2PointB)
+        {
+            float l1ax = line1PointA.X;
+            float l1ay = line1PointA.Y;
+
+            float l2ax = line2PointA.X;
+            float l2ay = line2PointA.Y;
+
+            Vector2 line1PointAToB = line1PointB - line1PointA;
+            float l1x = line1PointAToB.X;
+            float l1y = line1PointAToB.Y;
+
+            Vector2 line2PointAToB = line2PointB - line2PointA;
+            float l2x = line2PointAToB.X;
+            float l2y = line2PointAToB.Y;
+
+            float s = (-l1y * (l1ax - l2ax) + l1x * (l1ay - l2ay)) / (-l2x * l1y + l1x * l2y);
+            float t = ( l2x * (l1ay - l2ay) - l2y * (l1ax - l2ax)) / (-l2x * l1y + l1x * l2y);
+
+            bool intersects = 0 <= s && s <= 1 && 0 <= t && t <= 1;
+            Vector2 intersectionPoint = new Vector2(l1ax + t * l1x, l1ay + t * l1y);
+
+            return (intersects, intersectionPoint);
+        }
+
+        public List<Vector2> EdgeIntersections(Vector2 pointA, Vector2 pointB)
+        {
+            List<Vector2> intersections = new List<Vector2>();
+
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Vector2 currentVertex = vertices[i];
+                Vector2 nextVertex = vertices[NextIndex(i)];
+
+                var (intersects, intersectionPoint) = LinesIntersect(pointA, pointB, currentVertex, nextVertex);
+                if (intersects)
+                {
+                    intersections.Add(intersectionPoint);
+                }
+            }
+
+            return intersections;
         }
     }
 }
