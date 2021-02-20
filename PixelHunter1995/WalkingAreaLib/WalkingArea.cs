@@ -61,31 +61,37 @@ namespace PixelHunter1995.WalkingAreaLib
             clickPosition = ClosestPositionInWalkingArea(clickPosition);
             currentPosition = ClosestPositionInWalkingArea(currentPosition);
 
-            int currentIndex = partition.ContainingPolygonIndex(currentPosition);
             int clickIndex = partition.ContainingPolygonIndex(clickPosition);
-            // Case1: In correct polygon
-            if (clickIndex == currentIndex)
+            int currentIndex = partition.ContainingPolygonIndex(currentPosition);
+
+            // Case 1: In correct polygon
+            // TODO: Check if line from currentPosition to clickPosition is within the polygon partition
+            //       instead (if this is easy, then maybe the polygon partitioning is pretty pointless...).
+            if (partition.Polygons[clickIndex].Contains(currentPosition))
             {
                 return clickPosition;
             }
-            // Case2: In adjacent polygon
-            if (partition.Adjacents[currentIndex].Contains(clickIndex))
-            {
-                return partition.Polygons[clickIndex].Center;
-            }
-            // Case3: Non adjecent Polygon, find adjacent polygon in correct direction.
+
+            // Case 2: Find adjacent polygon in correct direction.
             int[] path = RunDijkstra(partition.Polygons.Count, partition.DistanceMatrix, currentIndex);
-            int temp = clickIndex;
+
+            int tempIndex = clickIndex;
             Stack<int> stack = new Stack<int>();
-            while (temp != currentIndex)
+            while (!partition.Polygons[tempIndex].Contains(currentPosition))
             {
-                stack.Push(temp);
-                temp = path[temp];
+                stack.Push(tempIndex);
+                tempIndex = path[tempIndex];
             }
-            return partition.Polygons[stack.Pop()].Center;
+            int nextPolygonIndex = stack.Pop();
+
+            return partition.Polygons[nextPolygonIndex].ClosestPositionInPolygon(currentPosition).Item1;
         }
 
         // Taken from: https://simpledevcode.wordpress.com/2015/12/22/graphs-and-dijkstras-algorithm-c/
+        // TODO:
+        // - Create a matrix that counts distance in number of polygons one has to traverse.
+        // - Include some library with a good license which has a priority queue to use.
+        // - Implement Dijkstra ourselves...
         private int[] RunDijkstra(int graphSize, float[,] distanceMatrix, int sourceIndex)
         {
             float[] distance = new float[graphSize];
