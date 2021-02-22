@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using PixelHunter1995.Utilities;
+using System;
 
 namespace PixelHunter1995.WalkingAreaLib
 {
@@ -96,14 +97,14 @@ namespace PixelHunter1995.WalkingAreaLib
 
         public PolygonPartition ConvexPartition()
         {
-            // TODO: Use an actual convex partition algorithn, e.g. Hertel-Mehlhorn,
+            // TODO: Use an actual convex partition algorithm, e.g. Hertel-Mehlhorn,
             //       instead of only using triangulation.
             if (IsConvex())
             {
-                return new PolygonPartition(new List<Polygon>() { this });
+                return new PolygonPartition(new List<Polygon>() { this }, this);
             }
 
-            return new PolygonPartition(Triangulate()).RemoveUnnecessaryEdges();
+            return new PolygonPartition(Triangulate(), this).RemoveUnnecessaryEdges();
         }
 
         /// <summary>
@@ -183,7 +184,7 @@ namespace PixelHunter1995.WalkingAreaLib
 
         /// <summary>
         /// Checks if point is contained in the polygon.
-        /// Taken from https://stackoverflow.com/a/2922778
+        /// Based on https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
@@ -191,14 +192,53 @@ namespace PixelHunter1995.WalkingAreaLib
         {
             bool contains = false;
 
-            for (int i = 0, j = vertices.Count - 1; i < vertices.Count; j = i++)
+            for (int i = 0; i < vertices.Count; i++)
             {
-                if ((vertices[i].Y > point.Y) != (vertices[j].Y > point.Y) &&
-                        (point.X < (vertices[j].X - vertices[i].X) * (point.Y - vertices[i].Y) /
-                        (vertices[j].Y - vertices[i].Y) + vertices[i].X))
+                Vector2 previousVertex = vertices[PreviousIndex(i)];
+                Vector2 currentVertex = vertices[i];
+                if ((currentVertex.Y > point.Y) != (previousVertex.Y > point.Y) &&
+                    (point.X < ((previousVertex.X - currentVertex.X) * (point.Y - currentVertex.Y) /
+                                (previousVertex.Y - currentVertex.Y) + currentVertex.X)))
+                {
                     contains = !contains;
+                }
             }
+
+            // As can be seen when following the documentation link edge cases are not certain to be included,
+            // but we need them to be (since we go there when someone clicks outside)
+            if (AtPolygonEdge(point))
+            {
+                return true;
+            }
+
             return contains;
+        }
+
+        private bool AtPolygonEdge(Vector2 point)
+        {
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Vector2 previousVertex = vertices[PreviousIndex(i)];
+                Vector2 currentVertex = vertices[i];
+                if (OnLine(point, previousVertex, currentVertex))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool OnLine(Vector2 pointOfInterest, Vector2 linePointA, Vector2 linePointB)
+        {
+            Vector2 pointAToPOI = pointOfInterest - linePointA;
+            Vector2 pointBToPOI = pointOfInterest - linePointB;
+            Vector2 pointAToPointB = linePointB - linePointA;
+
+            double lengthViaPOI = pointAToPOI.Length() + pointBToPOI.Length();
+            double lineLength = pointAToPointB.Length();
+
+            return Math.Abs(lengthViaPOI - lineLength) < 0.0000001;
         }
 
         /// <summary>
@@ -386,20 +426,106 @@ namespace PixelHunter1995.WalkingAreaLib
             return -1;
         }
 
-        public (Vector2, double) GetClosestVertex(Vector2 position)
+        private static Vector2 ProjectOntoLine(Vector2 pointOfInterest, Vector2 pointA, Vector2 pointB)
         {
-            Vector2 closestVertice = Vector2.Zero;
-            double closestDistance = double.MaxValue;
-            foreach (Vector2 vertex in vertices)
+            Vector2 pointAToPointB = pointB - pointA;
+            Vector2 pointAToPOI = pointOfInterest - pointA;
+
+            Vector2 normalizedPointAToPointB = pointAToPointB;
+            normalizedPointAToPointB.Normalize();
+
+            float scalarProjection = Vector2.Dot(pointAToPOI, normalizedPointAToPointB);
+            Vector2 pointProjection = new Vector2(normalizedPointAToPointB.X * scalarProjection, normalizedPointAToPointB.Y * scalarProjection);
+
+            Vector2 pointOnInfiniteLine = pointProjection + pointA;
+
+            if (!OnLine(pointOnInfiniteLine, pointA, pointB))
             {
-                double distance = (vertex - position).Length();
+                if ((pointA - pointOfInterest).Length() < (pointB - pointOfInterest).Length())
+                {
+                    return pointA;
+                }
+                else
+                {
+                    return pointB;
+                }
+            }
+
+            return pointOnInfiniteLine;
+        }
+
+        public (Vector2, double) ClosestPositionInPolygon(Vector2 pointOfInterest)
+        {
+            if (Contains(pointOfInterest))
+            {
+                return (pointOfInterest, 0.0);
+            }
+
+            Vector2 closestPoint = Vector2.Zero;
+            double closestDistance = double.MaxValue;
+
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Vector2 currentVertex = vertices[i];
+                Vector2 nextVertex = vertices[NextIndex(i)];
+
+                Vector2 pointOnLine = ProjectOntoLine(pointOfInterest, currentVertex, nextVertex);
+                double distance = (pointOnLine - pointOfInterest).Length();
                 if (distance < closestDistance)
                 {
-                    closestVertice = vertex;
+                    closestPoint = pointOnLine;
                     closestDistance = distance;
                 }
             }
-            return (closestVertice, closestDistance);
+
+            return (closestPoint, closestDistance);
+        }
+
+        private static (bool, Vector2) LinesIntersect(Vector2 line1PointA,
+                                                      Vector2 line1PointB,
+                                                      Vector2 line2PointA,
+                                                      Vector2 line2PointB)
+        {
+            float l1ax = line1PointA.X;
+            float l1ay = line1PointA.Y;
+
+            float l2ax = line2PointA.X;
+            float l2ay = line2PointA.Y;
+
+            Vector2 line1PointAToB = line1PointB - line1PointA;
+            float l1x = line1PointAToB.X;
+            float l1y = line1PointAToB.Y;
+
+            Vector2 line2PointAToB = line2PointB - line2PointA;
+            float l2x = line2PointAToB.X;
+            float l2y = line2PointAToB.Y;
+
+            float s = (-l1y * (l1ax - l2ax) + l1x * (l1ay - l2ay)) / (-l2x * l1y + l1x * l2y);
+            float t = ( l2x * (l1ay - l2ay) - l2y * (l1ax - l2ax)) / (-l2x * l1y + l1x * l2y);
+
+            bool intersects = 0 <= s && s <= 1 && 0 <= t && t <= 1;
+            Vector2 intersectionPoint = new Vector2(l1ax + t * l1x, l1ay + t * l1y);
+
+            return (intersects, intersectionPoint);
+        }
+
+        public List<Vector2> EdgeIntersections(Vector2 pointA, Vector2 pointB)
+        {
+            List<Vector2> intersections = new List<Vector2>();
+
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Vector2 currentVertex = vertices[i];
+                Vector2 nextVertex = vertices[NextIndex(i)];
+
+                var (intersects, intersectionPoint) = LinesIntersect(pointA, pointB, currentVertex, nextVertex);
+                if (intersects)
+                {
+                    intersections.Add(intersectionPoint);
+                }
+            }
+
+            return intersections;
         }
     }
 }
